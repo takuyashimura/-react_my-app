@@ -17,6 +17,7 @@ import Register from './Register';
 
 import axios from 'axios';
 import ReactDOM from 'react-dom';
+import { ReactNode } from 'react';
 
 axios.defaults.baseURL = 'http://localhost:8888/';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -29,6 +30,23 @@ axios.interceptors.request.use(function (config) {
 });
 
 const App = () => {
+  let AuthButtons: ReactNode;
+
+  if (!localStorage.getItem('auth_token') === false) {
+    AuthButtons = (
+      <>
+        <Route path={`/food/`} element={<Food />} />
+
+        <Route path={`/about/`} element={<About />} />
+        <Route path={`/`} element={<Food />} />
+
+        <Route path={`/menu/`} element={<Menu />} />
+        <Route path={`/buyList/`} element={<BuyList />} />
+        <Route path={`/cookingList/`} element={<CookingList />} />
+      </>
+    );
+  }
+
   return (
     <div className="App">
       <ChakraProvider theme={theme}>
@@ -38,27 +56,15 @@ const App = () => {
             <Routes>
               <Route path={`/register/`} element={<Register />} />
               <Route path={`/login/`} element={<Login />} />
-              <Route path={`/food/`} element={<Food />} />
-
-              <Route path={`/about/`} element={<About />} />
-              <Route path={`/`} element={<Food />} />
-
-              <Route path={`/menu/`} element={<Menu />} />
-              <Route path={`/buyList/`} element={<BuyList />} />
-              <Route path={`/cookingList/`} element={<CookingList />} />
+              {AuthButtons}
             </Routes>
             <Footer />
           </BrowserRouter>{' '}
         </Box>
-        <Box></Box>
       </ChakraProvider>
     </div>
   );
 };
-if (document.getElementById('nav')) {
-  ReactDOM.render(<App />, document.getElementById('nav'));
-}
-
 if (document.getElementById('nav')) {
   ReactDOM.render(<App />, document.getElementById('nav'));
 }
