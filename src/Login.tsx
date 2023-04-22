@@ -49,7 +49,9 @@ function Login() {
           localStorage.setItem('auth_name', res.data.username);
           swal('ログイン成功', res.data.message, 'success');
           navigation('/');
-          window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else if (res.data.status === 401) {
           swal('注意', res.data.message, 'warning');
         } else {
