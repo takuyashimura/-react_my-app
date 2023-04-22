@@ -1,6 +1,5 @@
 // import { AssertionError } from "assert";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './Home';
 import Login from './Login';
 
 import Food from './components/Food';

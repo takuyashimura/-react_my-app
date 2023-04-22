@@ -1,7 +1,5 @@
 import {
   Button,
-  Wrap,
-  WrapItem,
   useDisclosure,
   useToast,
   Text,
@@ -13,9 +11,7 @@ import {
 import Icon from '../icon/mapper';
 
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import { useEffect, useState } from 'react';
 
 import NewFood from './NewFood';
 import { FoodToMenusModal } from './FoodToMenusModal';
@@ -123,8 +119,6 @@ const Food = () => {
   };
 
   const toast = useToast();
-
-  const navigate = useNavigate();
 
   return (
     <div className="Food">
