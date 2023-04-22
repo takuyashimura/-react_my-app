@@ -11,7 +11,7 @@ import CookingList from './components/cookingList';
 import { Box, ChakraProvider } from '@chakra-ui/react';
 
 import theme from './theme/theme';
-import GlobalNav from './GlobalNav';
+import GlobalNav from './Nav';
 import About from './About';
 import Register from './Register';
 
