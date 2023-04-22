@@ -2,10 +2,16 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Input, Text } from '@chakra-ui/react';
+import { Box, Button, Text } from '@chakra-ui/react';
 import {
-  InformationInput,
-  InformationInputError,
+  ContainerBox,
+  ContentBox,
+  InformationEmailInput,
+  InformationEmailInputError,
+  InformationNameInput,
+  InformationNameInputError,
+  InformationPasswordInput,
+  InformationPasswordInputError,
   RegisterTag,
 } from './tags/RegisterLogintag';
 
@@ -61,28 +67,18 @@ function Register() {
 
   return (
     <>
-      <Box
-        mt={'50px'}
-        className="container"
-        display={'flex'}
-        justifyContent={'center'}
-      >
-        <Box
-          display={'flex'}
-          borderRadius={'8px'}
-          justifyContent={'center'}
-          width={'75%'}
-        >
+      <ContainerBox>
+        <ContentBox>
           <Box width={'100%'}>
             <form onSubmit={registerSubmit}>
-              {' '}
               <Box textAlign={'center'} mb={'10px'}>
                 <Text fontSize={'30px'}>ユーザー登録</Text>
               </Box>
               {registerInput.error_list.name ? (
                 <>
                   <RegisterTag>
-                    <InformationInputError
+                    <InformationNameInputError
+                      name="name"
                       onChange={handleInput}
                       value={registerInput.name}
                     />
@@ -91,7 +87,7 @@ function Register() {
                 </>
               ) : (
                 <RegisterTag>
-                  <InformationInput
+                  <InformationNameInput
                     onChange={handleInput}
                     value={registerInput.name}
                   />
@@ -99,61 +95,41 @@ function Register() {
               )}
               {registerInput.error_list.email ? (
                 <>
-                  <Box display="flex" alignItems="center">
-                    <Input
-                      textAlign={'center'}
-                      float={'right'}
-                      type=""
-                      placeholder="email"
-                      name="email"
+                  <RegisterTag>
+                    <InformationEmailInputError
                       onChange={handleInput}
                       value={registerInput.email}
                     />
-                  </Box>
+                  </RegisterTag>
                   <Text color="red.300">{registerInput.error_list.email}</Text>
                 </>
               ) : (
-                <Box display="flex" alignItems="center">
-                  <Input
-                    textAlign={'center'}
-                    mb={'24px'}
-                    type=""
-                    placeholder="email"
-                    name="email"
+                <RegisterTag>
+                  <InformationEmailInput
                     onChange={handleInput}
                     value={registerInput.email}
                   />
-                </Box>
+                </RegisterTag>
               )}
               {registerInput.error_list.password ? (
                 <>
-                  <Box display="flex" alignItems="center">
-                    <Input
-                      textAlign={'center'}
-                      float={'right'}
-                      type=""
-                      placeholder="password"
-                      name="password"
+                  <RegisterTag>
+                    <InformationPasswordInputError
                       onChange={handleInput}
                       value={registerInput.password}
                     />
-                  </Box>
+                  </RegisterTag>
                   <Text color="red.300">
                     {registerInput.error_list.password}
                   </Text>
                 </>
               ) : (
-                <Box display="flex" alignItems="center">
-                  <Input
-                    textAlign={'center'}
-                    mb={'24px'}
-                    type=""
-                    placeholder="password"
-                    name="password"
+                <RegisterTag>
+                  <InformationPasswordInput
                     onChange={handleInput}
                     value={registerInput.password}
                   />
-                </Box>
+                </RegisterTag>
               )}
               <Box textAlign={'center'}>
                 <Button type="submit" bg={'white'} _hover={{ opacity: 1 }}>
@@ -170,8 +146,8 @@ function Register() {
               </Box>
             </form>
           </Box>
-        </Box>
-      </Box>
+        </ContentBox>
+      </ContainerBox>
     </>
   );
 }

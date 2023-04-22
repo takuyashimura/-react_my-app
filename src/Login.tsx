@@ -1,106 +1,130 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import swal from "sweetalert";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import swal from 'sweetalert';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import {
+  ContainerBox,
+  ContentBox,
+  InformationEmailInput,
+  InformationEmailInputError,
+  InformationPasswordInput,
+  InformationPasswordInputError,
+  RegisterTag,
+} from './tags/RegisterLogintag';
+import { Box, Button, Text } from '@chakra-ui/react';
 
 type LoginInput = {
-    email: string;
-    password: string;
-    error_list: any;
+  email: string;
+  password: string;
+  error_list: any;
 };
 
 function Login() {
-    const navigation = useNavigate();
+  const navigation = useNavigate();
 
-    const [loginInput, setLogin] = useState<LoginInput>({
-        email: "",
-        password: "",
-        error_list: [],
+  const [loginInput, setLogin] = useState<LoginInput>({
+    email: '',
+    password: '',
+    error_list: [],
+  });
+
+  const handleInput = (e: any) => {
+    e.persist();
+    setLogin({ ...loginInput, [e.target.name]: e.target.value });
+  };
+
+  const loginSubmit = (e: any) => {
+    e.preventDefault();
+
+    const data = {
+      email: loginInput.email,
+      password: loginInput.password,
+    };
+
+    axios.get('/sanctum/csrf-cookie').then((response) => {
+      axios.post(`api/login`, data).then((res) => {
+        if (res.data.status === 200) {
+          localStorage.setItem('auth_token', res.data.token);
+          localStorage.setItem('auth_name', res.data.username);
+          swal('ログイン成功', res.data.message, 'success');
+          navigation('/');
+          window.location.reload();
+        } else if (res.data.status === 401) {
+          swal('注意', res.data.message, 'warning');
+        } else {
+          setLogin({
+            ...loginInput,
+            error_list: res.data.validation_errors,
+          });
+        }
+      });
     });
+  };
 
-    const handleInput = (e: any) => {
-        e.persist();
-        setLogin({ ...loginInput, [e.target.name]: e.target.value });
-    };
+  return (
+    <ContainerBox>
+      <ContentBox>
+        <Box width={'100%'}>
+          <form onSubmit={loginSubmit}>
+            <Box width={'100%'} textAlign={'center'} mb={'10px'}>
+              <Text fontSize={'30px'}>ログイン</Text>
+            </Box>
+            {loginInput.error_list.email ? (
+              <>
+                <RegisterTag>
+                  <InformationEmailInputError
+                    onChange={handleInput}
+                    value={loginInput.email}
+                  />
+                </RegisterTag>
+                <Text color="red.300">{loginInput.error_list.email}</Text>
+              </>
+            ) : (
+              <RegisterTag>
+                <InformationEmailInput
+                  onChange={handleInput}
+                  value={loginInput.email}
+                />
+              </RegisterTag>
+            )}
+            {loginInput.error_list.password ? (
+              <>
+                <RegisterTag>
+                  <InformationPasswordInputError
+                    onChange={handleInput}
+                    value={loginInput.password}
+                  />
+                </RegisterTag>
+                <Text color="red.300">{loginInput.error_list.password}</Text>
+              </>
+            ) : (
+              <RegisterTag>
+                <InformationPasswordInput
+                  onChange={handleInput}
+                  value={loginInput.password}
+                />
+              </RegisterTag>
+            )}
 
-    const loginSubmit = (e: any) => {
-        e.preventDefault();
-
-        const data = {
-            email: loginInput.email,
-            password: loginInput.password,
-        };
-
-        axios.get("/sanctum/csrf-cookie").then((response) => {
-            axios.post(`api/login`, data).then((res) => {
-                if (res.data.status === 200) {
-                    localStorage.setItem("auth_token", res.data.token);
-                    localStorage.setItem("auth_name", res.data.username);
-                    swal("ログイン成功", res.data.message, "success");
-                    navigation("/");
-                    window.location.reload();
-                } else if (res.data.status === 401) {
-                    swal("注意", res.data.message, "warning");
-                } else {
-                    setLogin({
-                        ...loginInput,
-                        error_list: res.data.validation_errors,
-                    });
-                }
-            });
-        });
-    };
-
-    return (
-        <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-md-6 col-lg-6 mx-auto">
-                    <div className="card">
-                        <div className="card-header">
-                            <h4>Login</h4>
-                        </div>
-                        <div className="card-body">
-                            <form onSubmit={loginSubmit}>
-                                <div className="form-group mb-3">
-                                    <label>Mail Address</label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        onChange={handleInput}
-                                        value={loginInput.email}
-                                        className="form-control"
-                                    />
-                                    <span>{loginInput.error_list.email}</span>
-                                </div>
-                                <div className="form-group mb-3">
-                                    <label>Password</label>
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        onChange={handleInput}
-                                        value={loginInput.password}
-                                        className="form-control"
-                                    />
-                                    <span>
-                                        {loginInput.error_list.password}
-                                    </span>
-                                </div>
-                                <div className="form-group mb-3">
-                                    <button
-                                        type="submit"
-                                        className="btn btn-primary"
-                                    >
-                                        Login
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+            <Text textAlign={'center'}>
+              <Button type="submit" bg={'white'} _hover={{ opacity: 1 }}>
+                <Text
+                  color={'blue.500'}
+                  fontWeight={'200'}
+                  _hover={{
+                    borderBottom: '1px solid #3B82F6',
+                  }}
+                >
+                  ログイン
+                </Text>
+              </Button>
+            </Text>
+          </form>
+        </Box>
+      </ContentBox>
+    </ContainerBox>
+  );
 }
 
 export default Login;
