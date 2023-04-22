@@ -126,7 +126,7 @@ const Food = () => {
       <Box w={'100%'} textAlign={'right'}>
         {' '}
         <CustomButtom m={2} onClick={onOpenAddFoodModal}>
-          新規食材追加ボタン
+          新規食材追加
         </CustomButtom>
       </Box>
 
