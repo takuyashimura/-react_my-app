@@ -1,7 +1,6 @@
-import { Box, List, ListItem, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { FooterTagu } from '../tags/Footer';
 import { FooterElement } from '../tags/FooterElement';
-import { Link } from 'react-router-dom';
 
 import Icon from '../icon/mapper';
 import { ReactNode } from 'react';
