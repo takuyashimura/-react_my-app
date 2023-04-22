@@ -9,7 +9,7 @@ import { ReactNode } from 'react';
 export const Footer = () => {
   let AuthButtons: ReactNode;
 
-  if (localStorage.getItem('auth_token')) {
+  if (!localStorage.getItem('auth_token') === false) {
     AuthButtons = (
       <>
         <FooterElement href="/food/">
