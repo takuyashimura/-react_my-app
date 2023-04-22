@@ -59,7 +59,7 @@ function GlobalNav() {
   return (
     <Flex bg={'red.100'} justify="space-between">
       <Box>
-        <Text fontSize={'25px'}>食材管理アプリ</Text>
+        <Text fontSize={'25px'}>食材管理</Text>
       </Box>
 
       <List>{AuthButtons}</List>
