@@ -19,7 +19,7 @@ import axios from 'axios';
 import ReactDOM from 'react-dom';
 import { ReactNode } from 'react';
 
-axios.defaults.baseURL = 'http://snowpanda2.sakura.ne.jp/';
+axios.defaults.baseURL = 'http://localhost:8888/';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
