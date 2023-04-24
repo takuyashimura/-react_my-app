@@ -52,7 +52,7 @@ export const FoodToMenusModal: VFC<Props> = memo((props) => {
   const ClickChoice = (menu: any) => {
     console.log('menu', menu);
     axios
-      .post('http://localhost:8888/api/menu_cook', { menu })
+      .post('api/menu_cook', { menu })
       .then((response) => {
         setChoiceMenu(response.data);
         console.log('choiceMenu', choiceMenu);

@@ -43,7 +43,7 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
   const handlePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('http://localhost:8888/api/add_menu_edit', {
+      .post('api/add_menu_edit', {
         menuName,
         postMenuData,
       })

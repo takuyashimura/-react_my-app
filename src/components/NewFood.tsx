@@ -23,12 +23,13 @@ const NewFood: VFC<Props> = memo((props) => {
 
   const OnChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFoodData(e.target.value);
+    console.log('foodData', foodData);
   };
 
   const HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('http://localhost:8888/api/add', foodData)
+      .post('api/add', foodData)
       .then((response) => {
         console.log(response.data);
         if (response.data === '登録完了') {

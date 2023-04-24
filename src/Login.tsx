@@ -48,7 +48,7 @@ function Login() {
           localStorage.setItem('auth_token', res.data.token);
           localStorage.setItem('auth_name', res.data.username);
           swal('ログイン成功', res.data.message, 'success');
-          navigation('/');
+          navigation('/food/');
           setTimeout(() => {
             window.location.reload();
           }, 2000);

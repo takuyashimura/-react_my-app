@@ -42,7 +42,7 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('http://localhost:8888/api/edit_buy_list');
+        const res = await axios.get('api/edit_buy_list');
         console.log('res.data', res.data);
         setNonFood(res.data.nonFood);
         setSList(res.data.shopping_item);
@@ -57,7 +57,7 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('http://localhost:8888/api/reply_buy_list', sList)
+      .post('api/reply_buy_list', sList)
       .then((response) => {
         console.log('post', response.data);
         onClose();

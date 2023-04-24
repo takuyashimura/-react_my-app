@@ -48,7 +48,7 @@ const CookingList = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('http://localhost:8888/api/cooking_list');
+        const res = await axios.get('api/cooking_list');
         console.log('res.data', res.data);
         setCookingList(res.data.cooking_list);
         setnonStocksData(res.data.non_stocks_data);
@@ -74,7 +74,7 @@ const CookingList = () => {
   const HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('http://localhost:8888/api/addBuyListByCoookingList', toBuyList)
+      .post('api/addBuyListByCoookingList', toBuyList)
       .then((response) => {
         toast({
           title: '不足している食材をカートに追加しました。',
@@ -93,7 +93,7 @@ const CookingList = () => {
 
   const HandlePost = () => {
     axios
-      .post('http://localhost:8888/api/cooking', { useList, cookingList })
+      .post('api/cooking', { useList, cookingList })
       .then((response) => {
         console.log('帰ってきたお', response.data);
         toast({

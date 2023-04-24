@@ -30,7 +30,7 @@ export const MenuCookModal: FC<Props> = memo((props) => {
   const handlePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('http://localhost:8888/api/add_buy_list', choiceMenu)
+      .post('api/add_buy_list', choiceMenu)
       .then((response) => {
         console.log('post', response.data);
         toast({
@@ -49,7 +49,7 @@ export const MenuCookModal: FC<Props> = memo((props) => {
 
   const handlePost1 = () => {
     axios
-      .post('http://localhost:8888/api/add_cooking_list', choiceMenu[1])
+      .post('api/add_cooking_list', choiceMenu[1])
       .then((response) => {
         console.log('response', response.data);
         toast({

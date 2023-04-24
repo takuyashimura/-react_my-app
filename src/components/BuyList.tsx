@@ -35,7 +35,7 @@ const BuyList = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('http://localhost:8888/api/buy_list');
+        const res = await axios.get('api/buy_list');
         console.log('res.data', res.data);
         setShoppingItems(res.data.shopping_items);
         setText(res.data.texts[0].text);
@@ -48,7 +48,7 @@ const BuyList = () => {
   const HnadleSubmit1 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('http://localhost:8888/api/boughtFood', shoppingItems)
+      .post('api/boughtFood', shoppingItems)
       .then((response) => {
         console.log('shoppingItems', shoppingItems);
         toast({
@@ -67,7 +67,7 @@ const BuyList = () => {
   const HnadleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('http://localhost:8888/api/text', text)
+      .post('api/text', text)
       .then((response) => {
         console.log('post', response.data);
       })

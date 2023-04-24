@@ -48,7 +48,7 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
 
   //↓GET受信関係 ----------------------------------------------------------------------------------------------
 
-  const url = 'http://localhost:8888/api/add_menu';
+  const url = 'api/add_menu';
 
   useEffect(() => {
     (async () => {
@@ -97,7 +97,7 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
     e.preventDefault();
     // if (menuName !== "この食材はすでに登録されています。") {
     axios
-      .post('http://localhost:8888/api/add_menu_register', postData)
+      .post('api/add_menu_register', postData)
       .then((response) => {
         console.log('post', response.data);
         if (response.data === '登録完了') {

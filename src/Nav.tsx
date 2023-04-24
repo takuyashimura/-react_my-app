@@ -12,7 +12,8 @@ function GlobalNav() {
   const logoutSubmit = (e: any) => {
     e.preventDefault();
 
-    axios.post(`/api/logout`).then((res) => {
+    axios.post(`api/logout`).then((res) => {
+      console.log('res', res);
       if (res.data.status === 200) {
         localStorage.removeItem('auth_token');
         localStorage.removeItem('auth_namee');
