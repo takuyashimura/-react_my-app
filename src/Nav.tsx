@@ -12,12 +12,14 @@ function GlobalNav() {
   const logoutSubmit = (e: any) => {
     e.preventDefault();
 
-    axios.post(`/api/logout`).then((res) => {
+    axios.post(`api/logout`).then((res) => {
+      console.log('res', res);
       if (res.data.status === 200) {
         localStorage.removeItem('auth_token');
         localStorage.removeItem('auth_namee');
         swal('ログアウトしました', res.data.message, 'success');
         navigation('/');
+        localStorage.clear();
         window.location.reload();
       }
     });
@@ -54,7 +56,7 @@ function GlobalNav() {
       </Box>
     );
   }
-  console.log('localStorage', localStorage.auth_name);
+  console.log('localStorage', localStorage);
 
   return (
     <Flex bg={'red.100'} justify="space-between">

@@ -63,12 +63,11 @@ const Food = () => {
   } = useDisclosure();
 
   // 先ほど作成したLaravelのAPIのURL
-  const url = 'http://localhost:8888/api/home';
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get(url);
+        const res = await axios.get('/api/home');
 
         setFoodStocks(res.data.food_stocks);
 
@@ -107,7 +106,7 @@ const Food = () => {
 
   const handlePostModal = (food_stock: any) => {
     axios
-      .post('http://localhost:8888/api/foodToMenu', { food_stock })
+      .post('/api/foodToMenu', { food_stock })
       .then((response) => {
         console.log('post', response.data);
         setModalFoodStocks(response.data);

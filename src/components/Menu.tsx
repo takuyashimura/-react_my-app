@@ -66,7 +66,7 @@ const Menu = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('http://localhost:8888/api/menu');
+        const res = await axios.get('api/menu');
         console.log(res);
 
         setMenus(res.data.menus);
@@ -83,10 +83,8 @@ const Menu = () => {
   // post↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
   const ClickChoice = (menu: any) => {
-    console.log('menu', menu);
-
     axios
-      .post('http://localhost:8888/api/menu_cook', { menu })
+      .post('api/menu_cook', { menu })
       .then((response) => {
         setChoiceMenu(response.data);
         console.log('choiceMenu', choiceMenu);
@@ -105,7 +103,7 @@ const Menu = () => {
 
   const clickEdit = (menu: any) => {
     axios
-      .post('http://localhost:8888/api/menu_edit', { menu })
+      .post('api/menu_edit', { menu })
       .then((response) => {
         console.log('post1', response.data.menuData);
         console.log('post2', response.data.foodArray);

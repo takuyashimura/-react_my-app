@@ -13,7 +13,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { FC, memo } from 'react';
+import { VFC, memo } from 'react';
 import { CustomButtom } from '../tags/buttom';
 
 type Props = {
@@ -22,7 +22,7 @@ type Props = {
   choiceMenu: any;
 };
 
-export const MenuCookModal: FC<Props> = memo((props) => {
+export const MenuCookModal: VFC<Props> = memo((props) => {
   const { isOpen, onClose, choiceMenu } = props;
 
   const toast = useToast();
@@ -30,7 +30,7 @@ export const MenuCookModal: FC<Props> = memo((props) => {
   const handlePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('http://localhost:8888/api/add_buy_list', choiceMenu)
+      .post('api/add_buy_list', choiceMenu)
       .then((response) => {
         console.log('post', response.data);
         toast({
@@ -49,7 +49,7 @@ export const MenuCookModal: FC<Props> = memo((props) => {
 
   const handlePost1 = () => {
     axios
-      .post('http://localhost:8888/api/add_cooking_list', choiceMenu[1])
+      .post('api/add_cooking_list', choiceMenu[1])
       .then((response) => {
         console.log('response', response.data);
         toast({
@@ -120,6 +120,7 @@ export const MenuCookModal: FC<Props> = memo((props) => {
                 align="stretch"
               >
                 {choiceMenu &&
+                  choiceMenu[2].length > 0 &&
                   choiceMenu[2].map((f: any) => (
                     <>
                       <Flex justify="space-between" key={f.food_id}>
