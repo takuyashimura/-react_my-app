@@ -52,6 +52,7 @@ function Register() {
         if (res.data.status === 200) {
           localStorage.setItem('auth_token', res.data.token);
           localStorage.setItem('auth_name', res.data.username);
+          localStorage.setItem('auth_userId', res.data.userId);
           navigation('/food/');
           swal('Success', res.data.message, 'success');
           setTimeout(() => {
