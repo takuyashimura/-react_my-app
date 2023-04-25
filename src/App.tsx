@@ -32,7 +32,7 @@ axios.interceptors.request.use(function (config) {
 const App = () => {
   let AuthButtons: ReactNode;
 
-  if (!localStorage.getItem('auth_token') === false) {
+  if (localStorage.getItem('auth_token')) {
     AuthButtons = (
       <>
         <Route path={`/food/`} element={<Food />} />

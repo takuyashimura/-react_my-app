@@ -15,11 +15,9 @@ function GlobalNav() {
     axios.post(`api/logout`).then((res) => {
       console.log('res', res);
       if (res.data.status === 200) {
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('auth_namee');
+        localStorage.clear();
         swal('ログアウトしました', res.data.message, 'success');
         navigation('/');
-        localStorage.clear();
         window.location.reload();
       }
     });
@@ -27,7 +25,20 @@ function GlobalNav() {
 
   let AuthButtons: ReactNode;
 
-  if (!localStorage.getItem('auth_token')) {
+  if (localStorage.getItem('auth_token')) {
+    AuthButtons = (
+      <Box>
+        <Box>
+          <Text>ログイン中</Text>
+        </Box>
+        <ListItem float={'right'} onClick={logoutSubmit}>
+          <Box width={'25%'}>
+            <Icon name="logout" />
+          </Box>
+        </ListItem>{' '}
+      </Box>
+    );
+  } else {
     AuthButtons = (
       <List>
         <ListItem>
@@ -41,19 +52,6 @@ function GlobalNav() {
           </Link>
         </ListItem>
       </List>
-    );
-  } else {
-    AuthButtons = (
-      <Box>
-        <Box>
-          <Text>ログイン中</Text>
-        </Box>
-        <ListItem float={'right'} onClick={logoutSubmit}>
-          <Box width={'25%'}>
-            <Icon name="logout" />
-          </Box>
-        </ListItem>{' '}
-      </Box>
     );
   }
   console.log('localStorage', localStorage);

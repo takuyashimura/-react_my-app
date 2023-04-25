@@ -44,9 +44,11 @@ function Login() {
 
     axios.get('/sanctum/csrf-cookie').then((response) => {
       axios.post(`api/login`, data).then((res) => {
+        console.log('res', res);
         if (res.data.status === 200) {
           localStorage.setItem('auth_token', res.data.token);
           localStorage.setItem('auth_name', res.data.username);
+          localStorage.setItem('auth_userId', res.data.userId);
           swal('ログイン成功', res.data.message, 'success');
           navigation('/food/');
           setTimeout(() => {
