@@ -26,6 +26,7 @@ type Props = { isOpen: boolean; onClose: () => void };
 type Nonfood = {
   id: number;
   name: string;
+  amount: number;
 };
 type ShoppingItem = {
   food_id: number;
@@ -35,7 +36,7 @@ type ShoppingItem = {
 
 export const EditBuyListModal: VFC<Props> = memo((props) => {
   const { isOpen, onClose } = props;
-  const [nonFood, setNonFood] = useState<[Nonfood] | undefined>(undefined);
+  const [nonFood, setNonFood] = useState<Nonfood[] | undefined>(undefined);
   const [sList, setSList] = useState<ShoppingItem[] | undefined>(undefined);
   const toast = useToast();
 
@@ -43,23 +44,28 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
     (async () => {
       try {
         const res = await axios.get('api/edit_buy_list');
-        console.log('res.data', res.data);
-        setNonFood(res.data.nonFood);
+        console.log('modalRes.data', res.data);
         setSList(res.data.shopping_item);
+        const nonFoodArray = res.data.nonFood?.flat();
+        const updatedNonFoodArray = nonFoodArray?.map((item: any) => ({
+          ...item,
+          amount: 0,
+        }));
+        setNonFood(updatedNonFoodArray as [Nonfood]);
         return;
       } catch (e) {
         return e;
       }
     })();
   }, []);
-  const nonFoodArray = nonFood?.flat();
+  console.log('nonFood', nonFood);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('api/reply_buy_list', sList)
+      .post('api/reply_buy_list', { sList, nonFood })
       .then((response) => {
-        console.log('post', response.data);
+        console.log('posts', response.data);
         onClose();
         toast({
           title: 'カートを更新しました',
@@ -76,24 +82,24 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
         console.error(error);
       });
   };
-  const onChangeFoodNumber = (e: string, name: string, food_id: number) => {
-    if (sList?.some((d) => d.food_id === food_id)) {
+
+  const onChangeNonFoodNumber = (e: string, name: string, id: number) => {
+    if (nonFood) {
+      const updatedNonfood = nonFood.map((list) =>
+        list.id === id ? { id, name, amount: Number(e) } : list
+      );
+      setNonFood(updatedNonfood);
+    }
+    console.log('nonFood', nonFood);
+  };
+  const onChangeSlistNumber = (e: string, name: string, food_id: number) => {
+    if (sList) {
       const updatedsList = sList.map((list) =>
         list.food_id === food_id ? { food_id, name, amount: Number(e) } : list
       );
       setSList(updatedsList);
-    } else {
-      setSList([
-        ...(sList ? sList : []),
-        {
-          food_id,
-          name,
-          amount: Number(e),
-        },
-      ]);
     }
   };
-  console.log('sList', sList);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -123,8 +129,8 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
               spacing={4}
               align="stretch"
             >
-              {nonFoodArray &&
-                nonFoodArray.map((f) => (
+              {nonFood &&
+                nonFood.map((f) => (
                   <>
                     <Flex justify="space-between">
                       <Box width={'50%'} key={f.id} h="40px">
@@ -133,7 +139,10 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
                       <Box width={'50%'}>
                         <NumberInput
                           min={0}
-                          onChange={(e) => onChangeFoodNumber(e, f.name, f.id)}
+                          defaultValue={f.amount}
+                          onChange={(e) =>
+                            onChangeNonFoodNumber(e, f.name, f.id)
+                          }
                         >
                           <NumberInputField textAlign={'right'} />
                           <NumberInputStepper>
@@ -154,9 +163,10 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
                       </Box>
                       <Box width={'50%'}>
                         <NumberInput
+                          min={0}
                           defaultValue={l.amount}
                           onChange={(e) =>
-                            onChangeFoodNumber(e, l.name, l.food_id)
+                            onChangeSlistNumber(e, l.name, l.food_id)
                           }
                         >
                           <NumberInputField textAlign={'right'} />

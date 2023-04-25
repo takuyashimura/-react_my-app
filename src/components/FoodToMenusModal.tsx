@@ -7,6 +7,7 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
+  Text,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { VFC, memo, useState } from 'react';
@@ -85,11 +86,11 @@ export const FoodToMenusModal: VFC<Props> = memo((props) => {
               modalFoodStocks[1].length > 0 ? (
                 modalFoodStocks[1].map((menu: any) => (
                   <Button key={menu.id} m={1} onClick={() => ClickChoice(menu)}>
-                    <p>{menu.name}</p>
+                    <Text>{menu.name}</Text>
                   </Button>
                 ))
               ) : (
-                <p>使用するメニューがありません</p>
+                <Text>使用するメニューがありません</Text>
               )}
             </div>
           </ModalBody>

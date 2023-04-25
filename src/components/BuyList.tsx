@@ -26,6 +26,8 @@ const BuyList = () => {
   const [shoppingItems, setShoppingItems] = useState<shopingItem[] | undefined>(
     undefined
   );
+  console.log('shoppingItems', shoppingItems);
+
   const [text, setText] = useState<text>();
 
   const { isOpen: isEdit, onOpen: onEdit, onClose: endEdit } = useDisclosure();
@@ -50,9 +52,8 @@ const BuyList = () => {
     axios
       .post('api/boughtFood', shoppingItems)
       .then((response) => {
-        console.log('shoppingItems', shoppingItems);
         toast({
-          title: '購入しました',
+          title: `${response.data}`,
           status: 'success',
           duration: 3000,
           isClosable: true,

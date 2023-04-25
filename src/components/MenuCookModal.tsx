@@ -13,7 +13,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { FC, memo } from 'react';
+import { VFC, memo } from 'react';
 import { CustomButtom } from '../tags/buttom';
 
 type Props = {
@@ -22,7 +22,7 @@ type Props = {
   choiceMenu: any;
 };
 
-export const MenuCookModal: FC<Props> = memo((props) => {
+export const MenuCookModal: VFC<Props> = memo((props) => {
   const { isOpen, onClose, choiceMenu } = props;
 
   const toast = useToast();
@@ -120,6 +120,7 @@ export const MenuCookModal: FC<Props> = memo((props) => {
                 align="stretch"
               >
                 {choiceMenu &&
+                  choiceMenu[2].length > 0 &&
                   choiceMenu[2].map((f: any) => (
                     <>
                       <Flex justify="space-between" key={f.food_id}>

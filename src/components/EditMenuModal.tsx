@@ -15,6 +15,7 @@ import {
   NumberInputStepper,
   VStack,
   Flex,
+  useToast,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { VFC, memo, useEffect, useState } from 'react';
@@ -32,6 +33,8 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
   const [postMenuData, setPostMenuData] = useState<any[] | undefined>(
     undefined
   );
+  const toast = useToast();
+
   useEffect(() => {
     if (menuName && menuData) {
       setPostMenuData(menuData);
@@ -49,6 +52,12 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
       })
       .then((response) => {
         console.log('post', response.data);
+        toast({
+          title: 'メニューで使用する食材を更新しました',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
         onClose();
       })
       .catch((error) => {

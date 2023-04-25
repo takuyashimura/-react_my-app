@@ -19,6 +19,7 @@ function GlobalNav() {
         localStorage.removeItem('auth_namee');
         swal('ログアウトしました', res.data.message, 'success');
         navigation('/');
+        localStorage.clear();
         window.location.reload();
       }
     });
@@ -55,7 +56,7 @@ function GlobalNav() {
       </Box>
     );
   }
-  console.log('localStorage', localStorage.auth_name);
+  console.log('localStorage', localStorage);
 
   return (
     <Flex bg={'red.100'} justify="space-between">

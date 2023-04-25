@@ -83,8 +83,6 @@ const Menu = () => {
   // post↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
   const ClickChoice = (menu: any) => {
-    console.log('menu', menu);
-
     axios
       .post('api/menu_cook', { menu })
       .then((response) => {

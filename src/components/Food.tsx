@@ -63,12 +63,11 @@ const Food = () => {
   } = useDisclosure();
 
   // 先ほど作成したLaravelのAPIのURL
-  const url = '/api/home';
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get(url);
+        const res = await axios.get('/api/home');
 
         setFoodStocks(res.data.food_stocks);
 
