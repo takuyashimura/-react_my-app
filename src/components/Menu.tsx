@@ -66,8 +66,8 @@ const Menu = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('api/menu');
-        console.log(res);
+        const res = await axios.get(`api/menu/${localStorage.auth_userId}`);
+        console.log('res', res);
 
         setMenus(res.data.menus);
         //サイトで拾ってきたコードにはconsoleのコードはなかったので自分で追記
@@ -86,9 +86,8 @@ const Menu = () => {
     axios
       .post('api/menu_cook', { menu })
       .then((response) => {
+        console.log('response', response);
         setChoiceMenu(response.data);
-        console.log('choiceMenu', choiceMenu);
-
         onChoice();
       })
       .catch((error) => {
@@ -105,13 +104,10 @@ const Menu = () => {
     axios
       .post('api/menu_edit', { menu })
       .then((response) => {
-        console.log('post1', response.data.menuData);
-        console.log('post2', response.data.foodArray);
+        console.log('response', response.data.foodArray);
         setMenuName(response.data.menuData);
         setMenuData(response.data.foodArray);
         onEdit();
-
-        // navigate("/EditMenu/", { state: response.data });
       })
       .catch((error) => {
         console.error(error);

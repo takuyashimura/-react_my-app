@@ -29,7 +29,7 @@ const NewFood: VFC<Props> = memo((props) => {
   const HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('api/add', { foodData, localStorage })
+      .post('api/add', { foodData, userId: localStorage.auth_userId })
       .then((response) => {
         console.log(response.data);
         if (response.data === '登録完了') {

@@ -37,7 +37,7 @@ const BuyList = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('api/buy_list');
+        const res = await axios.get(`api/buy_list/${localStorage.auth_userId}`);
         console.log('res.data', res.data);
         setShoppingItems(res.data.shopping_items);
         setText(res.data.texts[0].text);
@@ -50,7 +50,10 @@ const BuyList = () => {
   const HnadleSubmit1 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('api/boughtFood', shoppingItems)
+      .post('api/boughtFood', {
+        shoppingItems,
+        userId: localStorage.auth_userId,
+      })
       .then((response) => {
         toast({
           title: `${response.data}`,
@@ -68,7 +71,7 @@ const BuyList = () => {
   const HnadleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('api/text', text)
+      .post('api/text', { text, userId: localStorage.auth_userId })
       .then((response) => {
         console.log('post', response.data);
       })

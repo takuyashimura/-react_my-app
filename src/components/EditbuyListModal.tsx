@@ -43,7 +43,9 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('api/edit_buy_list');
+        const res = await axios.get(
+          `api/edit_buy_list/${localStorage.auth_userId}`
+        );
         console.log('modalRes.data', res.data);
         setSList(res.data.shopping_item);
         const nonFoodArray = res.data.nonFood?.flat();
@@ -59,11 +61,16 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
     })();
   }, []);
   console.log('nonFood', nonFood);
+  console.log('sList', sList);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('api/reply_buy_list', { sList, nonFood })
+      .post('api/reply_buy_list', {
+        sList,
+        nonFood,
+        userId: localStorage.auth_userId,
+      })
       .then((response) => {
         console.log('posts', response.data);
         onClose();

@@ -51,7 +51,7 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('api/add_menu');
+        const res = await axios.get(`api/add_menu/${localStorage.auth_userId}`);
 
         setFood(res.data.food);
 
@@ -94,8 +94,12 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
   const HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('api/add_menu_register', postData)
+      .post('api/add_menu_register', {
+        postData,
+        userId: localStorage.auth_userId,
+      })
       .then((response) => {
+        console.log('response', response);
         if (response.data === '登録完了') {
           onClose();
           toast({
@@ -130,11 +134,11 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>新しい食材追加モーダル</ModalHeader>
+        <ModalHeader>新しいメニュー追加</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <form onSubmit={HandleSubmit}>
-            <Flex justify="space-between">
+            <Flex justify="space-between" alignItems={'center'}>
               <Box>
                 <input
                   type="text"
