@@ -48,14 +48,15 @@ const CookingList = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('api/cooking_list');
+        const res = await axios.get(
+          `api/cooking_list/${localStorage.auth_userId}`
+        );
         console.log('res.data', res.data);
         setCookingList(res.data.cooking_list);
         setnonStocksData(res.data.non_stocks_data);
         setOonStocksData(res.data.on_stocks_data);
         setUseList(res.data.cooking_list_food_name_amount);
         setNameCount(res.data.cooking_list_name_count);
-        console.log('nameCount', nameCount);
 
         return;
       } catch (e) {
@@ -74,7 +75,10 @@ const CookingList = () => {
   const HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('api/addBuyListByCoookingList', toBuyList)
+      .post('api/addBuyListByCoookingList', {
+        toBuyList,
+        userId: localStorage.auth_userId,
+      })
       .then((response) => {
         toast({
           title: '不足している食材をカートに追加しました。',
@@ -93,7 +97,11 @@ const CookingList = () => {
 
   const HandlePost = () => {
     axios
-      .post('api/cooking', { useList, cookingList })
+      .post('api/cooking', {
+        useList,
+        cookingList,
+        userId: localStorage.auth_userId,
+      })
       .then((response) => {
         console.log('帰ってきたお', response.data);
         toast({
@@ -172,7 +180,7 @@ const CookingList = () => {
               align="stretch"
             >
               {nonStocksData.map((d) => (
-                <Flex justify="space-between" bg="yellow.200" key={d.id}>
+                <Flex justify="space-between" bg="red.200" key={d.id}>
                   <Text>{d.food_name}</Text>
                   <Flex>
                     <Text color={'red'}>{d.amount}</Text>

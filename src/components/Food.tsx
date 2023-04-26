@@ -63,14 +63,11 @@ const Food = () => {
   } = useDisclosure();
 
   // 先ほど作成したLaravelのAPIのURL
-
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('/api/home');
-
+        const res = await axios.get(`/api/home/${localStorage.auth_userId}`);
         setFoodStocks(res.data.food_stocks);
-
         return;
       } catch (e) {
         return e;
@@ -94,7 +91,6 @@ const Food = () => {
           });
         } else {
           setModalData(food_stock);
-          console.log('modaldata', modaldata);
           onCheck();
         }
         console.log('post', response.data);
@@ -106,15 +102,15 @@ const Food = () => {
 
   const handlePostModal = (food_stock: any) => {
     axios
-      .post('/api/foodToMenu', { food_stock })
+      .post('/api/foodToMenu', { food_stock, userId: localStorage.auth_userId })
       .then((response) => {
         console.log('post', response.data);
         setModalFoodStocks(response.data);
+        onOpenFoodToMenuModal();
       })
       .catch((error) => {
         console.error(error);
       });
-    onOpenFoodToMenuModal();
   };
 
   const toast = useToast();
@@ -128,15 +124,14 @@ const Food = () => {
           新規食材追加
         </CustomButtom>
       </Box>
-
-      <VStack
-        divider={<StackDivider borderColor="gray.200" />}
-        spacing={2}
-        align="stretch"
-      >
-        {' '}
-        {foodStocks &&
-          foodStocks.map((food_stock) => (
+      {foodStocks && foodStocks.length > 0 ? (
+        <VStack
+          divider={<StackDivider borderColor="gray.200" />}
+          spacing={2}
+          align="stretch"
+        >
+          {' '}
+          {foodStocks.map((food_stock) => (
             <Flex
               ml={2}
               mr={2}
@@ -182,7 +177,17 @@ const Food = () => {
               </Box>
             </Flex>
           ))}
-      </VStack>
+        </VStack>
+      ) : (
+        <Box textAlign={'center'}>
+          <Text mt={'50px'} fontSize={'20px'}>
+            新規食材追加ボタンから
+            <br />
+            食材を追加してください
+          </Text>
+        </Box>
+      )}
+
       <NewFood isOpen={isOpenAddFoodModal} onClose={CloseAddFoodModal} />
       <FoodToMenusModal
         isOpen={isOpenFoodToMenuModal}

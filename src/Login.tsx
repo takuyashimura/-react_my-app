@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +22,12 @@ type LoginInput = {
 
 function Login() {
   const navigation = useNavigate();
+  useEffect(() => {
+    if (localStorage.auth_token) {
+      localStorage.clear();
+      window.location.reload();
+    }
+  }, []);
 
   const [loginInput, setLogin] = useState<LoginInput>({
     email: '',
