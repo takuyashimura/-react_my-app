@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import NewFood from './NewFood';
 import { FoodToMenusModal } from './FoodToMenusModal';
 import { AlertDialogPage } from './AlertDialogPage';
-import { CustomButtom } from '../tags/buttom';
+import { MainButton } from '../tags/buttom';
 type FoodStocks = {
   id: number;
   name: string;
@@ -85,6 +85,7 @@ const Food = () => {
         ) {
           toast({
             title: `${response.data}`,
+            position: 'top',
             status: 'error',
             duration: 3000,
             isClosable: true,
@@ -120,9 +121,7 @@ const Food = () => {
       {/* <Button as={Link} to="/newFood/"> */}
       <Box w={'100%'} textAlign={'right'}>
         {' '}
-        <CustomButtom m={2} onClick={onOpenAddFoodModal}>
-          新規食材追加
-        </CustomButtom>
+        <MainButton onClick={onOpenAddFoodModal}>新規食材追加</MainButton>
       </Box>
       {foodStocks && foodStocks.length > 0 ? (
         <VStack

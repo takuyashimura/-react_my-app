@@ -26,6 +26,7 @@ export const AlertDialogPage: VFC<Props> = memo((props) => {
         onClose();
         toast({
           title: '削除しました',
+          position: 'top',
           description: '3秒後にリロードされます',
           status: 'success',
           duration: 3000,

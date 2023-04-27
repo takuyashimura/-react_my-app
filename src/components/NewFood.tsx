@@ -8,10 +8,11 @@ import {
   ModalBody,
   Flex,
   Box,
+  Input,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { memo, useState, VFC } from 'react';
-import { CustomButtom } from '../tags/buttom';
+import { CustomButton, CustomNonButton } from '../tags/buttom';
 
 type FoodData = string;
 
@@ -26,8 +27,7 @@ const NewFood: VFC<Props> = memo((props) => {
     console.log('foodData', foodData);
   };
 
-  const HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const HandleSubmit = () => {
     axios
       .post('api/add', { foodData, userId: localStorage.auth_userId })
       .then((response) => {
@@ -37,6 +37,7 @@ const NewFood: VFC<Props> = memo((props) => {
           onClose();
           toast({
             title: '正常に登録されました。3秒後にリロードされます',
+            position: 'top',
             description: '食材ページを確認してください',
             status: 'success',
             duration: 3000,
@@ -48,6 +49,7 @@ const NewFood: VFC<Props> = memo((props) => {
         } else {
           toast({
             title: '既に登録されています',
+            position: 'top',
             description: '食材ページを確認してください',
             status: 'error',
             duration: 3000,
@@ -69,29 +71,31 @@ const NewFood: VFC<Props> = memo((props) => {
         <ModalContent>
           <ModalHeader>新規食材追加</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <form onSubmit={HandleSubmit}>
-              <Flex ml={2} mr={2} justify="space-between" alignItems="center">
-                <Box>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="食品名"
-                    onChange={OnChangeName}
-                  />
-                </Box>
+          <ModalBody
+            display={'flex'}
+            justifyContent={'center'}
+            alignItems={'center'}
+          >
+            <Flex justify="space-between" alignItems="center">
+              <Box>
+                <Input
+                  type="text"
+                  name="name"
+                  placeholder="食品名"
+                  onChange={OnChangeName}
+                />
+              </Box>
 
-                {foodData === '食品名' ||
-                foodData === '' ||
-                foodData.length === 0 ? (
-                  <p>食材名を記入してください</p>
-                ) : (
-                  <CustomButtom type="submit" isDisabled={!foodData}>
-                    新規食材追加
-                  </CustomButtom>
-                )}
-              </Flex>
-            </form>{' '}
+              {foodData === '食品名' ||
+              foodData === '' ||
+              foodData.length === 0 ? (
+                <CustomNonButton>新規食材追加</CustomNonButton>
+              ) : (
+                <CustomButton onClick={HandleSubmit} isDisabled={!foodData}>
+                  新規食材追加
+                </CustomButton>
+              )}
+            </Flex>
           </ModalBody>
         </ModalContent>
       </Modal>

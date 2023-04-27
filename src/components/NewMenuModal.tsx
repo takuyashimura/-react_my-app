@@ -1,6 +1,6 @@
 import {
   Box,
-  Text,
+  Input,
   Flex,
   Modal,
   ModalBody,
@@ -14,10 +14,11 @@ import {
   NumberInputField,
   NumberInputStepper,
   useToast,
+  Spacer,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { VFC, memo, useEffect, useState } from 'react';
-import { CustomButtom } from '../tags/buttom';
+import { CustomButton, CustomNonButton } from '../tags/buttom';
 
 type Props = { isOpen: boolean; onClose: () => void };
 
@@ -91,8 +92,7 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
     }
   };
 
-  const HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const HandleSubmit = () => {
     axios
       .post('api/add_menu_register', {
         postData,
@@ -104,6 +104,7 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
           onClose();
           toast({
             title: 'メニューが登録さてました。3秒後にリロードされます',
+            position: 'top',
             description: 'メニューページを確認してください',
             status: 'success',
             duration: 3000,
@@ -122,6 +123,7 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
     const HandleAddFood2 = () => {
       toast({
         title: '既に登録されています',
+        position: 'top',
         description: 'メニューページを確認してください',
         status: 'error',
         duration: 3000,
@@ -136,31 +138,30 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
       <ModalContent>
         <ModalHeader>新しいメニュー追加</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
+        <ModalBody
+          display={'flex'}
+          justifyContent={'center'}
+          alignItems={'center'}
+        >
           <form onSubmit={HandleSubmit}>
-            <Flex justify="space-between" alignItems={'center'}>
-              <Box>
-                <input
+            <Flex width={'100%'}>
+              <Box width={'60%'}>
+                <Input
                   type="text"
                   name="name"
                   placeholder={menuName || 'メニュー名'}
                   onChange={OnChangeName}
                 />
               </Box>
-              <Box>
-                {' '}
-                {menuName === 'メニュー名' ||
-                menuName === '' ||
-                menuName === undefined ? (
-                  //  ||
-                  // menuName === 0
-                  <Text>食材名を記入してください</Text>
-                ) : (
-                  <CustomButtom type="submit" isDisabled={!menuName}>
-                    新規メニュー追加
-                  </CustomButtom>
-                )}
-              </Box>
+              {menuName === 'メニュー名' ||
+              menuName === '' ||
+              menuName === undefined ? (
+                <CustomNonButton>新規メニュー追加</CustomNonButton>
+              ) : (
+                <CustomButton onClick={HandleSubmit} isDisabled={!menuName}>
+                  新規メニュー追加
+                </CustomButton>
+              )}
             </Flex>
 
             {food &&

@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { VFC, memo } from 'react';
-import { CustomButtom } from '../tags/buttom';
+import { MainButton } from '../tags/buttom';
 
 type Props = {
   isOpen: boolean;
@@ -38,6 +38,7 @@ export const MenuCookModal: VFC<Props> = memo((props) => {
         console.log('post', response.data);
         toast({
           title: '不足している食材がカートに追加されました',
+          position: 'top',
           description: 'カートをご確認ください',
           status: 'success',
           duration: 3000,
@@ -60,6 +61,7 @@ export const MenuCookModal: VFC<Props> = memo((props) => {
         console.log('response', response.data);
         toast({
           title: `${choiceMenu[1]['name']}が調理リストに追加されました`,
+          position: 'top',
           description: '調理リストをご確認ください',
           status: 'success',
           duration: 3000,
@@ -110,10 +112,7 @@ export const MenuCookModal: VFC<Props> = memo((props) => {
                 </VStack>
                 {choiceMenu && choiceMenu[0].length > 0 && (
                   <Box w={'100%'} textAlign={'right'}>
-                    <CustomButtom mt={1} type="submit">
-                      {' '}
-                      カートに追加する
-                    </CustomButtom>
+                    <MainButton type="submit"> カートに追加する</MainButton>
                   </Box>
                 )}
               </form>
@@ -138,9 +137,9 @@ export const MenuCookModal: VFC<Props> = memo((props) => {
               </VStack>
               <Box w={'100%'} textAlign={'right'}>
                 {' '}
-                <CustomButtom onClick={handlePost1}>
+                <MainButton onClick={handlePost1}>
                   調理リストへ追加する
-                </CustomButtom>
+                </MainButton>
               </Box>
             </div>
           </>
