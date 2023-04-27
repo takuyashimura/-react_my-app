@@ -120,9 +120,7 @@ const Menu = () => {
   return (
     <div className="Food">
       <Box w={'100%'} textAlign={'right'}>
-        <MainButton m={2} onClick={onNew}>
-          新規メニュー追加
-        </MainButton>
+        <MainButton onClick={onNew}>新規メニュー追加</MainButton>
       </Box>
 
       <VStack

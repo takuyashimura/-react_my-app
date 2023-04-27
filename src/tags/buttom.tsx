@@ -20,6 +20,7 @@ export const MainButton = (props: any) => {
     <Button
       bg={'red.400'}
       color={'white'}
+      m={'5px'}
       _hover={{
         opacity: 0.8,
       }}

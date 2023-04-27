@@ -38,8 +38,6 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
   useEffect(() => {
     if (menuName && menuData) {
       setPostMenuData(menuData);
-      console.log('menuName', menuName.name);
-      console.log('menuData', menuData);
     }
   }, []);
 
@@ -54,6 +52,7 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
         console.log('post', response.data);
         toast({
           title: 'メニューで使用する食材を更新しました',
+          position: 'top',
           status: 'success',
           duration: 3000,
           isClosable: true,
@@ -95,10 +94,7 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
           <form onSubmit={handlePost}>
             <Box w={'100%'} textAlign={'right'}>
               {' '}
-              <MainButton mb={2} type="submit">
-                {' '}
-                使用する食材を変更する{' '}
-              </MainButton>
+              <MainButton type="submit"> 使用する食材を変更する </MainButton>
             </Box>
 
             <VStack

@@ -85,6 +85,7 @@ const Food = () => {
         ) {
           toast({
             title: `${response.data}`,
+            position: 'top',
             status: 'error',
             duration: 3000,
             isClosable: true,
@@ -120,9 +121,7 @@ const Food = () => {
       {/* <Button as={Link} to="/newFood/"> */}
       <Box w={'100%'} textAlign={'right'}>
         {' '}
-        <MainButton m={2} onClick={onOpenAddFoodModal}>
-          新規食材追加
-        </MainButton>
+        <MainButton onClick={onOpenAddFoodModal}>新規食材追加</MainButton>
       </Box>
       {foodStocks && foodStocks.length > 0 ? (
         <VStack

@@ -37,6 +37,7 @@ const NewFood: VFC<Props> = memo((props) => {
           onClose();
           toast({
             title: '正常に登録されました。3秒後にリロードされます',
+            position: 'top',
             description: '食材ページを確認してください',
             status: 'success',
             duration: 3000,
@@ -48,6 +49,7 @@ const NewFood: VFC<Props> = memo((props) => {
         } else {
           toast({
             title: '既に登録されています',
+            position: 'top',
             description: '食材ページを確認してください',
             status: 'error',
             duration: 3000,

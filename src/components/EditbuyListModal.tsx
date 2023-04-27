@@ -76,6 +76,7 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
         onClose();
         toast({
           title: 'カートを更新しました',
+          position: 'top',
           description: '3秒後にリロードします',
           status: 'success',
           duration: 3000,

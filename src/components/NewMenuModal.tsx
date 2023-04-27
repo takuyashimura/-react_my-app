@@ -104,6 +104,7 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
           onClose();
           toast({
             title: 'メニューが登録さてました。3秒後にリロードされます',
+            position: 'top',
             description: 'メニューページを確認してください',
             status: 'success',
             duration: 3000,
@@ -122,6 +123,7 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
     const HandleAddFood2 = () => {
       toast({
         title: '既に登録されています',
+        position: 'top',
         description: 'メニューページを確認してください',
         status: 'error',
         duration: 3000,
