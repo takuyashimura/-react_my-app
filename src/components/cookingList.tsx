@@ -1,20 +1,19 @@
 import {
   Box,
+  Button,
   Flex,
   StackDivider,
   Text,
   VStack,
+  useDisclosure,
   useToast,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CustomButtom } from '../tags/buttom';
-
-type cookingList = {
-  id: number;
-  name: string;
-};
+import { MainButton } from '../tags/buttom';
+import Icon from '../icon/mapper';
+import { CookingListEdit } from './CookingListModal';
 
 type StocksData = {
   id: number;
@@ -25,25 +24,24 @@ type StocksData = {
 type NameCount = {
   count: number;
   name: string;
+  menu_id: number;
 };
 
 const CookingList = () => {
-  const [cookingList, setCookingList] = useState<[cookingList] | undefined>(
+  const [nonStocksData, setnonStocksData] = useState<StocksData[] | undefined>(
     undefined
   );
-  const [nonStocksData, setnonStocksData] = useState<[StocksData] | undefined>(
-    undefined
-  );
-  const [onStocksData, setOonStocksData] = useState<[StocksData] | undefined>(
+  const [onStocksData, setOonStocksData] = useState<StocksData[] | undefined>(
     undefined
   );
   const [toBuyList, settoBuyList] = useState([nonStocksData, onStocksData]);
-  const [useList, setUseList] = useState<[StocksData] | undefined>(undefined);
+  const [useList, setUseList] = useState<StocksData[] | undefined>(undefined);
   const [nameCount, setNameCount] = useState<NameCount[] | undefined>(
     undefined
   );
   const navigate = useNavigate();
   const toast = useToast();
+  const { isOpen: isEdit, onOpen: onEdit, onClose: endEdit } = useDisclosure();
 
   useEffect(() => {
     (async () => {
@@ -52,11 +50,10 @@ const CookingList = () => {
           `api/cooking_list/${localStorage.auth_userId}`
         );
         console.log('res.data', res.data);
-        setCookingList(res.data.cooking_list);
         setnonStocksData(res.data.non_stocks_data);
         setOonStocksData(res.data.on_stocks_data);
         setUseList(res.data.cooking_list_food_name_amount);
-        setNameCount(res.data.cooking_list_name_count);
+        setNameCount(res.data.cooking_list_name_counts);
 
         return;
       } catch (e) {
@@ -82,8 +79,8 @@ const CookingList = () => {
       .then((response) => {
         toast({
           title: '不足している食材をカートに追加しました。',
+          position: 'top',
           description: 'カートへ移動します',
-
           status: 'success',
           duration: 3000,
           isClosable: true,
@@ -99,13 +96,14 @@ const CookingList = () => {
     axios
       .post('api/cooking', {
         useList,
-        cookingList,
+        // cookingList,
         userId: localStorage.auth_userId,
       })
       .then((response) => {
         console.log('帰ってきたお', response.data);
         toast({
           title: '使用する食材を消費しました。',
+          position: 'top',
           description: '在庫数をご確認ください',
           status: 'success',
           duration: 3000,
@@ -118,25 +116,48 @@ const CookingList = () => {
       });
   };
 
+  const clickEdit = () => {
+    onEdit();
+  };
+
   const length = onStocksData?.length || nonStocksData?.length;
 
   return (
     <>
       {nameCount && nameCount.length > 0 ? (
         <>
-          {' '}
-          <Text m={2} fontSize={30} fontWeight={800}>
-            メニュー
-          </Text>
+          <Flex justify={'space-between'}>
+            <Text m={2} fontSize={30} fontWeight={800}>
+              メニュー
+            </Text>
+            <Button
+              m={1}
+              onClick={() => clickEdit()}
+              _hover={{
+                cursor: 'pointer',
+                opacity: 0.8,
+              }}
+            >
+              <Text>
+                <Icon name="setting" />
+              </Text>
+            </Button>
+          </Flex>
           <VStack
             divider={<StackDivider borderColor="gray.200" />}
             spacing={2}
             align="stretch"
           >
-            {nameCount.map((c, index) => (
-              <Flex ml={2} mr={2} justify="space-between" key={index}>
-                <Text>{c.name}</Text>
-                <Text>{c.count}人前</Text>
+            {nameCount.map((c) => (
+              <Flex ml={2} mr={2} justify="space-between" key={c.menu_id}>
+                <Flex
+                  alignItems={'center'}
+                  width={'100%'}
+                  justify="space-between"
+                >
+                  <Text>{c.name}</Text>
+                  <Text mr={'5px'}>{c.count}人前</Text>
+                </Flex>
               </Flex>
             ))}{' '}
           </VStack>{' '}
@@ -199,23 +220,26 @@ const CookingList = () => {
               ))}
             </VStack>
             <Box w={'100%'} textAlign={'right'}>
-              <CustomButtom mt={5} ml={2} type="submit">
+              <MainButton type="submit">
                 <Text>不足分をカートに追加する</Text>
-              </CustomButtom>
+              </MainButton>
             </Box>
           </>
         ) : (
           <>
-            {cookingList && cookingList.length > 0 && (
+            {useList && useList.length > 0 && (
               <Box w={'100%'} textAlign={'right'}>
-                <CustomButtom mt={2} ml={2} onClick={HandlePost}>
-                  調理をする
-                </CustomButtom>{' '}
+                <MainButton onClick={HandlePost}>調理をする</MainButton>{' '}
               </Box>
             )}
           </>
         )}
       </form>
+      <CookingListEdit
+        isOpen={isEdit}
+        onClose={endEdit}
+        nameCount={nameCount}
+      />
     </>
   );
 };

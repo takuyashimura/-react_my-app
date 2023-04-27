@@ -57,6 +57,7 @@ const BuyList = () => {
       .then((response) => {
         toast({
           title: `${response.data}`,
+          position: 'top',
           status: 'success',
           duration: 3000,
           isClosable: true,
@@ -85,7 +86,7 @@ const BuyList = () => {
   return (
     <>
       <Box w={'100%'} textAlign={'right'}>
-        <MainButton m={2} onClick={onEdit}>
+        <MainButton onClick={onEdit}>
           <Icon name="setting" />{' '}
         </MainButton>
       </Box>
@@ -108,9 +109,7 @@ const BuyList = () => {
         </VStack>
         {shoppingItems && shoppingItems.length > 0 && (
           <Box w={'100%'} textAlign={'right'}>
-            <MainButton m={2} ml={2} type="submit">
-              購入する
-            </MainButton>
+            <MainButton type="submit">購入する</MainButton>
           </Box>
         )}
       </form>
@@ -126,7 +125,7 @@ const BuyList = () => {
           onChange={(e) => setText(e.target.value)}
         />
         <Box w={'100%'} textAlign={'right'}>
-          <MainButton m={2} ml={2} type="submit">
+          <MainButton type="submit">
             <Icon name="keep" />{' '}
           </MainButton>
         </Box>
