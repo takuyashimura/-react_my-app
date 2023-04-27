@@ -13,7 +13,7 @@ import { AlertDialogPageMenu } from './AlertDialogPageMenu';
 import { EditMenuModal } from './EditMenuModal';
 import { NewMenuModal } from './NewMenuModal';
 import { MenuCookModal } from './MenuCookModal';
-import { CustomButtom } from '../tags/buttom';
+import { MainButton } from '../tags/buttom';
 import Icon from '../icon/mapper';
 
 type Menus = {
@@ -120,9 +120,9 @@ const Menu = () => {
   return (
     <div className="Food">
       <Box w={'100%'} textAlign={'right'}>
-        <CustomButtom m={2} onClick={onNew}>
+        <MainButton m={2} onClick={onNew}>
           新規メニュー追加
-        </CustomButtom>
+        </MainButton>
       </Box>
 
       <VStack

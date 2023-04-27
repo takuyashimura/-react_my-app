@@ -12,7 +12,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { EditBuyListModal } from './EditbuyListModal';
-import { CustomButtom } from '../tags/buttom';
+import { MainButton } from '../tags/buttom';
 import Icon from '../icon/mapper';
 
 type shopingItem = {
@@ -85,9 +85,9 @@ const BuyList = () => {
   return (
     <>
       <Box w={'100%'} textAlign={'right'}>
-        <CustomButtom m={2} onClick={onEdit}>
+        <MainButton m={2} onClick={onEdit}>
           <Icon name="setting" />{' '}
-        </CustomButtom>
+        </MainButton>
       </Box>
 
       <form onSubmit={HnadleSubmit1}>
@@ -108,9 +108,9 @@ const BuyList = () => {
         </VStack>
         {shoppingItems && shoppingItems.length > 0 && (
           <Box w={'100%'} textAlign={'right'}>
-            <CustomButtom m={2} ml={2} type="submit">
+            <MainButton m={2} ml={2} type="submit">
               購入する
-            </CustomButtom>
+            </MainButton>
           </Box>
         )}
       </form>
@@ -126,9 +126,9 @@ const BuyList = () => {
           onChange={(e) => setText(e.target.value)}
         />
         <Box w={'100%'} textAlign={'right'}>
-          <CustomButtom m={2} ml={2} type="submit">
+          <MainButton m={2} ml={2} type="submit">
             <Icon name="keep" />{' '}
-          </CustomButtom>
+          </MainButton>
         </Box>
       </form>
       <EditBuyListModal isOpen={isEdit} onClose={endEdit} />

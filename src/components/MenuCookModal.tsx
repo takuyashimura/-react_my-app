@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { VFC, memo } from 'react';
-import { CustomButtom } from '../tags/buttom';
+import { MainButton } from '../tags/buttom';
 
 type Props = {
   isOpen: boolean;
@@ -110,10 +110,10 @@ export const MenuCookModal: VFC<Props> = memo((props) => {
                 </VStack>
                 {choiceMenu && choiceMenu[0].length > 0 && (
                   <Box w={'100%'} textAlign={'right'}>
-                    <CustomButtom mt={1} type="submit">
+                    <MainButton mt={1} type="submit">
                       {' '}
                       カートに追加する
-                    </CustomButtom>
+                    </MainButton>
                   </Box>
                 )}
               </form>
@@ -138,9 +138,9 @@ export const MenuCookModal: VFC<Props> = memo((props) => {
               </VStack>
               <Box w={'100%'} textAlign={'right'}>
                 {' '}
-                <CustomButtom onClick={handlePost1}>
+                <MainButton onClick={handlePost1}>
                   調理リストへ追加する
-                </CustomButtom>
+                </MainButton>
               </Box>
             </div>
           </>

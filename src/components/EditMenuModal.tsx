@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { VFC, memo, useEffect, useState } from 'react';
-import { CustomButtom } from '../tags/buttom';
+import { MainButton } from '../tags/buttom';
 
 type Props = {
   isOpen: boolean;
@@ -95,10 +95,10 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
           <form onSubmit={handlePost}>
             <Box w={'100%'} textAlign={'right'}>
               {' '}
-              <CustomButtom mb={2} type="submit">
+              <MainButton mb={2} type="submit">
                 {' '}
                 使用する食材を変更する{' '}
-              </CustomButtom>
+              </MainButton>
             </Box>
 
             <VStack
