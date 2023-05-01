@@ -88,19 +88,17 @@ const BuyList = () => {
   const changeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const upDataText = e.target.value;
     setText(upDataText);
-    // if (Inputting) {
-    //   axios
-    //     .post('api/text', { text, userId: localStorage.auth_userId })
-    //     .then((response) => {})
-    //     .catch((error) => {
-    //       console.error(error);
-    //     });
-    // }
   };
-  if (Inputting) {
-    console.log('true', true);
-  } else {
-    console.log('false', false);
+
+  if (!Inputting) {
+    axios
+      .post('api/text', { text, userId: localStorage.auth_userId })
+      .then((response) => {
+        console.log('response', response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   const navigation = useNavigate();
