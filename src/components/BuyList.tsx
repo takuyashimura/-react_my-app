@@ -47,6 +47,7 @@ const BuyList = () => {
       }
     })();
   }, []);
+
   const HnadleSubmit1 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
@@ -69,16 +70,21 @@ const BuyList = () => {
       });
   };
 
-  const HnadleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    axios
-      .post('api/text', { text, userId: localStorage.auth_userId })
-      .then((response) => {
-        console.log('post', response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const onEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.code === 'Enter') {
+      axios
+        .post('api/text', { text, userId: localStorage.auth_userId })
+        .then((response) => {
+          console.log('post', response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+
+  const onTouch = (e: React.TouchEvent<HTMLTextAreaElement>) => {
+    console.log('e', e);
   };
 
   const navigation = useNavigate();
@@ -114,22 +120,22 @@ const BuyList = () => {
         )}
       </form>
 
-      <form onSubmit={HnadleSubmit}>
-        <Textarea
-          bgColor={'gray.50'}
-          resize="vertical"
-          minH="200px"
-          maxH="400px"
-          placeholder="その他買い物メモ"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        />
-        <Box w={'100%'} textAlign={'right'}>
-          <MainButton type="submit">
-            <Icon name="keep" />{' '}
-          </MainButton>
-        </Box>
-      </form>
+      <Textarea
+        bgColor={'gray.50'}
+        resize="vertical"
+        minH="200px"
+        maxH="400px"
+        placeholder="その他買い物メモ"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        onKeyDown={(e) => onEnter(e)}
+        onTouchStart={(e) => onTouch(e)}
+      />
+      <Box w={'100%'} textAlign={'right'}>
+        <MainButton type="submit">
+          <Icon name="keep" />{' '}
+        </MainButton>
+      </Box>
       <EditBuyListModal isOpen={isEdit} onClose={endEdit} />
     </>
   );
