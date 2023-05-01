@@ -26,7 +26,6 @@ const BuyList = () => {
   const [shoppingItems, setShoppingItems] = useState<shopingItem[] | undefined>(
     undefined
   );
-  console.log('shoppingItems', shoppingItems);
 
   const [text, setText] = useState<text>();
 
@@ -70,21 +69,15 @@ const BuyList = () => {
       });
   };
 
-  const onEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.code === 'Enter') {
-      axios
-        .post('api/text', { text, userId: localStorage.auth_userId })
-        .then((response) => {
-          console.log('post', response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  };
-
-  const onTouch = (e: React.TouchEvent<HTMLTextAreaElement>) => {
-    console.log('e', e);
+  const postText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const upDataText = e.target.value;
+    setText(upDataText);
+    axios
+      .post('api/text', { text, userId: localStorage.auth_userId })
+      .then((response) => {})
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const navigation = useNavigate();
@@ -127,15 +120,9 @@ const BuyList = () => {
         maxH="400px"
         placeholder="その他買い物メモ"
         value={text}
-        onChange={(e) => setText(e.target.value)}
-        onKeyDown={(e) => onEnter(e)}
-        onTouchStart={(e) => onTouch(e)}
+        onChange={(e) => postText(e)}
       />
-      <Box w={'100%'} textAlign={'right'}>
-        <MainButton type="submit">
-          <Icon name="keep" />{' '}
-        </MainButton>
-      </Box>
+
       <EditBuyListModal isOpen={isEdit} onClose={endEdit} />
     </>
   );
