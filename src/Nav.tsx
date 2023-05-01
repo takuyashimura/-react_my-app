@@ -27,15 +27,13 @@ function GlobalNav() {
 
   if (localStorage.getItem('auth_token')) {
     AuthButtons = (
-      <Box>
-        <Box>
-          <Text>ログイン中</Text>
-        </Box>
-        <ListItem float={'right'} onClick={logoutSubmit}>
-          <Box width={'25%'}>
-            <Icon name="logout" />
-          </Box>
-        </ListItem>{' '}
+      <Box
+        display={'flex'}
+        alignItems={'flex-end'}
+        height={'100%'}
+        onClick={logoutSubmit}
+      >
+        <Icon name="logout" />
       </Box>
     );
   } else {
