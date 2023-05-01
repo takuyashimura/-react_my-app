@@ -125,7 +125,7 @@ const Menu = () => {
 
       <VStack
         divider={<StackDivider borderColor="gray.200" />}
-        spacing={2}
+        // spacing={2}
         align="stretch"
       >
         {' '}
@@ -133,8 +133,8 @@ const Menu = () => {
           menus.map((menu) => (
             <>
               <Flex
-                ml={2}
-                mr={2}
+                ml={'5px'}
+                mr={'5px'}
                 justify="space-between"
                 height={'40px'}
                 key={menu.menu_id}
@@ -144,20 +144,9 @@ const Menu = () => {
                 <Box>
                   {' '}
                   <Button
-                    m={1}
-                    onClick={() => clickEdit(menu)}
-                    _hover={{
-                      cursor: 'pointer',
-                      opacity: 0.8,
-                    }}
-                  >
-                    <Text>
-                      <Icon name="setting" />
-                    </Text>
-                  </Button>
-                  <Button
-                    m={1}
+                    mr={1}
                     colorScheme="teal"
+                    flexDirection={'column'}
                     onClick={() => ClickChoice(menu)}
                     _hover={{
                       cursor: 'pointer',
@@ -165,9 +154,10 @@ const Menu = () => {
                     }}
                   >
                     <Icon name="pot" />
+                    <Text fontSize={'1px'}>調理</Text>
                   </Button>
                   <Button
-                    m={1}
+                    mr={1}
                     colorScheme="red"
                     onClick={() => ClickAlert(menu)}
                     _hover={{
@@ -176,6 +166,17 @@ const Menu = () => {
                     }}
                   >
                     <Icon name="trashcan" />
+                  </Button>
+                  <Button
+                    onClick={() => clickEdit(menu)}
+                    _hover={{
+                      cursor: 'pointer',
+                      opacity: 0.8,
+                    }}
+                  >
+                    <Text>
+                      <Icon name="pencil" />
+                    </Text>
                   </Button>
                 </Box>
               </Flex>

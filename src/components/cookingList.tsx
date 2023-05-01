@@ -139,7 +139,7 @@ const CookingList = () => {
               }}
             >
               <Text>
-                <Icon name="setting" />
+                <Icon name="pencil" />
               </Text>
             </Button>
           </Flex>

@@ -154,13 +154,17 @@ const Food = () => {
                 <Button
                   colorScheme="teal"
                   mr={1}
+                  flexDirection="column"
                   onClick={() => handlePostModal(food_stock)}
                   _hover={{
                     cursor: 'pointer',
                     opacity: 0.8,
                   }}
                 >
-                  <Icon name="pot" />
+                  <Box>
+                    <Icon name="pot" />
+                  </Box>
+                  <Text fontSize={'0.5px'}>メニュー</Text>
                 </Button>
                 <Button
                   colorScheme="red"
