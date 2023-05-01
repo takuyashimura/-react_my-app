@@ -72,25 +72,24 @@ const BuyList = () => {
       });
   };
   // パソコンでのメモの変更。エンターキー押下でpostリクエスト
-  const onEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.code === 'Enter') {
-      axios
-        .post('api/text', { text, userId: localStorage.auth_userId })
-        .then((response) => {
-          console.log('response', response);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  };
+  // const onEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  //   if (e.code === 'Enter') {
+  //     axios
+  //       .post('api/text', { text, userId: localStorage.auth_userId })
+  //       .then((response) => {
+  //         console.log('response', response);
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   }
+  // };
 
   const changeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const upDataText = e.target.value;
     setText(upDataText);
   };
-
-  if (!Inputting) {
+  if (Inputting) {
     axios
       .post('api/text', { text, userId: localStorage.auth_userId })
       .then((response) => {
@@ -141,7 +140,7 @@ const BuyList = () => {
         maxH="400px"
         placeholder="その他買い物メモ"
         value={text}
-        onKeyDown={(e) => onEnter(e)}
+        // onKeyDown={(e) => onEnter(e)}
         onChange={(e) => changeText(e)}
         onCompositionStart={() => {
           setIsInputting(false);
