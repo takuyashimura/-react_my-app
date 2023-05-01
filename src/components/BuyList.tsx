@@ -22,12 +22,15 @@ type shopingItem = {
 };
 type text = string;
 
+type input = boolean;
+
 const BuyList = () => {
   const [shoppingItems, setShoppingItems] = useState<shopingItem[] | undefined>(
     undefined
   );
 
   const [text, setText] = useState<text>();
+  const [Inputting, setIsInputting] = useState<input>(false);
 
   const { isOpen: isEdit, onOpen: onEdit, onClose: endEdit } = useDisclosure();
 
@@ -68,17 +71,37 @@ const BuyList = () => {
         console.error(error);
       });
   };
+  // パソコンでのメモの変更。エンターキー押下でpostリクエスト
+  const onEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.code === 'Enter') {
+      axios
+        .post('api/text', { text, userId: localStorage.auth_userId })
+        .then((response) => {
+          console.log('response', response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
 
-  const postText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const changeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const upDataText = e.target.value;
     setText(upDataText);
-    axios
-      .post('api/text', { text, userId: localStorage.auth_userId })
-      .then((response) => {})
-      .catch((error) => {
-        console.error(error);
-      });
+    // if (Inputting) {
+    //   axios
+    //     .post('api/text', { text, userId: localStorage.auth_userId })
+    //     .then((response) => {})
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+    // }
   };
+  if (Inputting) {
+    console.log('true', true);
+  } else {
+    console.log('false', false);
+  }
 
   const navigation = useNavigate();
 
@@ -120,7 +143,14 @@ const BuyList = () => {
         maxH="400px"
         placeholder="その他買い物メモ"
         value={text}
-        onChange={(e) => postText(e)}
+        onKeyDown={(e) => onEnter(e)}
+        onChange={(e) => changeText(e)}
+        onCompositionStart={() => {
+          setIsInputting(false);
+        }}
+        onCompositionEnd={() => {
+          setIsInputting(true);
+        }}
       />
 
       <EditBuyListModal isOpen={isEdit} onClose={endEdit} />
