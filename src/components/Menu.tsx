@@ -129,7 +129,7 @@ const Menu = () => {
         align="stretch"
       >
         {' '}
-        {menus &&
+        {menus && menus.length > 0 ? (
           menus.map((menu) => (
             <>
               <Flex
@@ -181,7 +181,16 @@ const Menu = () => {
                 </Box>
               </Flex>
             </>
-          ))}
+          ))
+        ) : (
+          <Box textAlign={'center'}>
+            <Text mt={'50px'} fontSize={'20px'}>
+              新規メニュー追加ボタンから
+              <br />
+              食材を追加してください
+            </Text>
+          </Box>
+        )}
       </VStack>
       <AlertDialogPageMenu
         isOpen={isAlert}

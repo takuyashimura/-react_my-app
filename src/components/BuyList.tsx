@@ -71,19 +71,6 @@ const BuyList = () => {
         console.error(error);
       });
   };
-  // パソコンでのメモの変更。エンターキー押下でpostリクエスト
-  // const onEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-  //   if (e.code === 'Enter') {
-  //     axios
-  //       .post('api/text', { text, userId: localStorage.auth_userId })
-  //       .then((response) => {
-  //         console.log('response', response);
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //       });
-  //   }
-  // };
 
   const changeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const upDataText = e.target.value;
@@ -105,8 +92,8 @@ const BuyList = () => {
   return (
     <>
       <Box w={'100%'} textAlign={'right'}>
-        <MainButton onClick={onEdit}>
-          <Icon name="setting" />{' '}
+        <MainButton bg={'gray.200'} onClick={onEdit}>
+          <Icon name="pencil" />{' '}
         </MainButton>
       </Box>
 

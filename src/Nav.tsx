@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-no-undef */
 import React, { ReactNode } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
-import { Box, Flex, List, ListItem, Text } from '@chakra-ui/react';
+import { Box, Flex, List, ListItem, Text, Link } from '@chakra-ui/react';
 import Icon from './icon/mapper';
 
 function GlobalNav() {
@@ -33,22 +33,32 @@ function GlobalNav() {
         height={'100%'}
         onClick={logoutSubmit}
       >
-        <Icon name="logout" />
+        <Box height={'50%'} fontSize={'130%'} pb={'5px'} pr={'5px'}>
+          <Icon name="logout" />
+        </Box>
       </Box>
     );
   } else {
     AuthButtons = (
-      <List>
-        <ListItem>
-          <Link to="/register">
-            <span>登録</span>
-          </Link>
-        </ListItem>
-        <ListItem float={'right'}>
-          <Link to="/login">
+      <List
+        display={'flex'}
+        flexDirection="column"
+        justifyContent="space-between"
+        height={'100%'}
+      >
+        <Link href="/register" height={'50%'} pt={'5px'} pr={'5px'}>
+          <span>登録</span>
+        </Link>
+        <Link
+          href="/login"
+          height={'50%'}
+          display={'flex'}
+          justifyContent={'right'}
+        >
+          <Box height={'100%'} fontSize={'130%'} pb={'5px'} pr={'5px'}>
             <Icon name="login" />
-          </Link>
-        </ListItem>
+          </Box>
+        </Link>
       </List>
     );
   }
@@ -56,7 +66,7 @@ function GlobalNav() {
 
   return (
     <Flex bg={'red.100'} justify="space-between">
-      <Box>
+      <Box m={'10px'}>
         <Text fontSize={'25px'}>食材管理</Text>
       </Box>
 

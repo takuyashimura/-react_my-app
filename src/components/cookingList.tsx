@@ -61,7 +61,6 @@ const CookingList = () => {
       }
     })();
   }, []);
-  // console.log("nonStocksData", nonStocksData);
 
   //post↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
