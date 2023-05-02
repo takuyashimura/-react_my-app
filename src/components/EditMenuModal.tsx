@@ -81,13 +81,16 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
       ]);
     }
   };
+  // console.log('メニュー名', menuName.name);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          {menuName && menuName.name && `${menuName.name}で使用する食材`}
+          {menuName &&
+            menuName.menu.name &&
+            `${menuName.menu.name}で使用する食材`}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>

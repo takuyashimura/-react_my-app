@@ -14,7 +14,9 @@ import {
   NumberInputField,
   NumberInputStepper,
   useToast,
-  Spacer,
+  VStack,
+  Text,
+  StackDivider,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { VFC, memo, useEffect, useState } from 'react';
@@ -163,23 +165,32 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
                 </CustomButton>
               )}
             </Flex>
-
-            {food &&
-              food.map((f) => (
-                <div key={f.id}>
-                  <p>{f.name}</p>
-                  <NumberInput
-                    min={0}
-                    onChange={(e) => onChangeFoodNumber(e, f.id)}
-                  >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </div>
-              ))}
+            <VStack
+              divider={<StackDivider borderColor="gray.200" />}
+              spacing={4}
+              align="stretch"
+              mt={'10px'}
+            >
+              {food &&
+                food.map((f) => (
+                  <Flex justify={'space-between'}>
+                    {' '}
+                    <Box key={f.id} display={'flex'} alignItems={'center'}>
+                      <Text>{f.name}</Text>
+                    </Box>
+                    <NumberInput
+                      min={0}
+                      onChange={(e) => onChangeFoodNumber(e, f.id)}
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </Flex>
+                ))}{' '}
+            </VStack>
           </form>
         </ModalBody>
       </ModalContent>
