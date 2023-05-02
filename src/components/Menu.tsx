@@ -28,8 +28,7 @@ type DeleteMenu = {
 };
 
 type MenuName = {
-  id: number;
-  name: string;
+  menu: [];
 };
 
 type MenuData = {
@@ -39,7 +38,7 @@ type MenuData = {
 };
 
 const Menu = () => {
-  const [menus, setMenus] = useState<[Menus] | undefined>(undefined);
+  const [menus, setMenus] = useState<Menus[] | undefined>(undefined);
   const [deleteMenu, setDeleteMenu] = useState<DeleteMenu[] | undefined>(
     undefined
   );
@@ -68,9 +67,7 @@ const Menu = () => {
       try {
         const res = await axios.get(`api/menu/${localStorage.auth_userId}`);
         console.log('res', res);
-
         setMenus(res.data.menus);
-        //サイトで拾ってきたコードにはconsoleのコードはなかったので自分で追記
 
         return;
       } catch (e) {
@@ -104,16 +101,16 @@ const Menu = () => {
     axios
       .post('api/menu_edit', { menu })
       .then((response) => {
-        console.log('response', response.data.foodArray);
+        console.log('response', response.data);
         setMenuName(response.data.menuData);
         setMenuData(response.data.foodArray);
+
         onEdit();
       })
       .catch((error) => {
         console.error(error);
       });
   };
-  // console.log("menus", menus);
 
   // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
