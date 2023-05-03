@@ -180,9 +180,10 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
                     </Box>
                     <NumberInput
                       min={0}
+                      width={'50%'}
                       onChange={(e) => onChangeFoodNumber(e, f.id)}
                     >
-                      <NumberInputField />
+                      <NumberInputField textAlign={'right'} />
                       <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />

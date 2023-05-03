@@ -96,7 +96,7 @@ export const CookingListEdit: VFC<Props> = memo((props) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>調理リストも分量を編集</ModalHeader>
+          <ModalHeader>調理リストの分量を編集</ModalHeader>
           <ModalCloseButton />
           <VStack
             align="stretch"
