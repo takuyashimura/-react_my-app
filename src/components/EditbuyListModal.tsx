@@ -16,6 +16,7 @@ import {
   StackDivider,
   VStack,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 
 import axios from 'axios';
@@ -141,8 +142,14 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
                 nonFood.map((f) => (
                   <>
                     <Flex justify="space-between">
-                      <Box width={'50%'} key={f.id} h="40px">
-                        <p>{f.name}</p>
+                      <Box
+                        display={'flex'}
+                        alignItems={'center'}
+                        width={'50%'}
+                        key={f.id}
+                        h="40px"
+                      >
+                        <Text>{f.name}</Text>
                       </Box>
                       <Box width={'50%'}>
                         <NumberInput
@@ -166,8 +173,14 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
                 sList.map((l) => (
                   <>
                     <Flex justify="space-between">
-                      <Box width={'50%'} key={l.food_id} h="40px">
-                        <p>{l.name}</p>
+                      <Box
+                        display={'flex'}
+                        alignItems={'center'}
+                        width={'50%'}
+                        key={l.food_id}
+                        h="40px"
+                      >
+                        <Text>{l.name}</Text>
                       </Box>
                       <Box width={'50%'}>
                         <NumberInput
