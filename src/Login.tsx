@@ -12,7 +12,7 @@ import {
   InformationPasswordInputError,
   RegisterTag,
 } from './tags/RegisterLogintag';
-import { Box, Button, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
 
 type LoginInput = {
   email: string;
@@ -72,6 +72,10 @@ function Login() {
     });
   };
 
+  const Register = () => {
+    navigation('/register/');
+  };
+
   return (
     <ContainerBox>
       <ContentBox>
@@ -117,20 +121,36 @@ function Login() {
               </RegisterTag>
             )}
 
-            <Text textAlign={'center'}>
-              <Button type="submit" bg={'white'} _hover={{ opacity: 1 }}>
-                <Text
-                  color={'blue.500'}
-                  fontWeight={'200'}
-                  _hover={{
-                    borderBottom: '1px solid #3B82F6',
-                  }}
-                >
-                  ログイン
+            <Flex textAlign={'center'} justify={'space-between'}>
+              {' '}
+              <Button
+                onClick={Register}
+                bg={'blue.300'}
+                borderRadius={'full'}
+                _hover={{ opacity: 0.8 }}
+              >
+                <Text color={'white'} fontWeight={'200'}>
+                  新規登録画面へ
                 </Text>
               </Button>
-            </Text>
+              <Button
+                type="submit"
+                bg={'blue.300'}
+                borderRadius={'full'}
+                _hover={{ opacity: 0.8 }}
+              >
+                <Text color={'white'} fontWeight={'200'}>
+                  ログイン
+                </Text>
+              </Button>{' '}
+            </Flex>
           </form>
+          <Box
+            mt={'5px'}
+            width={'100%'}
+            display={'flex'}
+            justifyContent={'center'}
+          ></Box>
         </Box>
       </ContentBox>
     </ContainerBox>

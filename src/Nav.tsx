@@ -28,38 +28,17 @@ function GlobalNav() {
   if (localStorage.getItem('auth_token')) {
     AuthButtons = (
       <Box
-        display={'flex'}
-        alignItems={'flex-end'}
-        height={'100%'}
         onClick={logoutSubmit}
-      >
-        <Box height={'50%'} fontSize={'130%'} pb={'5px'} pr={'5px'}>
-          <Icon name="logout" />
-        </Box>
-      </Box>
-    );
-  } else {
-    AuthButtons = (
-      <List
-        display={'flex'}
-        flexDirection="column"
-        justifyContent="space-between"
         height={'100%'}
+        fontSize={'130%'}
+        pr={'5px'}
+        display={'flex'}
+        justifyContent={'column'}
+        alignItems={'center'}
       >
-        <Link href="/register" height={'50%'} pt={'5px'} pr={'5px'}>
-          <span>登録</span>
-        </Link>
-        <Link
-          href="/login"
-          height={'50%'}
-          display={'flex'}
-          justifyContent={'right'}
-        >
-          <Box height={'100%'} fontSize={'130%'} pb={'5px'} pr={'5px'}>
-            <Icon name="login" />
-          </Box>
-        </Link>
-      </List>
+        <Text fontSize={'80%'}>ログアウト</Text>
+        <Icon name="logout" />
+      </Box>
     );
   }
   console.log('localStorage', localStorage);

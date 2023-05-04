@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import {
   ContainerBox,
   ContentBox,
@@ -67,7 +67,10 @@ function Register() {
       });
     });
   };
-  console.log('registerInput.error_list', registerInput.error_list);
+
+  const Login = () => {
+    navigation('/login/');
+  };
 
   return (
     <>
@@ -123,31 +126,42 @@ function Register() {
                       value={registerInput.password}
                     />
                   </RegisterTag>
-                  <Text color="red.300">
+
+                  <Text mb={'24px'} color="red.300">
                     {registerInput.error_list.password}
                   </Text>
                 </>
               ) : (
                 <RegisterTag>
                   <InformationPasswordInput
+                    mb={'48px'}
                     onChange={handleInput}
                     value={registerInput.password}
                   />
                 </RegisterTag>
               )}
-              <Box textAlign={'center'}>
-                <Button type="submit" bg={'white'} _hover={{ opacity: 1 }}>
-                  <Text
-                    color={'blue.500'}
-                    fontWeight={'200'}
-                    _hover={{
-                      borderBottom: '1px solid #3B82F6',
-                    }}
-                  >
-                    サインアップ
+              <Flex justify={'space-between'}>
+                <Button
+                  onClick={Login}
+                  bg={'blue.300'}
+                  borderRadius={'full'}
+                  _hover={{ opacity: 0.8 }}
+                >
+                  <Text color={'white'} fontWeight={'200'}>
+                    ログイン画面へ
                   </Text>
                 </Button>
-              </Box>
+                <Button
+                  type="submit"
+                  bg={'blue.300'}
+                  borderRadius={'full'}
+                  _hover={{ opacity: 0.8 }}
+                >
+                  <Text color={'white'} fontWeight={'200'}>
+                    登録
+                  </Text>
+                </Button>
+              </Flex>
             </form>
           </Box>
         </ContentBox>
