@@ -35,7 +35,6 @@ export const MenuCookModal: VFC<Props> = memo((props) => {
         userId: localStorage.auth_userId,
       })
       .then((response) => {
-        console.log('post', response.data);
         toast({
           title: '不足している食材がカートに追加されました',
           position: 'top',
@@ -58,7 +57,6 @@ export const MenuCookModal: VFC<Props> = memo((props) => {
         userId: localStorage.auth_userId,
       })
       .then((response) => {
-        console.log('response', response.data);
         toast({
           title: `${choiceMenu[1]['name']}が調理リストに追加されました`,
           position: 'top',

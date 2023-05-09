@@ -94,7 +94,6 @@ const Food = () => {
           setModalData(food_stock);
           onCheck();
         }
-        console.log('post', response.data);
       })
       .catch((error) => {
         console.error(error);
@@ -105,7 +104,6 @@ const Food = () => {
     axios
       .post('/api/foodToMenu', { food_stock, userId: localStorage.auth_userId })
       .then((response) => {
-        console.log('post', response.data);
         setModalFoodStocks(response.data);
         onOpenFoodToMenuModal();
       })

@@ -46,7 +46,6 @@ export const CookingListEdit: VFC<Props> = memo((props) => {
         const res = await axios.get(
           `api/cooking_list/${localStorage.auth_userId}`
         );
-        console.log('res.data', res.data);
         setEditCookingList(res.data.cooking_list_name_counts);
         return;
       } catch (e) {
@@ -71,7 +70,6 @@ export const CookingListEdit: VFC<Props> = memo((props) => {
         userId: localStorage.auth_userId,
       })
       .then((response) => {
-        console.log('post', response.data);
         toast({
           title: '調理リストを更新しました',
           position: 'top',

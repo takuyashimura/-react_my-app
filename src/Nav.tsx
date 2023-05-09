@@ -13,7 +13,6 @@ function GlobalNav() {
     e.preventDefault();
 
     axios.post(`api/logout`).then((res) => {
-      console.log('res', res);
       if (res.data.status === 200) {
         localStorage.clear();
         swal('ログアウトしました', res.data.message, 'success');
@@ -41,7 +40,6 @@ function GlobalNav() {
       </Box>
     );
   }
-  console.log('localStorage', localStorage);
 
   return (
     <Flex bg={'red.100'} justify="space-between">

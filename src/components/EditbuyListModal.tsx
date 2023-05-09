@@ -47,7 +47,6 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
         const res = await axios.get(
           `api/edit_buy_list/${localStorage.auth_userId}`
         );
-        console.log('modalRes.data', res.data);
         setSList(res.data.shopping_item);
         const nonFoodArray = res.data.nonFood?.flat();
         const updatedNonFoodArray = nonFoodArray?.map((item: any) => ({
@@ -61,8 +60,6 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
       }
     })();
   }, []);
-  console.log('nonFood', nonFood);
-  console.log('sList', sList);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,7 +70,6 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
         userId: localStorage.auth_userId,
       })
       .then((response) => {
-        console.log('posts', response.data);
         onClose();
         toast({
           title: 'カートを更新しました',
@@ -99,7 +95,6 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
       );
       setNonFood(updatedNonfood);
     }
-    console.log('nonFood', nonFood);
   };
   const onChangeSlistNumber = (e: string, name: string, food_id: number) => {
     if (sList) {
