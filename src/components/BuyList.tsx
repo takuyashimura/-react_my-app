@@ -40,7 +40,6 @@ const BuyList = () => {
     (async () => {
       try {
         const res = await axios.get(`api/buy_list/${localStorage.auth_userId}`);
-        console.log('res.data', res.data);
         setShoppingItems(res.data.shopping_items);
         setText(res.data.texts[0].text);
         return;
@@ -79,9 +78,7 @@ const BuyList = () => {
   if (Inputting) {
     axios
       .post('api/text', { text, userId: localStorage.auth_userId })
-      .then((response) => {
-        console.log('response', response);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.error(error);
       });

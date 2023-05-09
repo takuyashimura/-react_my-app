@@ -49,7 +49,6 @@ const CookingList = () => {
         const res = await axios.get(
           `api/cooking_list/${localStorage.auth_userId}`
         );
-        console.log('res.data', res.data);
         setnonStocksData(res.data.non_stocks_data);
         setOonStocksData(res.data.on_stocks_data);
         setUseList(res.data.cooking_list_food_name_amount);
@@ -99,7 +98,6 @@ const CookingList = () => {
         userId: localStorage.auth_userId,
       })
       .then((response) => {
-        console.log('帰ってきたお', response.data);
         toast({
           title: '使用する食材を消費しました。',
           position: 'top',

@@ -22,7 +22,6 @@ export const AlertDialogPage: VFC<Props> = memo((props) => {
     axios
       .post('api/food_delete', { modaldata })
       .then((response) => {
-        console.log('response', response.data);
         onClose();
         toast({
           title: '削除しました',
@@ -41,8 +40,6 @@ export const AlertDialogPage: VFC<Props> = memo((props) => {
         console.error(error);
       });
   };
-
-  console.log('modaldata', modaldata);
 
   return (
     <>

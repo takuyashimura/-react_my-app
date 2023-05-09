@@ -20,7 +20,6 @@ export const AlertDialogPageMenu: VFC<Props> = memo((props) => {
 
   const handlePost2 = (deleteMenu: any) => {
     axios.post('api/menu_delete', { deleteMenu }).then((response) => {
-      console.log('response', response.data);
       onClose();
       toast({
         title: '削除されました。3秒後にリロードされます',
@@ -35,8 +34,6 @@ export const AlertDialogPageMenu: VFC<Props> = memo((props) => {
       }, 3000);
     });
   };
-
-  // console.log("modaldata", modaldata);
 
   return (
     <>

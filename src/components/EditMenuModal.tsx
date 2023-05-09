@@ -49,7 +49,6 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
         postMenuData,
       })
       .then((response) => {
-        console.log('post', response.data);
         toast({
           title: 'メニューで使用する食材を更新しました',
           position: 'top',
@@ -81,7 +80,6 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
       ]);
     }
   };
-  // console.log('メニュー名', menuName.name);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

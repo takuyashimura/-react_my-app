@@ -32,7 +32,6 @@ type MenuData = {
 };
 
 export const FoodToMenusModal: VFC<Props> = memo((props) => {
-  console.log('props', props);
   const { isOpen, onClose, modalFoodStocks } = props;
   const [choiceMenu, setChoiceMenu] = useState<MenuData[] | undefined>(
     undefined
@@ -44,19 +43,14 @@ export const FoodToMenusModal: VFC<Props> = memo((props) => {
   } = useDisclosure();
 
   if (modalFoodStocks) {
-    console.log('modalFoodStocks', modalFoodStocks[0]);
-    console.log('modalFoodStocks', modalFoodStocks[1].length);
     const length = modalFoodStocks[1].length;
-    console.log('length', !!length);
   }
 
   const ClickChoice = (menu: any) => {
-    console.log('menu', menu);
     axios
       .post('api/menu_cook', { menu })
       .then((response) => {
         setChoiceMenu(response.data);
-        console.log('choiceMenu', choiceMenu);
         onChoice();
       })
       .catch((error) => {
