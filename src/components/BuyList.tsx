@@ -103,8 +103,8 @@ const BuyList = () => {
           ml={2}
         >
           {shoppingItems &&
-            shoppingItems.map((shoppingItem) => (
-              <Flex justify="space-between">
+            shoppingItems.map((shoppingItem, index) => (
+              <Flex key={index} justify="space-between">
                 <Text>{shoppingItem.name}</Text>
                 <Text>{shoppingItem.total_amount}個</Text>
               </Flex>
@@ -124,7 +124,6 @@ const BuyList = () => {
         maxH="400px"
         placeholder="その他買い物メモ"
         value={text}
-        // onKeyDown={(e) => onEnter(e)}
         onChange={(e) => changeText(e)}
         onCompositionStart={() => {
           setIsInputting(false);

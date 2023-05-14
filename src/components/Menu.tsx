@@ -125,56 +125,53 @@ const Menu = () => {
         {' '}
         {menus && menus.length > 0 ? (
           menus.map((menu) => (
-            <>
-              <Flex
-                ml={'5px'}
-                mr={'5px'}
-                justify="space-between"
-                height={'40px'}
-                key={menu.menu_id}
-                alignItems="center"
-              >
-                <Text>{menu.name}</Text>
-                <Box>
-                  {' '}
-                  <Button
-                    mr={1}
-                    colorScheme="teal"
-                    flexDirection={'column'}
-                    onClick={() => ClickChoice(menu)}
-                    _hover={{
-                      cursor: 'pointer',
-                      opacity: 0.8,
-                    }}
-                  >
-                    <Icon name="pot" />
-                    <Text fontSize={'1px'}>調理</Text>
-                  </Button>
-                  <Button
-                    mr={1}
-                    colorScheme="red"
-                    onClick={() => ClickAlert(menu)}
-                    _hover={{
-                      cursor: 'pointer',
-                      opacity: 0.8,
-                    }}
-                  >
-                    <Icon name="trashcan" />
-                  </Button>
-                  <Button
-                    onClick={() => clickEdit(menu)}
-                    _hover={{
-                      cursor: 'pointer',
-                      opacity: 0.8,
-                    }}
-                  >
-                    <Text>
-                      <Icon name="pencil" />
-                    </Text>
-                  </Button>
-                </Box>
-              </Flex>
-            </>
+            <Flex
+              ml={'5px'}
+              mr={'5px'}
+              justify="space-between"
+              height={'40px'}
+              alignItems="center"
+              key={menu.menu_id}
+            >
+              <Text>{menu.name}</Text>
+              <Box>
+                <Button
+                  mr={1}
+                  colorScheme="teal"
+                  flexDirection={'column'}
+                  onClick={() => ClickChoice(menu)}
+                  _hover={{
+                    cursor: 'pointer',
+                    opacity: 0.8,
+                  }}
+                >
+                  <Icon name="pot" />
+                  <Text fontSize={'1px'}>調理</Text>
+                </Button>
+                <Button
+                  mr={1}
+                  colorScheme="red"
+                  onClick={() => ClickAlert(menu)}
+                  _hover={{
+                    cursor: 'pointer',
+                    opacity: 0.8,
+                  }}
+                >
+                  <Icon name="trashcan" />
+                </Button>
+                <Button
+                  onClick={() => clickEdit(menu)}
+                  _hover={{
+                    cursor: 'pointer',
+                    opacity: 0.8,
+                  }}
+                >
+                  <Text>
+                    <Icon name="pencil" />
+                  </Text>
+                </Button>
+              </Box>
+            </Flex>
           ))
         ) : (
           <Box textAlign={'center'}>
