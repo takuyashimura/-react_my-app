@@ -104,7 +104,7 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
         if (response.data === '登録完了') {
           onClose();
           toast({
-            title: 'メニューの登録が完了しました。3秒後にリロードされます',
+            title: 'メニューが登録さてました。3秒後にリロードされます',
             position: 'top',
             description: 'メニューページを確認してください',
             status: 'success',

@@ -34,7 +34,7 @@ const NewFood: VFC<Props> = memo((props) => {
           //画面遷移するとトーストが表示されない
           onClose();
           toast({
-            title: '食材の登録が完了しました。3秒後にリロードされます',
+            title: '正常に登録されました。3秒後にリロードされます',
             position: 'top',
             description: '食材ページを確認してください',
             status: 'success',
