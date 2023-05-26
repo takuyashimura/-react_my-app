@@ -115,22 +115,19 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
             window.location.reload();
           }, 3000);
         } else {
-          HandleAddFood2();
+          toast({
+            title: '既に登録されています',
+            position: 'top',
+            description: 'メニューページを確認してください',
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          });
         }
       })
       .catch((error) => {
         console.error(error);
       });
-    const HandleAddFood2 = () => {
-      toast({
-        title: '既に登録されています',
-        position: 'top',
-        description: 'メニューページを確認してください',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-    };
   };
 
   return (
