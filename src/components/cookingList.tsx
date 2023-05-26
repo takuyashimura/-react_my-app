@@ -1,19 +1,20 @@
 import {
   Box,
-  Button,
   Flex,
   StackDivider,
   Text,
   VStack,
-  useDisclosure,
   useToast,
+  NumberInput,
+  NumberInputStepper,
+  NumberInputField,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MainButton } from '../tags/buttom';
-import Icon from '../icon/mapper';
-import { CookingListEdit } from './CookingListModal';
+import { MainButton, MainNonButton } from '../tags/buttom';
 
 type StocksData = {
   id: number;
@@ -39,9 +40,11 @@ const CookingList = () => {
   const [nameCount, setNameCount] = useState<NameCount[] | undefined>(
     undefined
   );
+  const [nameCountBase, setNameCountBase] = useState<NameCount[] | undefined>(
+    undefined
+  );
   const navigate = useNavigate();
   const toast = useToast();
-  const { isOpen: isEdit, onOpen: onEdit, onClose: endEdit } = useDisclosure();
 
   useEffect(() => {
     (async () => {
@@ -53,6 +56,7 @@ const CookingList = () => {
         setOonStocksData(res.data.on_stocks_data);
         setUseList(res.data.cooking_list_food_name_amount);
         setNameCount(res.data.cooking_list_name_counts);
+        setNameCountBase(res.data.cooking_list_name_counts);
 
         return;
       } catch (e) {
@@ -94,7 +98,6 @@ const CookingList = () => {
     axios
       .post('api/cooking', {
         useList,
-        // cookingList,
         userId: localStorage.auth_userId,
       })
       .then((response) => {
@@ -113,11 +116,44 @@ const CookingList = () => {
       });
   };
 
-  const clickEdit = () => {
-    onEdit();
+  const length = onStocksData?.length || nonStocksData?.length;
+
+  const onChange = (e: string, name: string, menu_id: number) => {
+    if (nameCount) {
+      const upDataNameCount = nameCount.map((c) =>
+        c.menu_id === menu_id ? { name, count: Number(e), menu_id } : c
+      );
+      setNameCount(upDataNameCount);
+    }
+    axios
+      .post('api/editCookingList', {
+        nameCount,
+        userId: localStorage.auth_userId,
+      })
+      .then((response) => {})
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
-  const length = onStocksData?.length || nonStocksData?.length;
+  const editFood = () => {
+    (async () => {
+      try {
+        const res = await axios.get(
+          `api/cooking_list/${localStorage.auth_userId}`
+        );
+        setnonStocksData(res.data.non_stocks_data);
+        setOonStocksData(res.data.on_stocks_data);
+        setUseList(res.data.cooking_list_food_name_amount);
+        setNameCount(res.data.cooking_list_name_counts);
+        setNameCountBase(res.data.cooking_list_name_counts);
+
+        return;
+      } catch (e) {
+        return e;
+      }
+    })();
+  };
 
   return (
     <>
@@ -127,18 +163,6 @@ const CookingList = () => {
             <Text m={2} fontSize={30} fontWeight={800}>
               メニュー
             </Text>
-            <Button
-              m={1}
-              onClick={() => clickEdit()}
-              _hover={{
-                cursor: 'pointer',
-                opacity: 0.8,
-              }}
-            >
-              <Text>
-                <Icon name="pencil" />
-              </Text>
-            </Button>
           </Flex>
           <VStack
             divider={<StackDivider borderColor="gray.200" />}
@@ -153,10 +177,35 @@ const CookingList = () => {
                   justify="space-between"
                 >
                   <Text>{c.name}</Text>
-                  <Text mr={'5px'}>{c.count}人前</Text>
+                  <NumberInput
+                    onChange={(e) => onChange(e, c.name, c.menu_id)}
+                    value={`${c.count}人前`}
+                    min={1}
+                  >
+                    <NumberInputField
+                      textAlign={'right'}
+                      pr={'30px'}
+                      border={'none'}
+                      _focus={{ boxShadow: 'none' }}
+                      _active={{ borderColor: 'transparent' }}
+                    />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper border={'none'} />
+                      <NumberDecrementStepper border={'none'} />
+                    </NumberInputStepper>
+                  </NumberInput>
                 </Flex>
               </Flex>
-            ))}{' '}
+            ))}
+            {JSON.stringify(nameCountBase) !== JSON.stringify(nameCount) ? (
+              <Box w={'100%'} textAlign={'right'}>
+                <MainButton onClick={editFood}>使用食材を再計算</MainButton>{' '}
+              </Box>
+            ) : (
+              <Box w={'100%'} textAlign={'right'}>
+                <MainNonButton>使用食材を再計算</MainNonButton>{' '}
+              </Box>
+            )}
           </VStack>{' '}
           <Text m={2} fontSize={30} fontWeight={700}>
             使用食材
@@ -216,27 +265,35 @@ const CookingList = () => {
                 </Flex>
               ))}
             </VStack>
-            <Box w={'100%'} textAlign={'right'}>
-              <MainButton type="submit">
-                <Text>不足分をカートに追加する</Text>
-              </MainButton>
-            </Box>
+
+            {JSON.stringify(nameCountBase) === JSON.stringify(nameCount) ? (
+              <Box w={'100%'} textAlign={'right'}>
+                <MainButton type="submit">不足分をカートに追加する</MainButton>
+              </Box>
+            ) : (
+              <Box w={'100%'} textAlign={'right'}>
+                <MainNonButton>不足分をカートに追加する</MainNonButton>
+              </Box>
+            )}
           </>
         ) : (
           <>
             {useList && useList.length > 0 && (
-              <Box w={'100%'} textAlign={'right'}>
-                <MainButton onClick={HandlePost}>調理をする</MainButton>{' '}
-              </Box>
+              <>
+                {JSON.stringify(nameCountBase) === JSON.stringify(nameCount) ? (
+                  <Box w={'100%'} textAlign={'right'}>
+                    <MainButton onClick={HandlePost}>調理をする</MainButton>{' '}
+                  </Box>
+                ) : (
+                  <Box w={'100%'} textAlign={'right'}>
+                    <MainNonButton>調理をする</MainNonButton>{' '}
+                  </Box>
+                )}
+              </>
             )}
           </>
         )}
       </form>
-      <CookingListEdit
-        isOpen={isEdit}
-        onClose={endEdit}
-        nameCount={nameCount}
-      />
     </>
   );
 };
