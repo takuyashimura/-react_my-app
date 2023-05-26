@@ -7,8 +7,8 @@ import {
   StackDivider,
   Box,
   Flex,
+  Center,
 } from '@chakra-ui/react';
-import Icon from '../icon/mapper';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -17,6 +17,8 @@ import NewFood from './NewFood';
 import { FoodToMenusModal } from './FoodToMenusModal';
 import { AlertDialogPage } from './AlertDialogPage';
 import { MainButton } from '../tags/buttom';
+import SpinnerIcon from './loading';
+import FoodComponent from './FoodComponent';
 type FoodStocks = {
   id: number;
   name: string;
@@ -36,6 +38,8 @@ type Modal = {
   total_amount: number;
 };
 
+type Loading = boolean;
+
 const Food = () => {
   const [foodStocks, setFoodStocks] = useState<FoodStocks[] | undefined>(
     undefined
@@ -45,6 +49,8 @@ const Food = () => {
   >(undefined);
 
   const [modaldata, setModalData] = useState<Modal[] | undefined>(undefined);
+
+  const [loading, setLoading] = useState<Loading>(true);
 
   const {
     isOpen: isOpenAddFoodModal,
@@ -64,12 +70,15 @@ const Food = () => {
 
   // 先ほど作成したLaravelのAPIのURL
   useEffect(() => {
+    setLoading(false);
     (async () => {
       try {
         const res = await axios.get(`/api/home/${localStorage.auth_userId}`);
         setFoodStocks(res.data.food_stocks);
+        setLoading(true);
         return;
       } catch (e) {
+        setLoading(true);
         return e;
       }
     })();
@@ -116,90 +125,33 @@ const Food = () => {
 
   return (
     <div className="Food">
-      {/* <Button as={Link} to="/newFood/"> */}
-      <Box w={'100%'} textAlign={'right'}>
-        {' '}
-        <MainButton onClick={onOpenAddFoodModal}>新規食材追加</MainButton>
-      </Box>
-      {foodStocks && foodStocks.length > 0 ? (
-        <VStack
-          divider={<StackDivider borderColor="gray.200" />}
-          spacing={2}
-          align="stretch"
-        >
-          {' '}
-          {foodStocks.map((food_stock) => (
-            <Flex
-              ml={2}
-              mr={2}
-              justify="space-between"
-              height={'40px'}
-              key={food_stock.id}
-              alignItems="center"
-            >
-              <Text>{food_stock.name}</Text>
-
-              <Box display={'flex'} alignItems={'center'}>
-                <Box mr={1}>
-                  <Text>
-                    {food_stock.total_amount === null
-                      ? 0
-                      : food_stock.total_amount}
-                    個
-                  </Text>
-                </Box>
-
-                <Button
-                  colorScheme="teal"
-                  mr={1}
-                  flexDirection="column"
-                  onClick={() => handlePostModal(food_stock)}
-                  _hover={{
-                    cursor: 'pointer',
-                    opacity: 0.8,
-                  }}
-                >
-                  <Box>
-                    <Icon name="pot" />
-                  </Box>
-                  <Text fontSize={'0.5px'}>メニュー</Text>
-                </Button>
-                <Button
-                  colorScheme="red"
-                  onClick={() => onCheckOpen(food_stock)}
-                  _hover={{
-                    cursor: 'pointer',
-
-                    opacity: 0.8,
-                  }}
-                >
-                  <Icon name="trashcan" />
-                </Button>
-              </Box>
-            </Flex>
-          ))}
-        </VStack>
+      {loading ? (
+        <>
+          <Box w={'100%'} textAlign={'right'}>
+            <MainButton onClick={onOpenAddFoodModal}>新規食材追加</MainButton>
+          </Box>
+          <FoodComponent
+            handlePostModal={handlePostModal}
+            onCheckOpen={onCheckOpen}
+            foodStocks={foodStocks}
+          />
+          <NewFood isOpen={isOpenAddFoodModal} onClose={CloseAddFoodModal} />
+          <FoodToMenusModal
+            isOpen={isOpenFoodToMenuModal}
+            onClose={CloseFoodToMenuModal}
+            modalFoodStocks={modalFoodStocks}
+          />
+          <AlertDialogPage
+            isOpen={isCheck}
+            onClose={endCheck}
+            modaldata={modaldata}
+          />{' '}
+        </>
       ) : (
-        <Box textAlign={'center'}>
-          <Text mt={'50px'} fontSize={'20px'}>
-            新規食材追加ボタンから
-            <br />
-            食材を追加してください
-          </Text>
-        </Box>
+        <Center pt={'50px'}>
+          <SpinnerIcon />
+        </Center>
       )}
-
-      <NewFood isOpen={isOpenAddFoodModal} onClose={CloseAddFoodModal} />
-      <FoodToMenusModal
-        isOpen={isOpenFoodToMenuModal}
-        onClose={CloseFoodToMenuModal}
-        modalFoodStocks={modalFoodStocks}
-      />
-      <AlertDialogPage
-        isOpen={isCheck}
-        onClose={endCheck}
-        modaldata={modaldata}
-      />
     </div>
   );
 };

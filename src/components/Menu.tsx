@@ -6,6 +6,7 @@ import {
   VStack,
   useDisclosure,
   Text,
+  Center,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -15,6 +16,8 @@ import { NewMenuModal } from './NewMenuModal';
 import { MenuCookModal } from './MenuCookModal';
 import { MainButton } from '../tags/buttom';
 import Icon from '../icon/mapper';
+import MenuComopnent from './MenuComponent';
+import SpinnerIcon from './loading';
 
 type Menus = {
   menu_id: number;
@@ -36,6 +39,7 @@ type MenuData = {
   name: string;
   food_amount: number;
 };
+type Loading = boolean;
 
 const Menu = () => {
   const [menus, setMenus] = useState<Menus[] | undefined>(undefined);
@@ -47,6 +51,7 @@ const Menu = () => {
   const [choiceMenu, setChoiceMenu] = useState<MenuData[] | undefined>(
     undefined
   );
+  const [loading, setLoading] = useState<Loading>(true);
 
   const {
     isOpen: isAlert,
@@ -63,13 +68,17 @@ const Menu = () => {
 
   // get↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
   useEffect(() => {
+    setLoading(false);
+
     (async () => {
       try {
         const res = await axios.get(`api/menu/${localStorage.auth_userId}`);
         setMenus(res.data.menus);
-
+        setLoading(true);
         return;
       } catch (e) {
+        setLoading(true);
+
         return e;
       }
     })();
@@ -113,93 +122,38 @@ const Menu = () => {
 
   return (
     <div className="Food">
-      <Box w={'100%'} textAlign={'right'}>
-        <MainButton onClick={onNew}>新規メニュー追加</MainButton>
-      </Box>
-
-      <VStack
-        divider={<StackDivider borderColor="gray.200" />}
-        // spacing={2}
-        align="stretch"
-      >
-        {' '}
-        {menus && menus.length > 0 ? (
-          menus.map((menu) => (
-            <Flex
-              ml={'5px'}
-              mr={'5px'}
-              justify="space-between"
-              height={'40px'}
-              alignItems="center"
-              key={menu.menu_id}
-            >
-              <Text>{menu.name}</Text>
-              <Box>
-                <Button
-                  mr={1}
-                  colorScheme="teal"
-                  flexDirection={'column'}
-                  onClick={() => ClickChoice(menu)}
-                  _hover={{
-                    cursor: 'pointer',
-                    opacity: 0.8,
-                  }}
-                >
-                  <Icon name="pot" />
-                  <Text fontSize={'1px'}>調理</Text>
-                </Button>
-                <Button
-                  mr={1}
-                  colorScheme="red"
-                  onClick={() => ClickAlert(menu)}
-                  _hover={{
-                    cursor: 'pointer',
-                    opacity: 0.8,
-                  }}
-                >
-                  <Icon name="trashcan" />
-                </Button>
-                <Button
-                  onClick={() => clickEdit(menu)}
-                  _hover={{
-                    cursor: 'pointer',
-                    opacity: 0.8,
-                  }}
-                >
-                  <Text>
-                    <Icon name="pencil" />
-                  </Text>
-                </Button>
-              </Box>
-            </Flex>
-          ))
-        ) : (
-          <Box textAlign={'center'}>
-            <Text mt={'50px'} fontSize={'20px'}>
-              新規メニュー追加ボタンから
-              <br />
-              食材を追加してください
-            </Text>
-          </Box>
-        )}
-      </VStack>
-      <AlertDialogPageMenu
-        isOpen={isAlert}
-        onClose={endAlert}
-        deleteMenu={deleteMenu}
-      />
-      <EditMenuModal
-        isOpen={isEdit}
-        onClose={endEdit}
-        menuName={menuName}
-        menuData={menuData}
-      />
-      <NewMenuModal isOpen={isNew} onClose={endNew} />
-      <MenuCookModal
-        isOpen={isChoice}
-        onClose={endChoice}
-        choiceMenu={choiceMenu}
-      />
+      {loading ? (
+        <>
+          <MenuComopnent
+            onNew={onNew}
+            menus={menus}
+            ClickChoice={ClickChoice}
+            ClickAlert={ClickAlert}
+            clickEdit={clickEdit}
+          />
+          <AlertDialogPageMenu
+            isOpen={isAlert}
+            onClose={endAlert}
+            deleteMenu={deleteMenu}
+          />
+          <EditMenuModal
+            isOpen={isEdit}
+            onClose={endEdit}
+            menuName={menuName}
+            menuData={menuData}
+          />
+          <NewMenuModal isOpen={isNew} onClose={endNew} />
+          <MenuCookModal
+            isOpen={isChoice}
+            onClose={endChoice}
+            choiceMenu={choiceMenu}
+          />
+        </>
+      ) : (
+        <Center pt={'50px'}>
+          <SpinnerIcon />
+        </Center>
+      )}
     </div>
   );
 };

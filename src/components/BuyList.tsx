@@ -1,5 +1,6 @@
 import {
   Box,
+  Center,
   Flex,
   StackDivider,
   Text,
@@ -12,8 +13,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { EditBuyListModal } from './EditbuyListModal';
-import { MainButton } from '../tags/buttom';
-import Icon from '../icon/mapper';
+import BuyListComponent from './BuyListComponent';
+import SpinnerIcon from './loading';
 
 type shopingItem = {
   food_id: number;
@@ -28,22 +29,23 @@ const BuyList = () => {
   const [shoppingItems, setShoppingItems] = useState<shopingItem[] | undefined>(
     undefined
   );
-
+  const [loading, setLoading] = useState<input>(true);
   const [text, setText] = useState<text>();
   const [Inputting, setIsInputting] = useState<input>(false);
-
   const { isOpen: isEdit, onOpen: onEdit, onClose: endEdit } = useDisclosure();
-
   const toast = useToast();
 
   useEffect(() => {
+    setLoading(false);
     (async () => {
       try {
         const res = await axios.get(`api/buy_list/${localStorage.auth_userId}`);
         setShoppingItems(res.data.shopping_items);
         setText(res.data.texts[0].text);
+        setLoading(true);
         return;
       } catch (e) {
+        setLoading(true);
         return e;
       }
     })();
@@ -88,34 +90,17 @@ const BuyList = () => {
 
   return (
     <>
-      <Box w={'100%'} textAlign={'right'}>
-        <MainButton bg={'gray.200'} onClick={onEdit}>
-          <Icon name="pencil" />{' '}
-        </MainButton>
-      </Box>
-
-      <form onSubmit={HnadleSubmit1}>
-        <VStack
-          divider={<StackDivider borderColor="gray.200" />}
-          spacing={2}
-          align="stretch"
-          mr={2}
-          ml={2}
-        >
-          {shoppingItems &&
-            shoppingItems.map((shoppingItem, index) => (
-              <Flex key={index} justify="space-between">
-                <Text>{shoppingItem.name}</Text>
-                <Text>{shoppingItem.total_amount}個</Text>
-              </Flex>
-            ))}
-        </VStack>
-        {shoppingItems && shoppingItems.length > 0 && (
-          <Box w={'100%'} textAlign={'right'}>
-            <MainButton type="submit">購入する</MainButton>
-          </Box>
-        )}
-      </form>
+      {loading ? (
+        <BuyListComponent
+          onEdit={onEdit}
+          HnadleSubmit1={HnadleSubmit1}
+          shoppingItems={shoppingItems}
+        />
+      ) : (
+        <Center>
+          <SpinnerIcon />
+        </Center>
+      )}
 
       <Textarea
         bgColor={'gray.50'}
