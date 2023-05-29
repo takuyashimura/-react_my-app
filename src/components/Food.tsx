@@ -153,6 +153,7 @@ const Food = () => {
             isOpen={isCheck}
             onClose={endCheck}
             modaldata={modaldata}
+            getFoodData={getFoodData}
           />
         </>
       ) : (

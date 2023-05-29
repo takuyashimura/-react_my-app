@@ -101,6 +101,7 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
         userId: localStorage.auth_userId,
       })
       .then((response) => {
+        console.log('response', response.data);
         if (response.data === '登録完了') {
           onClose();
           getMenuData();
@@ -133,11 +134,12 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
         >
           <form onSubmit={HandleSubmit}>
             <Flex width={'100%'}>
-              <Box width={'60%'}>
+              <Box width={'60%'} mr={'5px'}>
                 <Input
+                  mr={'5px'}
                   type="text"
                   name="name"
-                  placeholder={menuName || 'メニュー名'}
+                  placeholder="メニュー名"
                   onChange={OnChangeName}
                 />
               </Box>

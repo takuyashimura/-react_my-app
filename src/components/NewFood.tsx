@@ -64,7 +64,7 @@ const NewFood: VFC<Props> = memo((props) => {
             alignItems={'center'}
           >
             <Flex justify="space-between" alignItems="center">
-              <Box>
+              <Box mr={'5px'}>
                 <Input
                   type="text"
                   name="name"

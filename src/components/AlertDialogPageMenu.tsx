@@ -11,28 +11,36 @@ import {
 import axios from 'axios';
 import React, { VFC, memo, useRef } from 'react';
 
-type Props = { isOpen: boolean; onClose: () => void; deleteMenu: any };
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  deleteMenu: any;
+  getMenuData: any;
+};
 
 export const AlertDialogPageMenu: VFC<Props> = memo((props) => {
-  const { isOpen, onClose, deleteMenu } = props;
+  const { isOpen, onClose, deleteMenu, getMenuData } = props;
   const cancelRef = useRef<HTMLButtonElement | null>(null);
   const toast = useToast();
 
   const handlePost2 = (deleteMenu: any) => {
-    axios.post('api/menu_delete', { deleteMenu }).then((response) => {
-      onClose();
-      toast({
-        title: '削除されました。3秒後にリロードされます',
-        position: 'top',
-        description: 'メニューページを確認してください',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
-    });
+    (async () => {
+      try {
+        await axios.post('api/menu_delete', { deleteMenu }).then((response) => {
+          onClose();
+          getMenuData();
+          toast({
+            title: '削除されました。',
+            position: 'top',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          });
+        });
+      } catch (error) {
+        return error;
+      }
+    })();
   };
 
   return (

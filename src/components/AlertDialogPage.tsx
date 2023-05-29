@@ -11,10 +11,15 @@ import {
 import axios from 'axios';
 import React, { VFC, memo, useRef } from 'react';
 
-type Props = { isOpen: boolean; onClose: () => void; modaldata: any };
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  modaldata: any;
+  getFoodData: any;
+};
 
 export const AlertDialogPage: VFC<Props> = memo((props) => {
-  const { isOpen, onClose, modaldata } = props;
+  const { isOpen, onClose, modaldata, getFoodData } = props;
   const cancelRef = useRef<HTMLButtonElement | null>(null);
   const toast = useToast();
 
@@ -23,18 +28,14 @@ export const AlertDialogPage: VFC<Props> = memo((props) => {
       .post('api/food_delete', { modaldata })
       .then((response) => {
         onClose();
+        getFoodData();
         toast({
           title: '削除しました',
           position: 'top',
-          description: '3秒後にリロードされます',
           status: 'success',
           duration: 3000,
           isClosable: true,
         });
-
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
       })
       .catch((error) => {
         console.error(error);
