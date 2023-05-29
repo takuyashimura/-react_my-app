@@ -1,5 +1,6 @@
 import {
   Box,
+  Center,
   Flex,
   NumberDecrementStepper,
   NumberIncrementStepper,
@@ -12,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { VFC, memo } from 'react';
 import { MainButton, MainNonButton } from '../tags/buttom';
+import SpinnerIcon from './loading';
 
 type Props = {
   nameCount: any;
@@ -24,6 +26,7 @@ type Props = {
   length: any;
   onStocksData: any;
   HandlePost: any;
+  editLoading: any;
 };
 
 const CookingListComponent: VFC<Props> = memo((props) => {
@@ -38,6 +41,7 @@ const CookingListComponent: VFC<Props> = memo((props) => {
     length,
     onStocksData,
     HandlePost,
+    editLoading,
   } = props;
   return (
     <>
@@ -64,7 +68,7 @@ const CookingListComponent: VFC<Props> = memo((props) => {
                   <NumberInput
                     onChange={(e) => onChange(e, c.name, c.menu_id)}
                     value={`${c.count}人前`}
-                    min={1}
+                    min={0}
                   >
                     <NumberInputField
                       textAlign={'right'}
@@ -81,32 +85,100 @@ const CookingListComponent: VFC<Props> = memo((props) => {
                 </Flex>
               </Flex>
             ))}
-            {JSON.stringify(nameCountBase) !== JSON.stringify(nameCount) ? (
-              <Box w={'100%'} textAlign={'right'}>
-                <MainButton onClick={editFood}>使用食材を再計算</MainButton>{' '}
-              </Box>
-            ) : (
-              <Box w={'100%'} textAlign={'right'}>
-                <MainNonButton>使用食材を再計算</MainNonButton>{' '}
-              </Box>
-            )}
+            {/* ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */}
+
+            {/* ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ */}
           </VStack>{' '}
-          <Text m={2} fontSize={30} fontWeight={700}>
-            使用食材
-          </Text>
-          {useList && (
-            <VStack
-              divider={<StackDivider borderColor="gray.200" />}
-              spacing={2}
-              align="stretch"
-            >
-              {useList.map((u: any) => (
-                <Flex ml={2} mr={2} justify="space-between" key={u.id}>
-                  <Text>{u.food_name}</Text>
-                  <Text>{u.amount}個</Text>
-                </Flex>
-              ))}{' '}
-            </VStack>
+          {editLoading ? (
+            <>
+              {' '}
+              <Text m={2} fontSize={30} fontWeight={700}>
+                使用食材
+              </Text>
+              {useList && (
+                <VStack
+                  divider={<StackDivider borderColor="gray.200" />}
+                  spacing={2}
+                  align="stretch"
+                >
+                  {useList.map((u: any) => (
+                    <Flex ml={2} mr={2} justify="space-between" key={u.id}>
+                      <Text>{u.food_name}</Text>
+                      <Text>{u.amount}個</Text>
+                    </Flex>
+                  ))}{' '}
+                </VStack>
+              )}
+              <form onSubmit={HandleSubmit}>
+                {nonStocksData && onStocksData && !!length ? (
+                  <>
+                    <Text m={2} fontSize={30} fontWeight={700}>
+                      不足食材
+                    </Text>
+                    <VStack
+                      divider={<StackDivider borderColor="gray.200" />}
+                      spacing={2}
+                      align="stretch"
+                    >
+                      {nonStocksData.map((d: any) => (
+                        <Flex justify="space-between" bg="red.200" key={d.id}>
+                          <Text>{d.food_name}</Text>
+                          <Flex>
+                            <Text color={'red'}>{d.amount}</Text>
+                            <Text>個</Text>
+                          </Flex>{' '}
+                        </Flex>
+                      ))}
+                      {onStocksData.map((d: any) => (
+                        <Flex justify="space-between" bg="red.200" key={d.id}>
+                          <Text>{d.food_name}</Text>
+                          <Flex>
+                            <Text color={'red'}>{d.amount}</Text>
+                            <Text>個</Text>
+                          </Flex>
+                        </Flex>
+                      ))}
+                    </VStack>
+
+                    {JSON.stringify(nameCountBase) ===
+                    JSON.stringify(nameCount) ? (
+                      <Box w={'100%'} textAlign={'right'}>
+                        <MainButton type="submit">
+                          不足分をカートに追加する
+                        </MainButton>
+                      </Box>
+                    ) : (
+                      <Box w={'100%'} textAlign={'right'}>
+                        <MainNonButton>不足分をカートに追加する</MainNonButton>
+                      </Box>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {useList && useList.length > 0 && (
+                      <>
+                        {JSON.stringify(nameCountBase) ===
+                        JSON.stringify(nameCount) ? (
+                          <Box w={'100%'} textAlign={'right'}>
+                            <MainButton onClick={HandlePost}>
+                              調理をする
+                            </MainButton>{' '}
+                          </Box>
+                        ) : (
+                          <Box w={'100%'} textAlign={'right'}>
+                            <MainNonButton>調理をする</MainNonButton>{' '}
+                          </Box>
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
+              </form>
+            </>
+          ) : (
+            <Center pt={'50px'}>
+              <SpinnerIcon />
+            </Center>
           )}
         </>
       ) : (
@@ -119,65 +191,6 @@ const CookingListComponent: VFC<Props> = memo((props) => {
           </Text>
         </Box>
       )}
-      <form onSubmit={HandleSubmit}>
-        {nonStocksData && onStocksData && !!length ? (
-          <>
-            <Text m={2} fontSize={30} fontWeight={700}>
-              不足食材
-            </Text>
-            <VStack
-              divider={<StackDivider borderColor="gray.200" />}
-              spacing={2}
-              align="stretch"
-            >
-              {nonStocksData.map((d: any) => (
-                <Flex justify="space-between" bg="red.200" key={d.id}>
-                  <Text>{d.food_name}</Text>
-                  <Flex>
-                    <Text color={'red'}>{d.amount}</Text>
-                    <Text>個</Text>
-                  </Flex>{' '}
-                </Flex>
-              ))}
-              {onStocksData.map((d: any) => (
-                <Flex justify="space-between" bg="red.200" key={d.id}>
-                  <Text>{d.food_name}</Text>
-                  <Flex>
-                    <Text color={'red'}>{d.amount}</Text>
-                    <Text>個</Text>
-                  </Flex>
-                </Flex>
-              ))}
-            </VStack>
-
-            {JSON.stringify(nameCountBase) === JSON.stringify(nameCount) ? (
-              <Box w={'100%'} textAlign={'right'}>
-                <MainButton type="submit">不足分をカートに追加する</MainButton>
-              </Box>
-            ) : (
-              <Box w={'100%'} textAlign={'right'}>
-                <MainNonButton>不足分をカートに追加する</MainNonButton>
-              </Box>
-            )}
-          </>
-        ) : (
-          <>
-            {useList && useList.length > 0 && (
-              <>
-                {JSON.stringify(nameCountBase) === JSON.stringify(nameCount) ? (
-                  <Box w={'100%'} textAlign={'right'}>
-                    <MainButton onClick={HandlePost}>調理をする</MainButton>{' '}
-                  </Box>
-                ) : (
-                  <Box w={'100%'} textAlign={'right'}>
-                    <MainNonButton>調理をする</MainNonButton>{' '}
-                  </Box>
-                )}
-              </>
-            )}
-          </>
-        )}
-      </form>
     </>
   );
 });

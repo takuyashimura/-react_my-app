@@ -51,6 +51,21 @@ const BuyList = () => {
     })();
   }, []);
 
+  const getBuyListData = () => {
+    (async () => {
+      try {
+        const res = await axios.get(`api/buy_list/${localStorage.auth_userId}`);
+        setShoppingItems(res.data.shopping_items);
+        setText(res.data.texts[0].text);
+        setLoading(true);
+        return;
+      } catch (e) {
+        setLoading(true);
+        return e;
+      }
+    })();
+  };
+
   const HnadleSubmit1 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
@@ -66,7 +81,7 @@ const BuyList = () => {
           duration: 3000,
           isClosable: true,
         });
-        navigation('/food/');
+        getBuyListData();
       })
       .catch((error) => {
         console.error(error);
@@ -86,39 +101,42 @@ const BuyList = () => {
       });
   }
 
-  const navigation = useNavigate();
-
   return (
     <>
       {loading ? (
-        <BuyListComponent
-          onEdit={onEdit}
-          HnadleSubmit1={HnadleSubmit1}
-          shoppingItems={shoppingItems}
-        />
+        <>
+          <BuyListComponent
+            onEdit={onEdit}
+            HnadleSubmit1={HnadleSubmit1}
+            shoppingItems={shoppingItems}
+          />
+          <Textarea
+            bgColor={'gray.50'}
+            resize="vertical"
+            minH="200px"
+            maxH="400px"
+            placeholder="その他買い物メモ"
+            value={text}
+            onChange={(e) => changeText(e)}
+            onCompositionStart={() => {
+              setIsInputting(false);
+            }}
+            onCompositionEnd={() => {
+              setIsInputting(true);
+            }}
+          />
+        </>
       ) : (
-        <Center>
+        <Center pt={'50px'}>
           <SpinnerIcon />
         </Center>
       )}
 
-      <Textarea
-        bgColor={'gray.50'}
-        resize="vertical"
-        minH="200px"
-        maxH="400px"
-        placeholder="その他買い物メモ"
-        value={text}
-        onChange={(e) => changeText(e)}
-        onCompositionStart={() => {
-          setIsInputting(false);
-        }}
-        onCompositionEnd={() => {
-          setIsInputting(true);
-        }}
+      <EditBuyListModal
+        isOpen={isEdit}
+        onClose={endEdit}
+        getBuyListData={getBuyListData}
       />
-
-      <EditBuyListModal isOpen={isEdit} onClose={endEdit} />
     </>
   );
 };

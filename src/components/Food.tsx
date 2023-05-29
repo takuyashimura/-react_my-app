@@ -1,14 +1,4 @@
-import {
-  Button,
-  useDisclosure,
-  useToast,
-  Text,
-  VStack,
-  StackDivider,
-  Box,
-  Flex,
-  Center,
-} from '@chakra-ui/react';
+import { useDisclosure, useToast, Box, Center } from '@chakra-ui/react';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -121,6 +111,20 @@ const Food = () => {
       });
   };
 
+  const getFoodData = () => {
+    (async () => {
+      try {
+        const res = await axios.get(`/api/home/${localStorage.auth_userId}`);
+        setFoodStocks(res.data.food_stocks);
+        setLoading(true);
+        return;
+      } catch (e) {
+        setLoading(true);
+        return e;
+      }
+    })();
+  };
+
   const toast = useToast();
 
   return (
@@ -135,7 +139,11 @@ const Food = () => {
             onCheckOpen={onCheckOpen}
             foodStocks={foodStocks}
           />
-          <NewFood isOpen={isOpenAddFoodModal} onClose={CloseAddFoodModal} />
+          <NewFood
+            isOpen={isOpenAddFoodModal}
+            onClose={CloseAddFoodModal}
+            getFoodData={getFoodData}
+          />
           <FoodToMenusModal
             isOpen={isOpenFoodToMenuModal}
             onClose={CloseFoodToMenuModal}
@@ -145,7 +153,7 @@ const Food = () => {
             isOpen={isCheck}
             onClose={endCheck}
             modaldata={modaldata}
-          />{' '}
+          />
         </>
       ) : (
         <Center pt={'50px'}>

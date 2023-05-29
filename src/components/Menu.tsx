@@ -84,6 +84,21 @@ const Menu = () => {
     })();
   }, []);
 
+  const getMenuData = () => {
+    (async () => {
+      try {
+        const res = await axios.get(`api/menu/${localStorage.auth_userId}`);
+        setMenus(res.data.menus);
+        setLoading(true);
+        return;
+      } catch (e) {
+        setLoading(true);
+
+        return e;
+      }
+    })();
+  };
+
   // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
   // post↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
@@ -142,7 +157,11 @@ const Menu = () => {
             menuName={menuName}
             menuData={menuData}
           />
-          <NewMenuModal isOpen={isNew} onClose={endNew} />
+          <NewMenuModal
+            isOpen={isNew}
+            onClose={endNew}
+            getMenuData={getMenuData}
+          />
           <MenuCookModal
             isOpen={isChoice}
             onClose={endChoice}

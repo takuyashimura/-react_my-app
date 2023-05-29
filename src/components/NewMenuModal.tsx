@@ -22,7 +22,7 @@ import axios from 'axios';
 import { VFC, memo, useEffect, useState } from 'react';
 import { CustomButton, CustomNonButton } from '../tags/buttom';
 
-type Props = { isOpen: boolean; onClose: () => void };
+type Props = { isOpen: boolean; onClose: () => void; getMenuData: any };
 
 type Food = {
   id: number;
@@ -37,7 +37,7 @@ type MenuFood = {
 };
 
 export const NewMenuModal: VFC<Props> = memo((props) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, getMenuData } = props;
 
   const [food, setFood] = useState<Food[] | undefined>(undefined);
 
@@ -103,17 +103,7 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
       .then((response) => {
         if (response.data === '登録完了') {
           onClose();
-          toast({
-            title: 'メニューが登録さてました。3秒後にリロードされます',
-            position: 'top',
-            description: 'メニューページを確認してください',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-          });
-          setTimeout(() => {
-            window.location.reload();
-          }, 3000);
+          getMenuData();
         } else {
           toast({
             title: '既に登録されています',
