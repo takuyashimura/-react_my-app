@@ -16,11 +16,11 @@ import { CustomButton, CustomNonButton } from '../tags/buttom';
 
 type FoodData = string;
 
-type Props = { isOpen: boolean; onClose: () => void };
+type Props = { isOpen: boolean; onClose: () => void; getFoodData: any };
 
 const NewFood: VFC<Props> = memo((props) => {
   const [foodData, setFoodData] = useState<FoodData>('食品名');
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, getFoodData } = props;
 
   const OnChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFoodData(e.target.value);
@@ -31,19 +31,8 @@ const NewFood: VFC<Props> = memo((props) => {
       .post('api/add', { foodData, userId: localStorage.auth_userId })
       .then((response) => {
         if (response.data === '登録完了') {
-          //画面遷移するとトーストが表示されない
           onClose();
-          toast({
-            title: '正常に登録されました。3秒後にリロードされます',
-            position: 'top',
-            description: '食材ページを確認してください',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-          });
-          setTimeout(() => {
-            window.location.reload();
-          }, 3000);
+          getFoodData();
         } else {
           toast({
             title: '既に登録されています',

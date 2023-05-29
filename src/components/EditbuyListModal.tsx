@@ -22,7 +22,7 @@ import {
 import axios from 'axios';
 import { VFC, memo, useEffect, useState } from 'react';
 
-type Props = { isOpen: boolean; onClose: () => void };
+type Props = { isOpen: boolean; onClose: () => void; getBuyListData: any };
 
 type Nonfood = {
   id: number;
@@ -36,7 +36,7 @@ type ShoppingItem = {
 };
 
 export const EditBuyListModal: VFC<Props> = memo((props) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, getBuyListData } = props;
   const [nonFood, setNonFood] = useState<Nonfood[] | undefined>(undefined);
   const [sList, setSList] = useState<ShoppingItem[] | undefined>(undefined);
   const toast = useToast();
@@ -71,17 +71,7 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
       })
       .then((response) => {
         onClose();
-        toast({
-          title: 'カートを更新しました',
-          position: 'top',
-          description: '3秒後にリロードします',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
+        getBuyListData();
       })
       .catch((error) => {
         console.error(error);

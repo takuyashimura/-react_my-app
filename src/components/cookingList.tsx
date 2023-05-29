@@ -33,10 +33,10 @@ type NameCount = {
 type Loading = boolean;
 
 const CookingList = () => {
-  const [nonStocksData, setnonStocksData] = useState<StocksData[] | undefined>(
+  const [nonStocksData, setNonStocksData] = useState<StocksData[] | undefined>(
     undefined
   );
-  const [onStocksData, setOonStocksData] = useState<StocksData[] | undefined>(
+  const [onStocksData, setOnStocksData] = useState<StocksData[] | undefined>(
     undefined
   );
   const [toBuyList, settoBuyList] = useState([nonStocksData, onStocksData]);
@@ -48,6 +48,7 @@ const CookingList = () => {
     undefined
   );
   const [loading, setLoading] = useState<Loading>(true);
+  const [editLoading, setEditLoading] = useState<Loading>(true);
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -58,8 +59,8 @@ const CookingList = () => {
         const res = await axios.get(
           `api/cooking_list/${localStorage.auth_userId}`
         );
-        setnonStocksData(res.data.non_stocks_data);
-        setOonStocksData(res.data.on_stocks_data);
+        setNonStocksData(res.data.non_stocks_data);
+        setOnStocksData(res.data.on_stocks_data);
         setUseList(res.data.cooking_list_food_name_amount);
         setNameCount(res.data.cooking_list_name_counts);
         setNameCountBase(res.data.cooking_list_name_counts);
@@ -128,31 +129,59 @@ const CookingList = () => {
   const length = onStocksData?.length || nonStocksData?.length;
 
   const onChange = (e: string, name: string, menu_id: number) => {
+    setEditLoading(false);
     if (nameCount) {
       const upDataNameCount = nameCount.map((c) =>
         c.menu_id === menu_id ? { name, count: Number(e), menu_id } : c
       );
       setNameCount(upDataNameCount);
+      console.log('upDataNameCount', upDataNameCount);
+
+      (async () => {
+        try {
+          await axios.post('api/editCookingList', {
+            upDataNameCount,
+            userId: localStorage.auth_userId,
+          });
+          return;
+        } catch (e) {
+          return e;
+        }
+      })();
     }
-    axios
-      .post('api/editCookingList', {
-        nameCount,
-        userId: localStorage.auth_userId,
-      })
-      .then((response) => {})
-      .catch((error) => {
-        console.error(error);
-      });
+
+    window.setTimeout(function () {
+      (async () => {
+        try {
+          const res = await axios.get(
+            `api/cooking_list/${localStorage.auth_userId}`
+          );
+          console.log('res.data', res.data);
+          setNonStocksData(res.data.non_stocks_data);
+          setOnStocksData(res.data.on_stocks_data);
+          setUseList(res.data.cooking_list_food_name_amount);
+          // setNameCount(res.data.cooking_list_name_counts);
+          setNameCountBase(res.data.cooking_list_name_counts);
+          setEditLoading(true);
+          return;
+        } catch (e) {
+          setEditLoading(true);
+
+          return e;
+        }
+      })();
+    }, 1000);
   };
 
-  const editFood = () => {
+  const editFood = async () => {
     (async () => {
       try {
         const res = await axios.get(
           `api/cooking_list/${localStorage.auth_userId}`
         );
-        setnonStocksData(res.data.non_stocks_data);
-        setOonStocksData(res.data.on_stocks_data);
+        console.log('res.data', res.data);
+        setNonStocksData(res.data.non_stocks_data);
+        setOnStocksData(res.data.on_stocks_data);
         setUseList(res.data.cooking_list_food_name_amount);
         setNameCount(res.data.cooking_list_name_counts);
         setNameCountBase(res.data.cooking_list_name_counts);
@@ -179,6 +208,7 @@ const CookingList = () => {
             length={length}
             onStocksData={onStocksData}
             HandlePost={HandlePost}
+            editLoading={editLoading}
           />
         </>
       ) : (
