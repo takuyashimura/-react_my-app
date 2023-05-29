@@ -1,21 +1,11 @@
-import {
-  Box,
-  Button,
-  Flex,
-  StackDivider,
-  VStack,
-  useDisclosure,
-  Text,
-  Center,
-} from '@chakra-ui/react';
+import { useDisclosure, Center } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AlertDialogPageMenu } from './AlertDialogPageMenu';
 import { EditMenuModal } from './EditMenuModal';
 import { NewMenuModal } from './NewMenuModal';
 import { MenuCookModal } from './MenuCookModal';
-import { MainButton } from '../tags/buttom';
-import Icon from '../icon/mapper';
+
 import MenuComopnent from './MenuComponent';
 import SpinnerIcon from './loading';
 
@@ -89,11 +79,9 @@ const Menu = () => {
       try {
         const res = await axios.get(`api/menu/${localStorage.auth_userId}`);
         setMenus(res.data.menus);
-        setLoading(true);
+        console.log('aaaa');
         return;
       } catch (e) {
-        setLoading(true);
-
         return e;
       }
     })();
@@ -150,6 +138,7 @@ const Menu = () => {
             isOpen={isAlert}
             onClose={endAlert}
             deleteMenu={deleteMenu}
+            getMenuData={getMenuData}
           />
           <EditMenuModal
             isOpen={isEdit}
