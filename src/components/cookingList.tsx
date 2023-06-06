@@ -1,17 +1,4 @@
-import {
-  Box,
-  Flex,
-  StackDivider,
-  Text,
-  VStack,
-  useToast,
-  NumberInput,
-  NumberInputStepper,
-  NumberInputField,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Center,
-} from '@chakra-ui/react';
+import { useToast, Center } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -160,7 +147,6 @@ const CookingList = () => {
           setNonStocksData(res.data.non_stocks_data);
           setOnStocksData(res.data.on_stocks_data);
           setUseList(res.data.cooking_list_food_name_amount);
-          // setNameCount(res.data.cooking_list_name_counts);
           setNameCountBase(res.data.cooking_list_name_counts);
           setEditLoading(true);
           return;

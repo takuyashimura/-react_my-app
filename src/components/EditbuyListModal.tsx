@@ -15,85 +15,82 @@ import {
   NumberInputStepper,
   StackDivider,
   VStack,
-  useToast,
   Text,
 } from '@chakra-ui/react';
 
 import axios from 'axios';
 import { VFC, memo, useEffect, useState } from 'react';
 
-type Props = { isOpen: boolean; onClose: () => void; getBuyListData: any };
-
-type Nonfood = {
-  id: number;
-  name: string;
-  amount: number;
-};
-type ShoppingItem = {
-  food_id: number;
-  name: string;
-  amount: number;
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  getBuyListData: any;
+  nonFood: any;
+  getNonFoodData: any;
+  onChangeNonFoodNumber: any;
 };
 
 export const EditBuyListModal: VFC<Props> = memo((props) => {
-  const { isOpen, onClose, getBuyListData } = props;
-  const [nonFood, setNonFood] = useState<Nonfood[] | undefined>(undefined);
-  const [sList, setSList] = useState<ShoppingItem[] | undefined>(undefined);
-  const toast = useToast();
+  const {
+    isOpen,
+    onClose,
+    getBuyListData,
+    nonFood,
+    getNonFoodData,
+    onChangeNonFoodNumber,
+  } = props;
+  // const [nonFood, setNonFood] = useState<Nonfood[] | undefined>(undefined);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await axios.get(
-          `api/edit_buy_list/${localStorage.auth_userId}`
-        );
-        setSList(res.data.shopping_item);
-        const nonFoodArray = res.data.nonFood?.flat();
-        const updatedNonFoodArray = nonFoodArray?.map((item: any) => ({
-          ...item,
-          amount: 0,
-        }));
-        setNonFood(updatedNonFoodArray as [Nonfood]);
-        return;
-      } catch (e) {
-        return e;
-      }
-    })();
-  }, []);
+  // const getNonFoodData = () => {
+  //   (async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         `api/edit_buy_list/${localStorage.auth_userId}`
+  //       );
+  //       const nonFoodArray = res.data.nonFood?.flat();
+  //       const updatedNonFoodArray = nonFoodArray?.map((item: any) => ({
+  //         ...item,
+  //         amount: 0,
+  //       }));
+  //       setNonFood(updatedNonFoodArray as [Nonfood]);
+  //       return;
+  //     } catch (e) {
+  //       return e;
+  //     }
+  //   })();
+  // };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios
-      .post('api/reply_buy_list', {
-        sList,
-        nonFood,
-        userId: localStorage.auth_userId,
-      })
-      .then((response) => {
-        onClose();
-        getBuyListData();
-      })
-      .catch((error) => {
+    (async () => {
+      try {
+        axios
+          .post('api/reply_buy_list', {
+            nonFood,
+            userId: localStorage.auth_userId,
+          })
+          .then((response) => {
+            console.log('response', response.data);
+            onClose();
+            getBuyListData();
+          });
+      } catch (error) {
         console.error(error);
-      });
+      }
+    })();
+    setTimeout(() => {
+      getNonFoodData();
+    }, 500);
   };
 
-  const onChangeNonFoodNumber = (e: string, name: string, id: number) => {
-    if (nonFood) {
-      const updatedNonfood = nonFood.map((list) =>
-        list.id === id ? { id, name, amount: Number(e) } : list
-      );
-      setNonFood(updatedNonfood);
-    }
-  };
-  const onChangeSlistNumber = (e: string, name: string, food_id: number) => {
-    if (sList) {
-      const updatedsList = sList.map((list) =>
-        list.food_id === food_id ? { food_id, name, amount: Number(e) } : list
-      );
-      setSList(updatedsList);
-    }
-  };
+  // const onChangeNonFoodNumber = (e: string, name: string, id: number) => {
+  //   if (nonFood) {
+  //     const updatedNonfood = nonFood.map((list) =>
+  //       list.id === id ? { id, name, amount: Number(e) } : list
+  //     );
+  //     setNonFood(updatedNonfood);
+  //   }
+  // };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -114,7 +111,7 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
                 }}
                 type="submit"
               >
-                カートを更新する{' '}
+                カートに追加する{' '}
               </Button>
             </Box>
 
@@ -124,7 +121,7 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
               align="stretch"
             >
               {nonFood &&
-                nonFood.map((f) => (
+                nonFood.map((f: any) => (
                   <>
                     <Flex justify="space-between">
                       <Box
@@ -142,37 +139,6 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
                           defaultValue={f.amount}
                           onChange={(e) =>
                             onChangeNonFoodNumber(e, f.name, f.id)
-                          }
-                        >
-                          <NumberInputField textAlign={'right'} />
-                          <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                          </NumberInputStepper>
-                        </NumberInput>
-                      </Box>
-                    </Flex>
-                  </>
-                ))}
-              {sList &&
-                sList.map((l) => (
-                  <>
-                    <Flex justify="space-between">
-                      <Box
-                        display={'flex'}
-                        alignItems={'center'}
-                        width={'50%'}
-                        key={l.food_id}
-                        h="40px"
-                      >
-                        <Text>{l.name}</Text>
-                      </Box>
-                      <Box width={'50%'}>
-                        <NumberInput
-                          min={0}
-                          defaultValue={l.amount}
-                          onChange={(e) =>
-                            onChangeSlistNumber(e, l.name, l.food_id)
                           }
                         >
                           <NumberInputField textAlign={'right'} />
