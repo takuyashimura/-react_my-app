@@ -34,7 +34,6 @@ const CookingListComponent: VFC<Props> = memo((props) => {
     nameCount,
     onChange,
     nameCountBase,
-    editFood,
     useList,
     HandleSubmit,
     nonStocksData,
