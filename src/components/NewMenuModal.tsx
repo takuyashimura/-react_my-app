@@ -95,30 +95,34 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
   };
 
   const HandleSubmit = () => {
-    axios
-      .post('api/add_menu_register', {
-        postData,
-        userId: localStorage.auth_userId,
-      })
-      .then((response) => {
-        console.log('response', response.data);
-        if (response.data === '登録完了') {
-          onClose();
-          getMenuData();
-        } else {
-          toast({
-            title: '既に登録されています',
-            position: 'top',
-            description: 'メニューページを確認してください',
-            status: 'error',
-            duration: 3000,
-            isClosable: true,
+    (async () => {
+      try {
+        axios
+          .post('api/add_menu_register', {
+            postData,
+            userId: localStorage.auth_userId,
+          })
+          .then((response) => {
+            console.log('response', response.data);
+            if (response.data === '登録完了') {
+              onClose();
+              getMenuData();
+            } else {
+              toast({
+                title: '既に登録されています',
+                position: 'top',
+                description: 'メニューページを確認してください',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+              });
+            }
           });
-        }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error(error);
-      });
+      }
+    })();
+    setMenuData([]);
   };
 
   return (
