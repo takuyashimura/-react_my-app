@@ -58,7 +58,7 @@ function Login() {
           navigation('/food/');
           setTimeout(() => {
             window.location.reload();
-          }, 2000);
+          }, 500);
         } else if (res.data.status === 401) {
           swal('注意', res.data.message, 'warning');
         } else {
