@@ -56,7 +56,7 @@ function Register() {
           swal('Success', res.data.message, 'success');
           setTimeout(() => {
             window.location.reload();
-          }, 2000);
+          }, 500);
         } else {
           setRegister({
             ...registerInput,
