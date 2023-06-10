@@ -6,6 +6,7 @@ import { AiFillSetting } from 'react-icons/ai';
 import { RxTextAlignBottom } from 'react-icons/rx';
 import { MdLogout, MdLogin } from 'react-icons/md';
 import { BsFillPencilFill } from 'react-icons/bs';
+import { AiOutlineDown } from 'react-icons/ai';
 
 const Icon = ({ name }: any) => {
   switch (name) {
@@ -31,6 +32,8 @@ const Icon = ({ name }: any) => {
       return <MdLogin />;
     case 'pencil':
       return <BsFillPencilFill color="black" />;
+    case 'down':
+      return <AiOutlineDown />;
 
     default:
       return null;

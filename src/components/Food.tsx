@@ -1,4 +1,4 @@
-import { useDisclosure, useToast, Box, Center } from '@chakra-ui/react';
+import { useDisclosure, useToast, Box, Center, Flex } from '@chakra-ui/react';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -6,9 +6,10 @@ import { useEffect, useState } from 'react';
 import NewFood from './NewFood';
 import { FoodToMenusModal } from './FoodToMenusModal';
 import { AlertDialogPage } from './AlertDialogPage';
-import { MainButton } from '../tags/buttom';
+import { MainButton, MainCategoryButton } from '../tags/buttom';
 import SpinnerIcon from './loading';
 import FoodComponent from './FoodComponent';
+import NewCategory from './NewCategory';
 type FoodStocks = {
   id: number;
   name: string;
@@ -46,6 +47,12 @@ const Food = () => {
     isOpen: isOpenAddFoodModal,
     onOpen: onOpenAddFoodModal,
     onClose: CloseAddFoodModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenAddCategory,
+    onOpen: onOpenAddCategory,
+    onClose: CloseAddCategory,
   } = useDisclosure();
   const {
     isOpen: isOpenFoodToMenuModal,
@@ -131,9 +138,17 @@ const Food = () => {
     <div className="Food">
       {loading ? (
         <>
-          <Box w={'100%'} textAlign={'right'}>
-            <MainButton onClick={onOpenAddFoodModal}>新規食材追加</MainButton>
-          </Box>
+          <Flex>
+            <Box w={'100%'} textAlign={'left'}>
+              <MainCategoryButton onClick={onOpenAddCategory}>
+                カテゴリー追加
+              </MainCategoryButton>
+            </Box>
+            <Box w={'100%'} textAlign={'right'}>
+              <MainButton onClick={onOpenAddFoodModal}>新規食材追加</MainButton>
+            </Box>
+          </Flex>
+
           <FoodComponent
             handlePostModal={handlePostModal}
             onCheckOpen={onCheckOpen}
@@ -144,6 +159,7 @@ const Food = () => {
             onClose={CloseAddFoodModal}
             getFoodData={getFoodData}
           />
+          <NewCategory isOpen={isOpenAddCategory} onClose={CloseAddCategory} />
           <FoodToMenusModal
             isOpen={isOpenFoodToMenuModal}
             onClose={CloseFoodToMenuModal}

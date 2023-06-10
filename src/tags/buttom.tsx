@@ -5,7 +5,7 @@ export const CustomButton = (props: any) => {
     <Button
       bg={'red.400'}
       color={'white'}
-      width={'45%'}
+      width={'50%'}
       _hover={{
         opacity: 0.8,
       }}
@@ -19,6 +19,21 @@ export const MainButton = (props: any) => {
   return (
     <Button
       bg={'red.400'}
+      color={'white'}
+      m={'5px'}
+      _hover={{
+        opacity: 0.8,
+      }}
+      {...props}
+    >
+      {props.children}
+    </Button>
+  );
+};
+export const MainCategoryButton = (props: any) => {
+  return (
+    <Button
+      bg={'green.300'}
       color={'white'}
       m={'5px'}
       _hover={{
@@ -47,7 +62,7 @@ export const MainNonButton = (props: any) => {
 };
 export const CustomNonButton = (props: any) => {
   return (
-    <Button bg={'gray.400'} color={'white'} width={'45%'} {...props}>
+    <Button bg={'gray.400'} color={'white'} width={'50%'} {...props}>
       {props.children}
     </Button>
   );
