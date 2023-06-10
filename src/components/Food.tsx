@@ -139,11 +139,11 @@ const Food = () => {
       {loading ? (
         <>
           <Flex>
-            <Box w={'100%'} textAlign={'left'}>
+            {/* <Box w={'100%'} textAlign={'left'}>
               <MainCategoryButton onClick={onOpenAddCategory}>
                 カテゴリー追加
               </MainCategoryButton>
-            </Box>
+            </Box> */}
             <Box w={'100%'} textAlign={'right'}>
               <MainButton onClick={onOpenAddFoodModal}>新規食材追加</MainButton>
             </Box>

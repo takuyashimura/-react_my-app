@@ -70,14 +70,14 @@ const NewFood: VFC<Props> = memo((props) => {
             alignItems={'center'}
             flexDirection={'column'}
           >
-            <Box width={'100%'} justifyContent="left">
+            {/* <Box width={'100%'} justifyContent="left">
               {' '}
               <SelectCategoryMenu
                 setCategory={setCategory}
                 category={category}
                 selectCateogory={selectCateogory}
               />
-            </Box>
+            </Box> */}
 
             <Flex width={'100%'} justify="space-between" alignItems="center">
               <Box mr={'5px'} width={'50%'}>
