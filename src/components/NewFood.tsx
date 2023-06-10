@@ -13,6 +13,7 @@ import {
 import axios from 'axios';
 import { memo, useState, VFC } from 'react';
 import { CustomButton, CustomNonButton } from '../tags/buttom';
+import SelectCategoryMenu from './selectCategoryMenu';
 
 type FoodData = string;
 
@@ -21,6 +22,7 @@ type Props = { isOpen: boolean; onClose: () => void; getFoodData: any };
 const NewFood: VFC<Props> = memo((props) => {
   const [foodData, setFoodData] = useState<FoodData>('食品名');
   const { isOpen, onClose, getFoodData } = props;
+  const [category, setCategory] = useState<FoodData | undefined>(undefined);
 
   const OnChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFoodData(e.target.value);
@@ -49,6 +51,10 @@ const NewFood: VFC<Props> = memo((props) => {
       });
   };
 
+  const selectCateogory = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCategory(event.target.value);
+  };
+  console.log('category', category);
   const toast = useToast();
 
   return (
@@ -62,9 +68,19 @@ const NewFood: VFC<Props> = memo((props) => {
             display={'flex'}
             justifyContent={'center'}
             alignItems={'center'}
+            flexDirection={'column'}
           >
-            <Flex justify="space-between" alignItems="center">
-              <Box mr={'5px'}>
+            <Box width={'100%'} justifyContent="left">
+              {' '}
+              <SelectCategoryMenu
+                setCategory={setCategory}
+                category={category}
+                selectCateogory={selectCateogory}
+              />
+            </Box>
+
+            <Flex width={'100%'} justify="space-between" alignItems="center">
+              <Box mr={'5px'} width={'50%'}>
                 <Input
                   type="text"
                   name="name"
