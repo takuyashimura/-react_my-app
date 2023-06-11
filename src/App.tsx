@@ -20,7 +20,6 @@ import ReactDOM from 'react-dom';
 import { ReactNode } from 'react';
 
 axios.defaults.baseURL = 'http://localhost:8888/';
-// axios.defaults.baseURL = 'http://43.207.34.41/';
 
 // axios.defaults.baseURL = 'http://54.150.18.194/';
 // axios.defaults.baseURL = 'https://snowpanda2.sakura.ne.jp/';
