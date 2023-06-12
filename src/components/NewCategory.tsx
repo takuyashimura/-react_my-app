@@ -35,7 +35,6 @@ const NewCategory: VFC<Props> = memo((props) => {
     axios
       .post('api/addCategory', { category, userId: localStorage.auth_userId })
       .then((response) => {
-        console.log('post', response.data);
         if (response.data === '成功') {
           onClose();
           getCategoryData();

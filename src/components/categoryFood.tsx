@@ -27,13 +27,8 @@ type CategoryProps = {
 };
 
 export const AllFood: VFC<Props> = memo((props) => {
-  const {
-    handlePostModal,
-    onCheckOpen,
-    foodStocks,
-
-    foodCategoryEditModal,
-  } = props;
+  const { handlePostModal, onCheckOpen, foodStocks, foodCategoryEditModal } =
+    props;
   return (
     <>
       {' '}
@@ -152,6 +147,19 @@ export const CategoryFood: VFC<CategoryProps> = memo((props) => {
                   </Box>
 
                   <Button
+                    mr={1}
+                    onClick={() => foodCategoryEditModal(matchingFood)}
+                    _hover={{
+                      cursor: 'pointer',
+                      opacity: 0.8,
+                    }}
+                  >
+                    <Box>
+                      <Icon name="pencil" />
+                    </Box>
+                  </Button>
+
+                  <Button
                     colorScheme="teal"
                     mr={1}
                     flexDirection="column"
@@ -223,6 +231,19 @@ export const NullFood: VFC<Props> = memo((props) => {
                       個
                     </Text>
                   </Box>
+
+                  <Button
+                    mr={1}
+                    onClick={() => foodCategoryEditModal(matchingFood)}
+                    _hover={{
+                      cursor: 'pointer',
+                      opacity: 0.8,
+                    }}
+                  >
+                    <Box>
+                      <Icon name="pencil" />
+                    </Box>
+                  </Button>
 
                   <Button
                     colorScheme="teal"

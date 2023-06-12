@@ -26,9 +26,6 @@ type Props = {
 const SelectCategoryMenu: VFC<Props> = memo((props) => {
   const { postCategory, setPostCategory, getCategories } = props;
 
-  console.log('getCategories', getCategories);
-  console.log('PostCategory', postCategory);
-
   return (
     <>
       <Menu>

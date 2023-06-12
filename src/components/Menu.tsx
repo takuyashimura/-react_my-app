@@ -80,7 +80,6 @@ const Menu = () => {
       try {
         const res = await axios.get(`api/menu/${localStorage.auth_userId}`);
         setMenus(res.data.menus);
-        console.log('aaaa');
         return;
       } catch (e) {
         return e;

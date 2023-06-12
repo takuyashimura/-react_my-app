@@ -41,9 +41,10 @@ type CategoryEditFood = {
   id: number;
   name: string;
   category_id: number;
+  total_amount: number;
 };
 
-// type category
+type NowFoodCategory = any;
 
 const Food = () => {
   const [foodStocks, setFoodStocks] = useState<FoodStocks[] | undefined>(
@@ -62,6 +63,9 @@ const Food = () => {
   const [loading, setLoading] = useState<Loading>(true);
   const [categoryEditFood, setCategoryEditFood] = useState<
     CategoryEditFood | undefined
+  >(undefined);
+  const [nowFoodCategory, setNowFoodCategory] = useState<
+    NowFoodCategory | undefined
   >(undefined);
 
   const {
@@ -91,6 +95,7 @@ const Food = () => {
     onClose: endFoodCategoryEdit,
   } = useDisclosure();
 
+  //カテゴリー一覧を取得
   const getCategoryData = () => {
     (async () => {
       try {
@@ -105,20 +110,24 @@ const Food = () => {
     })();
   };
 
-  useEffect(() => {
-    setLoading(false);
+  //食品のデータを取得
+  const getFoodData = () => {
     (async () => {
       try {
         const res = await axios.get(`/api/home/${localStorage.auth_userId}`);
         setFoodStocks(res.data.food_stocks);
         setLoading(true);
-        console.log('res', res.data);
         return;
       } catch (e) {
         setLoading(true);
         return e;
       }
     })();
+  };
+
+  useEffect(() => {
+    setLoading(false);
+    getFoodData();
     getCategoryData();
   }, []);
 
@@ -160,33 +169,13 @@ const Food = () => {
   };
 
   const foodCategoryEditModal = (matchingFood: any) => {
-    console.log('matchingFood', matchingFood);
-    // axios
-    //   .post('/api/categoryEdit', {
-    //     matchingFood,
-    //     userId: localStorage.auth_userId,
-    //   })
-    //   .then((response) => {
-    //     console.log('response', response.data);
-    //     // onFoodCategoryEdit();
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-  };
-
-  const getFoodData = () => {
-    (async () => {
-      try {
-        const res = await axios.get(`/api/home/${localStorage.auth_userId}`);
-        setFoodStocks(res.data.food_stocks);
-        setLoading(true);
-        return;
-      } catch (e) {
-        setLoading(true);
-        return e;
-      }
-    })();
+    setCategoryEditFood(matchingFood);
+    if (matchingFood.category_id === null) {
+      setNowFoodCategory('null');
+    } else if (matchingFood.category_id) {
+      setNowFoodCategory(matchingFood.category_id.toString());
+    }
+    onFoodCategoryEdit();
   };
 
   const toast = useToast();
@@ -198,7 +187,7 @@ const Food = () => {
           <Flex>
             <Box w={'100%'} textAlign={'left'}>
               <MainCategoryButton onClick={onOpenAddCategory}>
-                カテゴリー追加
+                カテゴリー編集
               </MainCategoryButton>
             </Box>
             <Box w={'100%'} textAlign={'right'}>
@@ -238,6 +227,11 @@ const Food = () => {
           <EditCategoryModal
             isOpen={isFoodCategoryEdit}
             onClose={endFoodCategoryEdit}
+            categoryEditFood={categoryEditFood}
+            getCategories={getCategories}
+            nowFoodCategory={nowFoodCategory}
+            setNowFoodCategory={setNowFoodCategory}
+            getFoodData={getFoodData}
           />
         </>
       ) : (

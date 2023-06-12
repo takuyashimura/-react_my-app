@@ -70,7 +70,6 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
             userId: localStorage.auth_userId,
           })
           .then((response) => {
-            console.log('response', response.data);
             onClose();
             getBuyListData();
           });

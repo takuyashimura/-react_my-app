@@ -20,7 +20,6 @@ import {
 } from '@chakra-ui/react';
 import { VFC, memo } from 'react';
 import { AllFood, CategoryFood, NullFood } from './categoryFood';
-import Icon from '../icon/mapper';
 
 type Props = {
   handlePostModal: any;
