@@ -17,12 +17,13 @@ import axios from 'axios';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  getCategoryData: any;
 };
 
 type Category = string;
 
 const NewCategory: VFC<Props> = memo((props) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, getCategoryData } = props;
 
   const [category, setCategory] = useState<Category>('カテゴリー名');
 
@@ -37,6 +38,7 @@ const NewCategory: VFC<Props> = memo((props) => {
         console.log('post', response.data);
         if (response.data === '成功') {
           onClose();
+          getCategoryData();
         } else {
           toast({
             title: '既に登録されています',

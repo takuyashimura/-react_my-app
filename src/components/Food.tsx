@@ -31,6 +31,11 @@ type Modal = {
 
 type Loading = boolean;
 
+type GetCategories = {
+  id: number;
+  name: string;
+};
+
 const Food = () => {
   const [foodStocks, setFoodStocks] = useState<FoodStocks[] | undefined>(
     undefined
@@ -40,6 +45,10 @@ const Food = () => {
   >(undefined);
 
   const [modaldata, setModalData] = useState<Modal[] | undefined>(undefined);
+
+  const [getCategories, setGetCategories] = useState<GetCategories | undefined>(
+    undefined
+  );
 
   const [loading, setLoading] = useState<Loading>(true);
 
@@ -65,7 +74,20 @@ const Food = () => {
     onClose: endCheck,
   } = useDisclosure();
 
-  // 先ほど作成したLaravelのAPIのURL
+  const getCategoryData = () => {
+    (async () => {
+      try {
+        const res = await axios.get(
+          `/api/category/${localStorage.auth_userId}`
+        );
+        setGetCategories(res.data.categories);
+        return;
+      } catch (e) {
+        return e;
+      }
+    })();
+  };
+
   useEffect(() => {
     setLoading(false);
     (async () => {
@@ -73,12 +95,14 @@ const Food = () => {
         const res = await axios.get(`/api/home/${localStorage.auth_userId}`);
         setFoodStocks(res.data.food_stocks);
         setLoading(true);
+        console.log('res', res.data);
         return;
       } catch (e) {
         setLoading(true);
         return e;
       }
     })();
+    getCategoryData();
   }, []);
 
   const onCheckOpen = (food_stock: any) => {
@@ -139,11 +163,11 @@ const Food = () => {
       {loading ? (
         <>
           <Flex>
-            {/* <Box w={'100%'} textAlign={'left'}>
+            <Box w={'100%'} textAlign={'left'}>
               <MainCategoryButton onClick={onOpenAddCategory}>
                 カテゴリー追加
               </MainCategoryButton>
-            </Box> */}
+            </Box>
             <Box w={'100%'} textAlign={'right'}>
               <MainButton onClick={onOpenAddFoodModal}>新規食材追加</MainButton>
             </Box>
@@ -153,13 +177,20 @@ const Food = () => {
             handlePostModal={handlePostModal}
             onCheckOpen={onCheckOpen}
             foodStocks={foodStocks}
+            getCategories={getCategories}
           />
           <NewFood
             isOpen={isOpenAddFoodModal}
             onClose={CloseAddFoodModal}
             getFoodData={getFoodData}
+            getCategoryData={getCategoryData}
+            getCategories={getCategories}
           />
-          <NewCategory isOpen={isOpenAddCategory} onClose={CloseAddCategory} />
+          <NewCategory
+            isOpen={isOpenAddCategory}
+            onClose={CloseAddCategory}
+            getCategoryData={getCategoryData}
+          />
           <FoodToMenusModal
             isOpen={isOpenFoodToMenuModal}
             onClose={CloseFoodToMenuModal}
