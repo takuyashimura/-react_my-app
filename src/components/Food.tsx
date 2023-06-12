@@ -10,6 +10,7 @@ import { MainButton, MainCategoryButton } from '../tags/buttom';
 import SpinnerIcon from './loading';
 import FoodComponent from './FoodComponent';
 import NewCategory from './NewCategory';
+import EditCategoryModal from './editCategoryModal';
 type FoodStocks = {
   id: number;
   name: string;
@@ -36,6 +37,14 @@ type GetCategories = {
   name: string;
 };
 
+type CategoryEditFood = {
+  id: number;
+  name: string;
+  category_id: number;
+};
+
+// type category
+
 const Food = () => {
   const [foodStocks, setFoodStocks] = useState<FoodStocks[] | undefined>(
     undefined
@@ -51,6 +60,9 @@ const Food = () => {
   );
 
   const [loading, setLoading] = useState<Loading>(true);
+  const [categoryEditFood, setCategoryEditFood] = useState<
+    CategoryEditFood | undefined
+  >(undefined);
 
   const {
     isOpen: isOpenAddFoodModal,
@@ -72,6 +84,11 @@ const Food = () => {
     isOpen: isCheck,
     onOpen: onCheck,
     onClose: endCheck,
+  } = useDisclosure();
+  const {
+    isOpen: isFoodCategoryEdit,
+    onOpen: onFoodCategoryEdit,
+    onClose: endFoodCategoryEdit,
   } = useDisclosure();
 
   const getCategoryData = () => {
@@ -142,6 +159,22 @@ const Food = () => {
       });
   };
 
+  const foodCategoryEditModal = (matchingFood: any) => {
+    console.log('matchingFood', matchingFood);
+    // axios
+    //   .post('/api/categoryEdit', {
+    //     matchingFood,
+    //     userId: localStorage.auth_userId,
+    //   })
+    //   .then((response) => {
+    //     console.log('response', response.data);
+    //     // onFoodCategoryEdit();
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
+  };
+
   const getFoodData = () => {
     (async () => {
       try {
@@ -172,12 +205,12 @@ const Food = () => {
               <MainButton onClick={onOpenAddFoodModal}>新規食材追加</MainButton>
             </Box>
           </Flex>
-
           <FoodComponent
             handlePostModal={handlePostModal}
             onCheckOpen={onCheckOpen}
             foodStocks={foodStocks}
             getCategories={getCategories}
+            foodCategoryEditModal={foodCategoryEditModal}
           />
           <NewFood
             isOpen={isOpenAddFoodModal}
@@ -201,6 +234,10 @@ const Food = () => {
             onClose={endCheck}
             modaldata={modaldata}
             getFoodData={getFoodData}
+          />{' '}
+          <EditCategoryModal
+            isOpen={isFoodCategoryEdit}
+            onClose={endFoodCategoryEdit}
           />
         </>
       ) : (

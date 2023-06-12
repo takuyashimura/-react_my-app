@@ -14,17 +14,26 @@ type Props = {
   onCheckOpen: any;
   foodStocks: any;
   getCategories: any;
+  foodCategoryEditModal: any;
 };
 type CategoryProps = {
   handlePostModal: any;
   onCheckOpen: any;
   foodStocks: any;
   getCategories: any;
+  foodCategoryEditModal: any;
+
   g: any;
 };
 
 export const AllFood: VFC<Props> = memo((props) => {
-  const { handlePostModal, onCheckOpen, foodStocks, getCategories } = props;
+  const {
+    handlePostModal,
+    onCheckOpen,
+    foodStocks,
+
+    foodCategoryEditModal,
+  } = props;
   return (
     <>
       {' '}
@@ -34,32 +43,45 @@ export const AllFood: VFC<Props> = memo((props) => {
         align="stretch"
       >
         {' '}
-        {foodStocks.map((food_stock: any) => (
+        {foodStocks.map((matchingFood: any) => (
           <Flex
             ml={2}
             mr={2}
             justify="space-between"
             height={'40px'}
-            key={food_stock.id}
+            key={matchingFood.id}
             alignItems="center"
           >
-            <Text>{food_stock.name}</Text>
+            <Text>{matchingFood.name}</Text>
 
             <Box display={'flex'} alignItems={'center'}>
               <Box mr={1}>
                 <Text>
-                  {food_stock.total_amount === null
+                  {matchingFood.total_amount === null
                     ? 0
-                    : food_stock.total_amount}
+                    : matchingFood.total_amount}
                   個
                 </Text>
               </Box>
 
               <Button
+                mr={1}
+                onClick={() => foodCategoryEditModal(matchingFood)}
+                _hover={{
+                  cursor: 'pointer',
+                  opacity: 0.8,
+                }}
+              >
+                <Box>
+                  <Icon name="pencil" />
+                </Box>
+              </Button>
+
+              <Button
                 colorScheme="teal"
                 mr={1}
                 flexDirection="column"
-                onClick={() => handlePostModal(food_stock)}
+                onClick={() => handlePostModal(matchingFood)}
                 _hover={{
                   cursor: 'pointer',
                   opacity: 0.8,
@@ -72,7 +94,7 @@ export const AllFood: VFC<Props> = memo((props) => {
               </Button>
               <Button
                 colorScheme="red"
-                onClick={() => onCheckOpen(food_stock)}
+                onClick={() => onCheckOpen(matchingFood)}
                 _hover={{
                   cursor: 'pointer',
 
@@ -90,7 +112,14 @@ export const AllFood: VFC<Props> = memo((props) => {
 });
 
 export const CategoryFood: VFC<CategoryProps> = memo((props) => {
-  const { handlePostModal, onCheckOpen, foodStocks, getCategories, g } = props;
+  const {
+    handlePostModal,
+    onCheckOpen,
+    foodStocks,
+
+    g,
+    foodCategoryEditModal,
+  } = props;
   return (
     <>
       <VStack
@@ -157,7 +186,13 @@ export const CategoryFood: VFC<CategoryProps> = memo((props) => {
 });
 
 export const NullFood: VFC<Props> = memo((props) => {
-  const { handlePostModal, onCheckOpen, foodStocks, getCategories } = props;
+  const {
+    handlePostModal,
+    onCheckOpen,
+    foodStocks,
+
+    foodCategoryEditModal,
+  } = props;
   return (
     <>
       <VStack

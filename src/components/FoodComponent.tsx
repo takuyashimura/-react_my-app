@@ -27,10 +27,17 @@ type Props = {
   onCheckOpen: any;
   foodStocks: any;
   getCategories: any;
+  foodCategoryEditModal: any;
 };
 
 const FoodComponent: VFC<Props> = memo((props) => {
-  const { handlePostModal, onCheckOpen, foodStocks, getCategories } = props;
+  const {
+    handlePostModal,
+    onCheckOpen,
+    foodStocks,
+    getCategories,
+    foodCategoryEditModal,
+  } = props;
 
   return (
     <>
@@ -52,6 +59,7 @@ const FoodComponent: VFC<Props> = memo((props) => {
                   onCheckOpen={onCheckOpen}
                   foodStocks={foodStocks}
                   getCategories={getCategories}
+                  foodCategoryEditModal={foodCategoryEditModal}
                 />
               </TabPanel>
 
@@ -63,6 +71,7 @@ const FoodComponent: VFC<Props> = memo((props) => {
                       onCheckOpen={onCheckOpen}
                       foodStocks={foodStocks}
                       getCategories={getCategories}
+                      foodCategoryEditModal={foodCategoryEditModal}
                       g={g}
                     />{' '}
                   </TabPanel>
@@ -73,6 +82,7 @@ const FoodComponent: VFC<Props> = memo((props) => {
                   onCheckOpen={onCheckOpen}
                   foodStocks={foodStocks}
                   getCategories={getCategories}
+                  foodCategoryEditModal={foodCategoryEditModal}
                 />
               </TabPanel>
             </TabPanels>
