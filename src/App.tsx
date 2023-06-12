@@ -20,8 +20,8 @@ import ReactDOM from 'react-dom';
 import { ReactNode } from 'react';
 
 // axios.defaults.baseURL = 'http://localhost:8888/';
-// axios.defaults.baseURL = 'http://54.150.18.194/';
-axios.defaults.baseURL = 'https://snowpanda2.sakura.ne.jp/';
+axios.defaults.baseURL = 'http://54.150.18.194/';
+// axios.defaults.baseURL = 'https://snowpanda2.sakura.ne.jp/';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
