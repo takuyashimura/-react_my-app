@@ -153,39 +153,52 @@ const NewCategory: VFC<Props> = memo((props) => {
                 </CustomButton>
               )}
             </Flex>
-            <Box mb={'5px'} width={'100%'} justifyContent="left">
-              <Text fontWeight={'bold'}>カテゴリー名の編集</Text>
-            </Box>
-            <Box>
-              {' '}
-              {getCategories &&
-                getCategories.map((g: any) => (
-                  <Input
-                    mb={'5px'}
-                    mr={'10px'}
-                    key={g.id}
-                    type="text"
-                    name="name"
-                    placeholder={g.name}
-                    onChange={(e) => {
-                      onEditCategories(e, g.id, g.name);
-                    }}
-                  />
-                ))}
-              {editCategories &&
-              getCategories &&
-              !editCategories.some((g: any) => g.name === '') &&
-              !_.isEqual(getCategories, editCategories) ? (
-                <Box width={'100%'} display={'flex'} justifyContent="flex-end">
+            {getCategories && (
+              <>
+                <Box mb={'5px'} width={'100%'} justifyContent="left">
+                  <Text fontWeight={'bold'}>カテゴリー名の編集</Text>
+                </Box>
+
+                <Box>
                   {' '}
-                  <CustomButton onClick={postEditCategories}>変更</CustomButton>
+                  {getCategories.map((g: any) => (
+                    <Input
+                      mb={'5px'}
+                      mr={'10px'}
+                      key={g.id}
+                      type="text"
+                      name="name"
+                      placeholder={g.name}
+                      onChange={(e) => {
+                        onEditCategories(e, g.id, g.name);
+                      }}
+                    />
+                  ))}
+                  {editCategories &&
+                  !editCategories.some((g: any) => g.name === '') &&
+                  !_.isEqual(getCategories, editCategories) ? (
+                    <Box
+                      width={'100%'}
+                      display={'flex'}
+                      justifyContent="flex-end"
+                    >
+                      {' '}
+                      <CustomButton onClick={postEditCategories}>
+                        変更
+                      </CustomButton>
+                    </Box>
+                  ) : (
+                    <Box
+                      width={'100%'}
+                      display={'flex'}
+                      justifyContent="flex-end"
+                    >
+                      <CustomNonButton>変更</CustomNonButton>
+                    </Box>
+                  )}
                 </Box>
-              ) : (
-                <Box width={'100%'} display={'flex'} justifyContent="flex-end">
-                  <CustomNonButton>変更</CustomNonButton>
-                </Box>
-              )}
-            </Box>
+              </>
+            )}
           </ModalBody>
         </ModalContent>
       </Modal>
