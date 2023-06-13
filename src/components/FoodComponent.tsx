@@ -1,82 +1,81 @@
 import {
-  Flex,
-  StackDivider,
-  VStack,
   Text,
   Box,
-  Button,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from '@chakra-ui/react';
 import { VFC, memo } from 'react';
-import Icon from '../icon/mapper';
+import { AllFood, CategoryFood, NullFood } from './categoryFood';
 
 type Props = {
   handlePostModal: any;
   onCheckOpen: any;
   foodStocks: any;
+  getCategories: any;
+  foodCategoryEditModal: any;
 };
 
 const FoodComponent: VFC<Props> = memo((props) => {
-  const { handlePostModal, onCheckOpen, foodStocks } = props;
+  const {
+    handlePostModal,
+    onCheckOpen,
+    foodStocks,
+    getCategories,
+    foodCategoryEditModal,
+  } = props;
+
   return (
     <>
       {foodStocks && foodStocks.length > 0 ? (
-        <VStack
-          divider={<StackDivider borderColor="gray.200" />}
-          spacing={2}
-          align="stretch"
-        >
-          {' '}
-          {foodStocks.map((food_stock: any) => (
-            <Flex
-              ml={2}
-              mr={2}
-              justify="space-between"
-              height={'40px'}
-              key={food_stock.id}
-              alignItems="center"
-            >
-              <Text>{food_stock.name}</Text>
+        <>
+          <Tabs isFitted variant="enclosed">
+            <TabList overflowX={'auto'}>
+              <Tab>全て</Tab>
+              {getCategories &&
+                getCategories.map((g: any) => <Tab key={g.id}>{g.name}</Tab>)}
 
-              <Box display={'flex'} alignItems={'center'}>
-                <Box mr={1}>
-                  <Text>
-                    {food_stock.total_amount === null
-                      ? 0
-                      : food_stock.total_amount}
-                    個
-                  </Text>
-                </Box>
+              <Tab>未分類</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel pr={'0px'} pl={'0px'}>
+                {' '}
+                <AllFood
+                  handlePostModal={handlePostModal}
+                  onCheckOpen={onCheckOpen}
+                  foodStocks={foodStocks}
+                  getCategories={getCategories}
+                  foodCategoryEditModal={foodCategoryEditModal}
+                />
+              </TabPanel>
 
-                <Button
-                  colorScheme="teal"
-                  mr={1}
-                  flexDirection="column"
-                  onClick={() => handlePostModal(food_stock)}
-                  _hover={{
-                    cursor: 'pointer',
-                    opacity: 0.8,
-                  }}
-                >
-                  <Box>
-                    <Icon name="pot" />
-                  </Box>
-                  <Text fontSize={'0.5px'}>メニュー</Text>
-                </Button>
-                <Button
-                  colorScheme="red"
-                  onClick={() => onCheckOpen(food_stock)}
-                  _hover={{
-                    cursor: 'pointer',
-
-                    opacity: 0.8,
-                  }}
-                >
-                  <Icon name="trashcan" />
-                </Button>
-              </Box>
-            </Flex>
-          ))}
-        </VStack>
+              {getCategories &&
+                getCategories.map((g: any) => (
+                  <TabPanel pr={'0px'} pl={'0px'} key={g.id}>
+                    <CategoryFood
+                      handlePostModal={handlePostModal}
+                      onCheckOpen={onCheckOpen}
+                      foodStocks={foodStocks}
+                      getCategories={getCategories}
+                      foodCategoryEditModal={foodCategoryEditModal}
+                      g={g}
+                    />{' '}
+                  </TabPanel>
+                ))}
+              <TabPanel pr={'0px'} pl={'0px'}>
+                <NullFood
+                  handlePostModal={handlePostModal}
+                  onCheckOpen={onCheckOpen}
+                  foodStocks={foodStocks}
+                  getCategories={getCategories}
+                  foodCategoryEditModal={foodCategoryEditModal}
+                />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </>
       ) : (
         <Box textAlign={'center'}>
           <Text mt={'50px'} fontSize={'20px'}>

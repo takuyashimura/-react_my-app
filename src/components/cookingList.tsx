@@ -122,7 +122,6 @@ const CookingList = () => {
         c.menu_id === menu_id ? { name, count: Number(e), menu_id } : c
       );
       setNameCount(upDataNameCount);
-      console.log('upDataNameCount', upDataNameCount);
 
       (async () => {
         try {
@@ -143,7 +142,6 @@ const CookingList = () => {
           const res = await axios.get(
             `api/cooking_list/${localStorage.auth_userId}`
           );
-          console.log('res.data', res.data);
           setNonStocksData(res.data.non_stocks_data);
           setOnStocksData(res.data.on_stocks_data);
           setUseList(res.data.cooking_list_food_name_amount);
@@ -165,7 +163,6 @@ const CookingList = () => {
         const res = await axios.get(
           `api/cooking_list/${localStorage.auth_userId}`
         );
-        console.log('res.data', res.data);
         setNonStocksData(res.data.non_stocks_data);
         setOnStocksData(res.data.on_stocks_data);
         setUseList(res.data.cooking_list_food_name_amount);
