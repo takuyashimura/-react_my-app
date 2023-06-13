@@ -111,7 +111,6 @@ const NewCategory: VFC<Props> = memo((props) => {
       }
     })();
   };
-
   const toast = useToast();
   return (
     <>
@@ -153,13 +152,13 @@ const NewCategory: VFC<Props> = memo((props) => {
                 </CustomButton>
               )}
             </Flex>
-            {getCategories && (
+            {getCategories && getCategories.length !== 0 && (
               <>
                 <Box mb={'5px'} width={'100%'} justifyContent="left">
                   <Text fontWeight={'bold'}>カテゴリー名の編集</Text>
                 </Box>
 
-                <Box>
+                <Box width={'100%'}>
                   {' '}
                   {getCategories.map((g: any) => (
                     <Input
