@@ -10,6 +10,7 @@ import { MainButton, MainCategoryButton } from '../tags/buttom';
 import SpinnerIcon from './loading';
 import FoodComponent from './FoodComponent';
 import NewCategory from './NewCategory';
+import EditCategoryModal from './editCategoryModal';
 type FoodStocks = {
   id: number;
   name: string;
@@ -31,6 +32,20 @@ type Modal = {
 
 type Loading = boolean;
 
+type GetCategories = {
+  id: number;
+  name: string;
+};
+
+type CategoryEditFood = {
+  id: number;
+  name: string;
+  category_id: number;
+  total_amount: number;
+};
+
+type NowFoodCategory = any;
+
 const Food = () => {
   const [foodStocks, setFoodStocks] = useState<FoodStocks[] | undefined>(
     undefined
@@ -41,7 +56,17 @@ const Food = () => {
 
   const [modaldata, setModalData] = useState<Modal[] | undefined>(undefined);
 
+  const [getCategories, setGetCategories] = useState<GetCategories | undefined>(
+    undefined
+  );
+
   const [loading, setLoading] = useState<Loading>(true);
+  const [categoryEditFood, setCategoryEditFood] = useState<
+    CategoryEditFood | undefined
+  >(undefined);
+  const [nowFoodCategory, setNowFoodCategory] = useState<
+    NowFoodCategory | undefined
+  >(undefined);
 
   const {
     isOpen: isOpenAddFoodModal,
@@ -64,10 +89,29 @@ const Food = () => {
     onOpen: onCheck,
     onClose: endCheck,
   } = useDisclosure();
+  const {
+    isOpen: isFoodCategoryEdit,
+    onOpen: onFoodCategoryEdit,
+    onClose: endFoodCategoryEdit,
+  } = useDisclosure();
 
-  // 先ほど作成したLaravelのAPIのURL
-  useEffect(() => {
-    setLoading(false);
+  //カテゴリー一覧を取得
+  const getCategoryData = () => {
+    (async () => {
+      try {
+        const res = await axios.get(
+          `/api/category/${localStorage.auth_userId}`
+        );
+        setGetCategories(res.data.categories);
+        return;
+      } catch (e) {
+        return e;
+      }
+    })();
+  };
+
+  //食品のデータを取得
+  const getFoodData = () => {
     (async () => {
       try {
         const res = await axios.get(`/api/home/${localStorage.auth_userId}`);
@@ -79,6 +123,12 @@ const Food = () => {
         return e;
       }
     })();
+  };
+
+  useEffect(() => {
+    setLoading(false);
+    getFoodData();
+    getCategoryData();
   }, []);
 
   const onCheckOpen = (food_stock: any) => {
@@ -118,18 +168,14 @@ const Food = () => {
       });
   };
 
-  const getFoodData = () => {
-    (async () => {
-      try {
-        const res = await axios.get(`/api/home/${localStorage.auth_userId}`);
-        setFoodStocks(res.data.food_stocks);
-        setLoading(true);
-        return;
-      } catch (e) {
-        setLoading(true);
-        return e;
-      }
-    })();
+  const foodCategoryEditModal = (matchingFood: any) => {
+    setCategoryEditFood(matchingFood);
+    if (matchingFood.category_id === null) {
+      setNowFoodCategory('null');
+    } else if (matchingFood.category_id) {
+      setNowFoodCategory(matchingFood.category_id.toString());
+    }
+    onFoodCategoryEdit();
   };
 
   const toast = useToast();
@@ -139,27 +185,36 @@ const Food = () => {
       {loading ? (
         <>
           <Flex>
-            {/* <Box w={'100%'} textAlign={'left'}>
+            <Box w={'100%'} textAlign={'left'}>
               <MainCategoryButton onClick={onOpenAddCategory}>
-                カテゴリー追加
+                カテゴリー編集
               </MainCategoryButton>
-            </Box> */}
+            </Box>
             <Box w={'100%'} textAlign={'right'}>
               <MainButton onClick={onOpenAddFoodModal}>新規食材追加</MainButton>
             </Box>
           </Flex>
-
           <FoodComponent
             handlePostModal={handlePostModal}
             onCheckOpen={onCheckOpen}
             foodStocks={foodStocks}
+            getCategories={getCategories}
+            foodCategoryEditModal={foodCategoryEditModal}
           />
           <NewFood
             isOpen={isOpenAddFoodModal}
             onClose={CloseAddFoodModal}
             getFoodData={getFoodData}
+            getCategoryData={getCategoryData}
+            getCategories={getCategories}
           />
-          <NewCategory isOpen={isOpenAddCategory} onClose={CloseAddCategory} />
+          <NewCategory
+            isOpen={isOpenAddCategory}
+            onClose={CloseAddCategory}
+            getCategoryData={getCategoryData}
+            setGetCategories={setGetCategories}
+            getCategories={getCategories}
+          />
           <FoodToMenusModal
             isOpen={isOpenFoodToMenuModal}
             onClose={CloseFoodToMenuModal}
@@ -170,6 +225,16 @@ const Food = () => {
             onClose={endCheck}
             modaldata={modaldata}
             getFoodData={getFoodData}
+          />{' '}
+          <EditCategoryModal
+            isOpen={isFoodCategoryEdit}
+            onClose={endFoodCategoryEdit}
+            categoryEditFood={categoryEditFood}
+            getCategories={getCategories}
+            nowFoodCategory={nowFoodCategory}
+            setNowFoodCategory={setNowFoodCategory}
+            getFoodData={getFoodData}
+            toast={toast}
           />
         </>
       ) : (

@@ -11,18 +11,24 @@ import {
   Input,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { memo, useState, VFC } from 'react';
+import { memo, useState, VFC, useEffect } from 'react';
 import { CustomButton, CustomNonButton } from '../tags/buttom';
 import SelectCategoryMenu from './selectCategoryMenu';
 
 type FoodData = string;
 
-type Props = { isOpen: boolean; onClose: () => void; getFoodData: any };
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  getFoodData: any;
+  getCategoryData: any;
+  getCategories: any;
+};
 
 const NewFood: VFC<Props> = memo((props) => {
   const [foodData, setFoodData] = useState<FoodData>('食品名');
-  const { isOpen, onClose, getFoodData } = props;
-  const [category, setCategory] = useState<FoodData | undefined>(undefined);
+  const { isOpen, onClose, getFoodData, getCategories } = props;
+  const [postCategory, setPostCategory] = useState<FoodData>('null');
 
   const OnChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFoodData(e.target.value);
@@ -30,11 +36,23 @@ const NewFood: VFC<Props> = memo((props) => {
 
   const HandleSubmit = () => {
     axios
-      .post('api/add', { foodData, userId: localStorage.auth_userId })
+      .post('api/add', {
+        postCategory,
+        foodData,
+        userId: localStorage.auth_userId,
+      })
       .then((response) => {
         if (response.data === '登録完了') {
+          toast({
+            title: '登録完了',
+            position: 'top',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          });
           onClose();
           getFoodData();
+          setPostCategory('null');
         } else {
           toast({
             title: '既に登録されています',
@@ -52,9 +70,8 @@ const NewFood: VFC<Props> = memo((props) => {
   };
 
   const selectCateogory = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCategory(event.target.value);
+    setPostCategory(event.target.value);
   };
-  console.log('category', category);
   const toast = useToast();
 
   return (
@@ -70,14 +87,15 @@ const NewFood: VFC<Props> = memo((props) => {
             alignItems={'center'}
             flexDirection={'column'}
           >
-            {/* <Box width={'100%'} justifyContent="left">
+            <Box width={'100%'} justifyContent="left">
               {' '}
               <SelectCategoryMenu
-                setCategory={setCategory}
-                category={category}
+                setPostCategory={setPostCategory}
+                postCategory={postCategory}
                 selectCateogory={selectCateogory}
+                getCategories={getCategories}
               />
-            </Box> */}
+            </Box>
 
             <Flex width={'100%'} justify="space-between" alignItems="center">
               <Box mr={'5px'} width={'50%'}>

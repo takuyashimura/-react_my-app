@@ -3,59 +3,79 @@ import {
   Menu,
   MenuButton,
   MenuList,
+  MenuItem,
   Button,
   Radio,
   RadioGroup,
   Stack,
   Text,
+  MenuOptionGroup,
+  Box,
+  MenuItemOption,
 } from '@chakra-ui/react';
 import Icon from '../icon/mapper';
 import axios from 'axios';
 
-type Props = { setCategory: any; category: any; selectCateogory: any };
+type Props = {
+  setPostCategory: any;
+  postCategory: any;
+  selectCateogory: any;
+  getCategories: any;
+};
 
 const SelectCategoryMenu: VFC<Props> = memo((props) => {
-  const { category, selectCateogory, setCategory } = props;
-
-  //   useEffect(() => {
-  //     (async () => {
-  //       try {
-  //         const res = await axios.get(`/api/home/${localStorage.auth_userId}`);
-
-  //         return;
-  //       } catch (e) {
-  //         return e;
-  //       }
-  //     })();
-  //   }, []);
+  const { postCategory, setPostCategory, getCategories } = props;
 
   return (
     <>
       <Menu>
-        <MenuButton
-          width={'50%'}
-          justify="left"
-          justifyContent={'center'}
-          mb={'5px'}
-          as={Button}
-          rightIcon={<Icon name="down" />}
-        >
-          {category ? <Text>{category}</Text> : <Text>未選択</Text>}
-        </MenuButton>
-        <MenuList>
-          <RadioGroup ml={'5px'} onChange={setCategory} value={category}>
-            <Stack>
-              <Radio value="未分類">未分類</Radio>
-              {category &&
-                category.map((c: any) => {
-                  <Radio key={c.id} value="2">
-                    Second
-                  </Radio>;
-                })}
+        {postCategory === 'null' ? (
+          <MenuButton
+            width={'50%'}
+            justify="left"
+            justifyContent={'center'}
+            mr={'5px'}
+            mb={'5px'}
+            as={Button}
+            rightIcon={<Icon name="down" />}
+          >
+            <Text>カテゴリー選択</Text>
+          </MenuButton>
+        ) : (
+          <MenuButton
+            width={'50%'}
+            justify="left"
+            justifyContent={'center'}
+            mr={'5px'}
+            mb={'5px'}
+            color={'white'}
+            colorScheme={'blue'}
+            as={Button}
+          >
+            <Text>カテゴリー:{postCategory}</Text>
+          </MenuButton>
+        )}
 
-              <Radio value="3">Third</Radio>
+        <MenuList>
+          <RadioGroup
+            ml={'5px'}
+            onChange={setPostCategory}
+            value={postCategory}
+          >
+            <Stack>
+              <Radio value="null">未分類</Radio>
+              {getCategories &&
+                getCategories.map((c: any) => (
+                  <Radio key={c.id} value={c.name.toString()}>
+                    <Text>{c.name}</Text>
+                  </Radio>
+                ))}
             </Stack>
           </RadioGroup>
+
+          <MenuItem justifyContent={'center'}>
+            <Text>Close</Text>
+          </MenuItem>
         </MenuList>
       </Menu>
     </>

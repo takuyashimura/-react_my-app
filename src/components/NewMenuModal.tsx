@@ -103,8 +103,14 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
             userId: localStorage.auth_userId,
           })
           .then((response) => {
-            console.log('response', response.data);
             if (response.data === '登録完了') {
+              toast({
+                title: '登録完了',
+                position: 'top',
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+              });
               onClose();
               getMenuData();
             } else {
