@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 
 import axios from 'axios';
-import { VFC, memo, useEffect, useState } from 'react';
+import { VFC, memo } from 'react';
 
 type Props = {
   isOpen: boolean;
@@ -39,26 +39,6 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
     getNonFoodData,
     onChangeNonFoodNumber,
   } = props;
-  // const [nonFood, setNonFood] = useState<Nonfood[] | undefined>(undefined);
-
-  // const getNonFoodData = () => {
-  //   (async () => {
-  //     try {
-  //       const res = await axios.get(
-  //         `api/edit_buy_list/${localStorage.auth_userId}`
-  //       );
-  //       const nonFoodArray = res.data.nonFood?.flat();
-  //       const updatedNonFoodArray = nonFoodArray?.map((item: any) => ({
-  //         ...item,
-  //         amount: 0,
-  //       }));
-  //       setNonFood(updatedNonFoodArray as [Nonfood]);
-  //       return;
-  //     } catch (e) {
-  //       return e;
-  //     }
-  //   })();
-  // };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -81,15 +61,6 @@ export const EditBuyListModal: VFC<Props> = memo((props) => {
       getNonFoodData();
     }, 500);
   };
-
-  // const onChangeNonFoodNumber = (e: string, name: string, id: number) => {
-  //   if (nonFood) {
-  //     const updatedNonfood = nonFood.map((list) =>
-  //       list.id === id ? { id, name, amount: Number(e) } : list
-  //     );
-  //     setNonFood(updatedNonfood);
-  //   }
-  // };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

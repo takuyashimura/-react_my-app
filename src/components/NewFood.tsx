@@ -11,7 +11,7 @@ import {
   Input,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { memo, useState, VFC, useEffect } from 'react';
+import { memo, useState, VFC } from 'react';
 import { CustomButton, CustomNonButton } from '../tags/buttom';
 import SelectCategoryMenu from './selectCategoryMenu';
 

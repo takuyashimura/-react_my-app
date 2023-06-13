@@ -1,4 +1,4 @@
-import { VFC, memo, useState, useEffect } from 'react';
+import { VFC, memo } from 'react';
 import {
   Menu,
   MenuButton,
@@ -9,12 +9,8 @@ import {
   RadioGroup,
   Stack,
   Text,
-  MenuOptionGroup,
-  Box,
-  MenuItemOption,
 } from '@chakra-ui/react';
 import Icon from '../icon/mapper';
-import axios from 'axios';
 
 type Props = {
   setPostCategory: any;

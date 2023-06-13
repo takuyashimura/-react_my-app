@@ -1,4 +1,4 @@
-import { VFC, memo, useEffect, useState } from 'react';
+import { VFC, memo } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -9,7 +9,6 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  useToast,
 } from '@chakra-ui/react';
 import axios from 'axios';
 
