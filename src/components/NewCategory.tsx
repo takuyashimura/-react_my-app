@@ -32,8 +32,7 @@ type GetCategories = {
 type Category = string;
 
 const NewCategory: VFC<Props> = memo((props) => {
-  const { isOpen, onClose, getCategoryData, setGetCategories, getCategories } =
-    props;
+  const { isOpen, onClose, getCategoryData, getCategories } = props;
 
   const [category, setCategory] = useState<Category>('カテゴリー名');
   //編集後のカテゴリーを格納する変数
