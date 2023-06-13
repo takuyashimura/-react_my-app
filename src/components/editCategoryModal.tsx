@@ -9,6 +9,7 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  useToast,
 } from '@chakra-ui/react';
 import axios from 'axios';
 
@@ -20,6 +21,7 @@ type Props = {
   nowFoodCategory: any;
   setNowFoodCategory: any;
   getFoodData: any;
+  toast: any;
 };
 
 const EditCategoryModal: VFC<Props> = memo((props) => {
@@ -31,9 +33,10 @@ const EditCategoryModal: VFC<Props> = memo((props) => {
     nowFoodCategory,
     setNowFoodCategory,
     getFoodData,
+    toast,
   } = props;
 
-  //食材のカテゴリーを変更するメソッド
+  //食材のカテゴリーを変更するメソッドし、変更後の食品のカテゴリー分類結果を取得
   const changeCategory = (value: any) => {
     setNowFoodCategory(value);
     (async () => {
@@ -44,6 +47,15 @@ const EditCategoryModal: VFC<Props> = memo((props) => {
             categoryEditFood,
           })
           .then((response) => {
+            if (response.data === 'ok') {
+              toast({
+                title: 'カテゴリーを変更しました',
+                position: 'top',
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+              });
+            }
             console.log('post', response.data);
             return;
           });
@@ -51,7 +63,9 @@ const EditCategoryModal: VFC<Props> = memo((props) => {
         return e;
       }
     })();
-    getFoodData();
+    setTimeout(() => {
+      getFoodData();
+    }, 500);
   };
 
   return (

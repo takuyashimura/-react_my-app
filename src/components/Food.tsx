@@ -212,6 +212,8 @@ const Food = () => {
             isOpen={isOpenAddCategory}
             onClose={CloseAddCategory}
             getCategoryData={getCategoryData}
+            setGetCategories={setGetCategories}
+            getCategories={getCategories}
           />
           <FoodToMenusModal
             isOpen={isOpenFoodToMenuModal}
@@ -232,6 +234,7 @@ const Food = () => {
             nowFoodCategory={nowFoodCategory}
             setNowFoodCategory={setNowFoodCategory}
             getFoodData={getFoodData}
+            toast={toast}
           />
         </>
       ) : (
