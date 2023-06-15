@@ -50,7 +50,7 @@ const NewFood: VFC<Props> = memo((props) => {
             duration: 3000,
             isClosable: true,
           });
-          onClose();
+          // onClose();
           getFoodData();
           setPostCategory('null');
         } else {
