@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
-import { Box, Flex, List, ListItem, Text, Link } from '@chakra-ui/react';
+import { Box, Flex, List, Text } from '@chakra-ui/react';
 import Icon from './icon/mapper';
 
 function GlobalNav() {

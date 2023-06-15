@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { EditBuyListModal } from './EditbuyListModal';
 import BuyListComponent from './BuyListComponent';
 import SpinnerIcon from './loading';
-import { RxPencil1 } from 'react-icons/rx';
 
 type shopingItem = {
   food_id: number;
@@ -28,9 +27,7 @@ const BuyList = () => {
   const [loading, setLoading] = useState<input>(true);
   const [buttomLoading, setButtomLoading] = useState<input>(true);
   const [text, setText] = useState<text>();
-  const [Inputting, setIsInputting] = useState<input>(false);
   const [deleting, setDeleting] = useState<input>(false);
-  const [resulting, setResulting] = useState<input>(false);
   const [nonFood, setNonFood] = useState<Nonfood[] | undefined>(undefined);
 
   const { isOpen: isEdit, onOpen: onEdit, onClose: endEdit } = useDisclosure();
@@ -189,9 +186,6 @@ const BuyList = () => {
             placeholder="その他買い物メモ"
             value={text}
             onChange={(e) => changeText(e)}
-            // onCompositionStart={() => {
-            //   setIsInputting(true);
-            // }}
             onCompositionEnd={result}
             onKeyDown={(e) => keyDown(e)}
           />

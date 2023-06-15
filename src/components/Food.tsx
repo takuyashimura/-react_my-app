@@ -214,6 +214,7 @@ const Food = () => {
             getCategoryData={getCategoryData}
             setGetCategories={setGetCategories}
             getCategories={getCategories}
+            getFoodData={getFoodData}
           />
           <FoodToMenusModal
             isOpen={isOpenFoodToMenuModal}
