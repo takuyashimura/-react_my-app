@@ -55,7 +55,6 @@ const EditCategoryModal: VFC<Props> = memo((props) => {
                 isClosable: true,
               });
             }
-            console.log('post', response.data);
             return;
           });
       } catch (e) {
@@ -82,6 +81,7 @@ const EditCategoryModal: VFC<Props> = memo((props) => {
               <RadioGroup
                 onChange={(value) => changeCategory(value)}
                 value={nowFoodCategory.toString()}
+                overflowX={'scroll'}
               >
                 <Stack direction="row">
                   <Radio value="null">未分類</Radio>

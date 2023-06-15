@@ -31,9 +31,11 @@ const FoodComponent: VFC<Props> = memo((props) => {
     <>
       {foodStocks && foodStocks.length > 0 ? (
         <>
-          <Tabs isFitted variant="enclosed">
-            <TabList overflowX={'auto'}>
-              <Tab>全て</Tab>
+          <Tabs isFitted variant="soft-rounded" colorScheme="green">
+            <TabList overflowX={'scroll'}>
+              <Tab>
+                <Text>全て</Text>
+              </Tab>
               {getCategories &&
                 getCategories.map((g: any) => <Tab key={g.id}>{g.name}</Tab>)}
 
