@@ -10,10 +10,15 @@ import {
   ModalOverlay,
   useToast,
   Text,
+  Button,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { VFC, memo, useState } from 'react';
 import { CustomButton, CustomNonButton } from '../tags/buttom';
 import axios from 'axios';
+import Icon from '../icon/mapper';
+import CategoryDeleteConfirmation from './categoryDeleteConfirmation';
+
 const _ = require('lodash');
 
 type Props = {
@@ -22,27 +27,43 @@ type Props = {
   getCategoryData: any;
   setGetCategories: any;
   getCategories: any;
+  getFoodData: any;
 };
 
 type GetCategories = {
   id: number;
   name: string;
 }[];
+type DeleteCategory = {
+  id: number;
+  name: string;
+};
 
 type Category = string;
 
 const NewCategory: VFC<Props> = memo((props) => {
-  const { isOpen, onClose, getCategoryData, getCategories } = props;
+  const { isOpen, onClose, getCategoryData, getCategories, getFoodData } =
+    props;
+  const {
+    isOpen: iscategoryDeleteConfirmationModal,
+    onOpen: oncategoryDeleteConfirmationModal,
+    onClose: endcategoryDeleteConfirmationModal,
+  } = useDisclosure();
 
   const [category, setCategory] = useState<Category>('カテゴリー名');
   //編集後のカテゴリーを格納する変数
   const [editCategories, seteditCategories] = useState<
     GetCategories | undefined
   >(undefined);
+  //削除するカテゴリーIDを格納するstate
+  const [categoryId, setCategoryId] = useState<DeleteCategory | undefined>(
+    undefined
+  );
 
   const OnAddCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategory(e.target.value);
   };
+  const toast = useToast();
 
   //カテゴリーを編集した際にgetCategoriesを更新する関数
   const onEditCategories = (
@@ -111,7 +132,13 @@ const NewCategory: VFC<Props> = memo((props) => {
       }
     })();
   };
-  const toast = useToast();
+
+  //カテゴリーを削除する関数
+  const categoryDelete = (id: number, name: string) => {
+    setCategoryId({ id, name });
+    oncategoryDeleteConfirmationModal();
+  };
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -161,17 +188,30 @@ const NewCategory: VFC<Props> = memo((props) => {
                 <Box width={'100%'}>
                   {' '}
                   {getCategories.map((g: any) => (
-                    <Input
-                      mb={'5px'}
-                      mr={'10px'}
-                      key={g.id}
-                      type="text"
-                      name="name"
-                      placeholder={g.name}
-                      onChange={(e) => {
-                        onEditCategories(e, g.id, g.name);
-                      }}
-                    />
+                    <Flex>
+                      <Input
+                        mb={'5px'}
+                        mr={'10px'}
+                        key={g.id}
+                        type="text"
+                        name="name"
+                        placeholder={g.name}
+                        onChange={(e) => {
+                          onEditCategories(e, g.id, g.name);
+                        }}
+                      />
+                      <Button
+                        colorScheme="red"
+                        onClick={(e) => categoryDelete(g.id, g.name)}
+                        _hover={{
+                          cursor: 'pointer',
+
+                          opacity: 0.8,
+                        }}
+                      >
+                        <Icon name="trashcan" />
+                      </Button>
+                    </Flex>
                   ))}
                   {editCategories &&
                   !editCategories.some((g: any) => g.name === '') &&
@@ -201,6 +241,15 @@ const NewCategory: VFC<Props> = memo((props) => {
           </ModalBody>
         </ModalContent>
       </Modal>
+      <CategoryDeleteConfirmation
+        isOpen={iscategoryDeleteConfirmationModal}
+        endcategoryDeleteConfirmationModal={endcategoryDeleteConfirmationModal}
+        categoryId={categoryId}
+        getFoodData={getFoodData}
+        getCategoryData={getCategoryData}
+        toast={toast}
+        closeCategoryEditModal={onClose}
+      />
     </>
   );
 });
