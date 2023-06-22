@@ -27,7 +27,10 @@ type Props = {
 
 const NewFood: VFC<Props> = memo((props) => {
   const [foodData, setFoodData] = useState<FoodData>('食品名');
+
   const { isOpen, onClose, getFoodData, getCategories } = props;
+
+  //選択中のカテゴリーを格納
   const [postCategory, setPostCategory] = useState<FoodData>('null');
 
   const OnChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {

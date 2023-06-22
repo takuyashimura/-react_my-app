@@ -16,28 +16,49 @@ import {
   VStack,
   Flex,
   useToast,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { VFC, memo, useEffect, useState } from 'react';
 import { MainButton } from '../tags/buttom';
+import CategoryMenu from './editMenuModalMenu';
+import { createImmediatelyInvokedFunctionExpression } from 'typescript';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   menuName: any;
   menuData: any;
+  menuCategories: any;
 };
 
+type Catagory = string;
+
 export const EditMenuModal: VFC<Props> = memo((props) => {
-  const { isOpen, onClose, menuName, menuData } = props;
+  const { isOpen, onClose, menuName, menuData, menuCategories } = props;
   const [postMenuData, setPostMenuData] = useState<any[] | undefined>(
     undefined
   );
+  //編集するカテゴリーを格納する変数
+  const [editMenuCategory, setEditMenuCategory] = useState<
+    Catagory | undefined
+  >(undefined);
   const toast = useToast();
 
   useEffect(() => {
-    if (menuName && menuData) {
-      setPostMenuData(menuData);
+    if (menuName) {
+      setEditMenuCategory(menuName.menu.category_id.toString());
+      console.log('editMenuCategory', editMenuCategory);
+      if (menuData) {
+        setPostMenuData(menuData);
+      }
     }
   }, []);
 
@@ -46,6 +67,7 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
     axios
       .post('api/add_menu_edit', {
         menuName,
+        editMenuCategory,
         postMenuData,
       })
       .then((response) => {
@@ -81,6 +103,8 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
     }
   };
 
+  console.log('menuName', menuName);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -93,10 +117,21 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
         <ModalCloseButton />
         <ModalBody>
           <form onSubmit={handlePost}>
-            <Box w={'100%'} textAlign={'right'}>
-              {' '}
-              <MainButton type="submit"> 使用する食材を変更する </MainButton>
-            </Box>
+            <Flex justify="space-between">
+              <CategoryMenu
+                menuCategories={menuCategories}
+                menuName={menuName}
+                setEditMenuCategory={setEditMenuCategory}
+                editMenuCategory={editMenuCategory}
+              />
+              <Box w={'100%'} textAlign={'right'}>
+                {' '}
+                <MainButton mr={0} type="submit">
+                  {' '}
+                  使用する食材を変更する{' '}
+                </MainButton>
+              </Box>
+            </Flex>
 
             <VStack
               divider={<StackDivider borderColor="gray.200" />}

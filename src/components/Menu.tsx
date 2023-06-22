@@ -1,4 +1,4 @@
-import { useDisclosure, Center } from '@chakra-ui/react';
+import { useDisclosure, Center, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AlertDialogPageMenu } from './AlertDialogPageMenu';
@@ -8,6 +8,7 @@ import { MenuCookModal } from './MenuCookModal';
 
 import MenuComopnent from './MenuComponent';
 import SpinnerIcon from './loading';
+import EditMenuCategoriesModal from './EditMenuCategoriesModal';
 
 type Menus = {
   menu_id: number;
@@ -31,6 +32,11 @@ type MenuData = {
 };
 type Loading = boolean;
 
+type MenuCategories = {
+  id: number;
+  name: string;
+};
+
 const Menu = () => {
   const [menus, setMenus] = useState<Menus[] | undefined>(undefined);
   const [deleteMenu, setDeleteMenu] = useState<DeleteMenu[] | undefined>(
@@ -41,6 +47,10 @@ const Menu = () => {
   const [choiceMenu, setChoiceMenu] = useState<MenuData[] | undefined>(
     undefined
   );
+  //メニューのカテゴリーを格納
+  const [menuCategories, setMenuCategories] = useState<
+    MenuCategories[] | undefined
+  >(undefined);
   const [loading, setLoading] = useState<Loading>(true);
 
   const {
@@ -55,37 +65,52 @@ const Menu = () => {
     onOpen: onChoice,
     onClose: endChoice,
   } = useDisclosure();
+  const {
+    isOpen: isEditCategories,
+    onOpen: onEditCategories,
+    onClose: endEditCategories,
+  } = useDisclosure();
+
+  const toast = useToast();
 
   // get↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
-  useEffect(() => {
-    setLoading(false);
-
+  //メニューのカテゴリーを取得
+  const getMenuCatagories = () => {
     (async () => {
       try {
-        const res = await axios.get(`api/menu/${localStorage.auth_userId}`);
-        setMenus(res.data.menus);
+        const res = await axios.get(
+          `api/getMenuCatagories/${localStorage.auth_userId}`
+        );
+        setMenuCategories(res.data);
         setLoading(true);
         return;
       } catch (e) {
         setLoading(true);
-
         return e;
       }
     })();
-  }, []);
-
+  };
+  //メニューのデータを取得
   const getMenuData = () => {
     (async () => {
       try {
         const res = await axios.get(`api/menu/${localStorage.auth_userId}`);
         setMenus(res.data.menus);
+        setLoading(true);
         return;
       } catch (e) {
+        setLoading(true);
         return e;
       }
     })();
   };
+
+  useEffect(() => {
+    setLoading(false);
+    getMenuData();
+    getMenuCatagories();
+  }, []);
 
   // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
   // post↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
@@ -121,6 +146,11 @@ const Menu = () => {
       });
   };
 
+  //カテゴリー編集モーダルを開く
+  const onOpenAddmenuCategory = () => {
+    onEditCategories();
+  };
+
   // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
   return (
@@ -133,6 +163,8 @@ const Menu = () => {
             ClickChoice={ClickChoice}
             ClickAlert={ClickAlert}
             clickEdit={clickEdit}
+            onOpenAddmenuCategory={onOpenAddmenuCategory}
+            menuCategories={menuCategories}
           />
           <AlertDialogPageMenu
             isOpen={isAlert}
@@ -145,16 +177,27 @@ const Menu = () => {
             onClose={endEdit}
             menuName={menuName}
             menuData={menuData}
+            menuCategories={menuCategories}
           />
           <NewMenuModal
             isOpen={isNew}
             onClose={endNew}
             getMenuData={getMenuData}
+            menuCategories={menuCategories}
           />
           <MenuCookModal
             isOpen={isChoice}
             onClose={endChoice}
             choiceMenu={choiceMenu}
+          />
+
+          <EditMenuCategoriesModal
+            isEditCategories={isEditCategories}
+            endEditCategories={endEditCategories}
+            menuCategories={menuCategories}
+            toast={toast}
+            getMenuCatagories={getMenuCatagories}
+            getMenuData={getMenuData}
           />
         </>
       ) : (

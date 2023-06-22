@@ -21,8 +21,14 @@ import {
 import axios from 'axios';
 import { VFC, memo, useEffect, useState } from 'react';
 import { CustomButton, CustomNonButton } from '../tags/buttom';
+import SelectMenuCategoryMenu from './selectMenuCategoryMenu';
 
-type Props = { isOpen: boolean; onClose: () => void; getMenuData: any };
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  getMenuData: any;
+  menuCategories: any;
+};
 
 type Food = {
   id: number;
@@ -36,8 +42,10 @@ type MenuFood = {
   amount: number;
 };
 
+type CategoryName = string;
+
 export const NewMenuModal: VFC<Props> = memo((props) => {
-  const { isOpen, onClose, getMenuData } = props;
+  const { isOpen, onClose, getMenuData, menuCategories } = props;
 
   const [food, setFood] = useState<Food[] | undefined>(undefined);
 
@@ -46,6 +54,9 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
   const [menuData, setMenuData] = useState<MenuFood[] | undefined>(undefined);
 
   const [postData, setPostData] = useState([menuName, menuData]);
+
+  //選択中のカテゴリーを格納
+  const [postCategory, setPostCategory] = useState<CategoryName>('null');
 
   const toast = useToast();
 
@@ -100,9 +111,11 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
         axios
           .post('api/add_menu_register', {
             postData,
+            postCategory,
             userId: localStorage.auth_userId,
           })
           .then((response) => {
+            console.log('response', response.data);
             if (response.data === '登録完了') {
               toast({
                 title: '登録完了',
@@ -141,56 +154,68 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
           display={'flex'}
           justifyContent={'center'}
           alignItems={'center'}
+          flexDirection={'column'}
         >
-          <form onSubmit={HandleSubmit}>
-            <Flex width={'100%'}>
-              <Box width={'60%'} mr={'5px'}>
-                <Input
-                  mr={'5px'}
-                  type="text"
-                  name="name"
-                  placeholder="メニュー名"
-                  onChange={OnChangeName}
-                />
-              </Box>
-              {menuName === 'メニュー名' ||
-              menuName === '' ||
-              menuName === undefined ? (
-                <CustomNonButton>新規メニュー追加</CustomNonButton>
-              ) : (
-                <CustomButton onClick={HandleSubmit} isDisabled={!menuName}>
-                  新規メニュー追加
-                </CustomButton>
-              )}
-            </Flex>
-            <VStack
-              divider={<StackDivider borderColor="gray.200" />}
-              spacing={4}
-              align="stretch"
-              mt={'10px'}
-            >
-              {food &&
-                food.map((f) => (
-                  <Flex justify={'space-between'}>
-                    {' '}
-                    <Box key={f.id} display={'flex'} alignItems={'center'}>
-                      <Text>{f.name}</Text>
-                    </Box>
-                    <NumberInput
-                      min={0}
-                      width={'50%'}
-                      onChange={(e) => onChangeFoodNumber(e, f.id)}
-                    >
-                      <NumberInputField textAlign={'right'} />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-                  </Flex>
-                ))}{' '}
-            </VStack>
-          </form>
+          <Box width={'100%'} justifyContent="left">
+            {' '}
+            <SelectMenuCategoryMenu
+              setPostCategory={setPostCategory}
+              postCategory={postCategory}
+              menuCategories={menuCategories}
+            />
+          </Box>
+          <Flex
+            width={'100%'}
+            justify="space-between"
+            alignItems="center"
+            p={0}
+          >
+            <Box width={'50%'} mr={'5px'}>
+              <Input
+                mr={'5px'}
+                type="text"
+                name="name"
+                placeholder="メニュー名"
+                onChange={OnChangeName}
+              />
+            </Box>
+            {menuName === 'メニュー名' ||
+            menuName === '' ||
+            menuName === undefined ? (
+              <CustomNonButton>新規メニュー追加</CustomNonButton>
+            ) : (
+              <CustomButton onClick={HandleSubmit} isDisabled={!menuName}>
+                新規メニュー追加
+              </CustomButton>
+            )}
+          </Flex>
+          <VStack
+            divider={<StackDivider borderColor="gray.200" />}
+            spacing={4}
+            align="stretch"
+            mt={'10px'}
+          >
+            {food &&
+              food.map((f) => (
+                <Flex justify={'space-between'}>
+                  {' '}
+                  <Box key={f.id} display={'flex'} alignItems={'center'}>
+                    <Text>{f.name}</Text>
+                  </Box>
+                  <NumberInput
+                    min={0}
+                    width={'50%'}
+                    onChange={(e) => onChangeFoodNumber(e, f.id)}
+                  >
+                    <NumberInputField textAlign={'right'} />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </Flex>
+              ))}{' '}
+          </VStack>
         </ModalBody>
       </ModalContent>
     </Modal>

@@ -31,7 +31,7 @@ const FoodComponent: VFC<Props> = memo((props) => {
     <>
       {foodStocks && foodStocks.length > 0 ? (
         <>
-          <Tabs isFitted variant="soft-rounded" colorScheme="green">
+          <Tabs variant="soft-rounded" colorScheme="green">
             <TabList overflowX={'scroll'}>
               <Tab>
                 <Text>全て</Text>
