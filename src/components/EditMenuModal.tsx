@@ -16,20 +16,11 @@ import {
   VStack,
   Flex,
   useToast,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { VFC, memo, useEffect, useState } from 'react';
 import { MainButton } from '../tags/buttom';
 import CategoryMenu from './editMenuModalMenu';
-import { createImmediatelyInvokedFunctionExpression } from 'typescript';
 
 type Props = {
   isOpen: boolean;
@@ -46,8 +37,11 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
   const [postMenuData, setPostMenuData] = useState<any[] | undefined>(
     undefined
   );
-  //編集するカテゴリーを格納する変数
+  //編集するカテゴリーidを格納する変数
   const [editMenuCategory, setEditMenuCategory] = useState<
+    Catagory | undefined
+  >(undefined);
+  const [editMenuCategoryName, setEditMenuCategoryName] = useState<
     Catagory | undefined
   >(undefined);
   const toast = useToast();
@@ -55,9 +49,18 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
   useEffect(() => {
     if (menuName) {
       setEditMenuCategory(menuName.menu.category_id.toString());
+      console.log('menuName.menu', menuName.menu);
       console.log('editMenuCategory', editMenuCategory);
       if (menuData) {
         setPostMenuData(menuData);
+      }
+      //選択したメニューのカテゴリー情報を取得
+      if (menuCategories) {
+        const selectMenuCategories = menuCategories.filter(
+          (m: any) => m.id === menuName.menu.category_id
+        );
+        setEditMenuCategoryName(selectMenuCategories);
+        console.log('selectMenuCategories', selectMenuCategories);
       }
     }
   }, []);
@@ -123,6 +126,7 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
                 menuName={menuName}
                 setEditMenuCategory={setEditMenuCategory}
                 editMenuCategory={editMenuCategory}
+                editMenuCategoryName={editMenuCategoryName}
               />
               <Box w={'100%'} textAlign={'right'}>
                 {' '}

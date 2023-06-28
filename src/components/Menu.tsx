@@ -82,6 +82,7 @@ const Menu = () => {
         const res = await axios.get(
           `api/getMenuCatagories/${localStorage.auth_userId}`
         );
+        console.log('res.data', res.data);
         setMenuCategories(res.data);
         setLoading(true);
         return;
@@ -132,13 +133,16 @@ const Menu = () => {
     onAlert();
   };
 
+  // 編集ボタン押下時に処理されるメソッド。選択したメニューの情報がmenuに当たる
   const clickEdit = (menu: any) => {
+    console.log('menu', menu);
     axios
       .post('api/menu_edit', { menu })
       .then((response) => {
+        //選択したメニューのレコードを取得する
         setMenuName(response.data.menuData);
+        //選択したメニューで使用する食材とその分量、使用しない食材を分けて取得する
         setMenuData(response.data.foodArray);
-
         onEdit();
       })
       .catch((error) => {

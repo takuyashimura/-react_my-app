@@ -18,13 +18,20 @@ type Props = {
   menuName: any;
   setEditMenuCategory: any;
   editMenuCategory: any;
+  editMenuCategoryName: any;
 };
 
 const CategoryMenu: VFC<Props> = memo((props) => {
-  const { menuCategories, menuName, setEditMenuCategory, editMenuCategory } =
-    props;
-
-  console.log('editMenuCategory', editMenuCategory);
+  const {
+    menuCategories,
+    menuName,
+    setEditMenuCategory,
+    editMenuCategory,
+    editMenuCategoryName,
+  } = props;
+  if (editMenuCategoryName) {
+    console.log('editMenuCategoryName[0]', editMenuCategoryName[0]);
+  }
 
   return (
     <>
@@ -35,13 +42,23 @@ const CategoryMenu: VFC<Props> = memo((props) => {
           as={Button}
           rightIcon={<Icon name="down" />}
         >
-          <Text
-            whiteSpace={'nowrap'}
-            overflow={'hidden'}
-            textOverflow={'ellipsis'}
-          >
-            選択
-          </Text>
+          {editMenuCategoryName ? (
+            <Text
+              whiteSpace={'nowrap'}
+              overflow={'hidden'}
+              textOverflow={'ellipsis'}
+            >
+              {editMenuCategoryName[0].name}
+            </Text>
+          ) : (
+            <Text
+              whiteSpace={'nowrap'}
+              overflow={'hidden'}
+              textOverflow={'ellipsis'}
+            >
+              選択
+            </Text>
+          )}
         </MenuButton>
         <MenuList>
           <MenuOptionGroup
