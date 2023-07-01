@@ -55,7 +55,7 @@ const Food = () => {
   >(undefined);
 
   const [modaldata, setModalData] = useState<Modal[] | undefined>(undefined);
-
+  //食材のカテゴリーを格納する変数
   const [getCategories, setGetCategories] = useState<GetCategories | undefined>(
     undefined
   );
@@ -95,7 +95,7 @@ const Food = () => {
     onClose: endFoodCategoryEdit,
   } = useDisclosure();
 
-  //カテゴリー一覧を取得
+  //食材のカテゴリー一覧を取得
   const getCategoryData = () => {
     (async () => {
       try {
@@ -155,7 +155,7 @@ const Food = () => {
         console.error(error);
       });
   };
-
+  //食材のメニューボタン押下時にその食材を使用するメニューを取得。取得したメニューをモーダルで表示する
   const handlePostModal = (food_stock: any) => {
     axios
       .post('/api/foodToMenu', { food_stock, userId: localStorage.auth_userId })

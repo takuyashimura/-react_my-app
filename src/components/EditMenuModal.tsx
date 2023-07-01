@@ -20,33 +20,47 @@ import {
 import axios from 'axios';
 import { VFC, memo, useEffect, useState } from 'react';
 import { MainButton } from '../tags/buttom';
+import CategoryMenu from './editMenuModalMenu';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   menuName: any;
   menuData: any;
+  menuCategories: any;
+  editMenuCategory: any;
+  setEditMenuCategory: any;
+  setEditMenuCategoryName: any;
+  editMenuCategoryName: any;
+  setMenuData: any;
+  getMenuData: any;
+  getMenuCatagories: any;
 };
 
 export const EditMenuModal: VFC<Props> = memo((props) => {
-  const { isOpen, onClose, menuName, menuData } = props;
-  const [postMenuData, setPostMenuData] = useState<any[] | undefined>(
-    undefined
-  );
-  const toast = useToast();
+  const {
+    isOpen,
+    onClose,
+    menuName,
+    menuData,
+    menuCategories,
+    editMenuCategory,
+    setEditMenuCategory,
+    editMenuCategoryName,
+    setMenuData,
+    getMenuData,
+    getMenuCatagories,
+  } = props;
 
-  useEffect(() => {
-    if (menuName && menuData) {
-      setPostMenuData(menuData);
-    }
-  }, []);
+  const toast = useToast();
 
   const handlePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
       .post('api/add_menu_edit', {
         menuName,
-        postMenuData,
+        editMenuCategory,
+        menuData,
       })
       .then((response) => {
         toast({
@@ -56,6 +70,8 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
           duration: 3000,
           isClosable: true,
         });
+        getMenuData();
+        getMenuCatagories();
         onClose();
       })
       .catch((error) => {
@@ -64,14 +80,14 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
   };
 
   const onChangeFoodNumber = (e: string, name: string, foodId: number) => {
-    if (postMenuData?.some((d) => d.id === foodId)) {
-      const updatedMenuData = postMenuData.map((data) =>
+    if (menuData?.some((d: any) => d.id === foodId)) {
+      const updatedMenuData = menuData.map((data: any) =>
         data.id === foodId ? { id: foodId, name, food_amount: Number(e) } : data
       );
-      setPostMenuData(updatedMenuData);
+      setMenuData(updatedMenuData);
     } else {
-      setPostMenuData([
-        ...(postMenuData ? postMenuData : []),
+      setMenuData([
+        ...(menuData ? menuData : []),
         {
           id: foodId,
           name,
@@ -93,10 +109,21 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
         <ModalCloseButton />
         <ModalBody>
           <form onSubmit={handlePost}>
-            <Box w={'100%'} textAlign={'right'}>
-              {' '}
-              <MainButton type="submit"> 使用する食材を変更する </MainButton>
-            </Box>
+            <Flex justify="space-between">
+              <CategoryMenu
+                menuCategories={menuCategories}
+                setEditMenuCategory={setEditMenuCategory}
+                editMenuCategory={editMenuCategory}
+                editMenuCategoryName={editMenuCategoryName}
+              />
+              <Box w={'100%'} textAlign={'right'}>
+                {' '}
+                <MainButton mr={0} type="submit">
+                  {' '}
+                  使用する食材を変更する{' '}
+                </MainButton>
+              </Box>
+            </Flex>
 
             <VStack
               divider={<StackDivider borderColor="gray.200" />}

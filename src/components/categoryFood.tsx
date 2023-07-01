@@ -22,7 +22,6 @@ type CategoryProps = {
   foodStocks: any;
   getCategories: any;
   foodCategoryEditModal: any;
-
   g: any;
 };
 
@@ -60,19 +59,6 @@ export const AllFood: VFC<Props> = memo((props) => {
               </Box>
 
               <Button
-                mr={1}
-                onClick={() => foodCategoryEditModal(matchingFood)}
-                _hover={{
-                  cursor: 'pointer',
-                  opacity: 0.8,
-                }}
-              >
-                <Box>
-                  <Icon name="pencil" />
-                </Box>
-              </Button>
-
-              <Button
                 colorScheme="teal"
                 mr={1}
                 flexDirection="column"
@@ -98,6 +84,18 @@ export const AllFood: VFC<Props> = memo((props) => {
               >
                 <Icon name="trashcan" />
               </Button>
+              <Button
+                ml={1}
+                onClick={() => foodCategoryEditModal(matchingFood)}
+                _hover={{
+                  cursor: 'pointer',
+                  opacity: 0.8,
+                }}
+              >
+                <Box>
+                  <Icon name="pencil" />
+                </Box>
+              </Button>
             </Box>
           </Flex>
         ))}
@@ -107,14 +105,8 @@ export const AllFood: VFC<Props> = memo((props) => {
 });
 
 export const CategoryFood: VFC<CategoryProps> = memo((props) => {
-  const {
-    handlePostModal,
-    onCheckOpen,
-    foodStocks,
-
-    g,
-    foodCategoryEditModal,
-  } = props;
+  const { handlePostModal, onCheckOpen, foodStocks, g, foodCategoryEditModal } =
+    props;
   return (
     <>
       <VStack
@@ -147,19 +139,6 @@ export const CategoryFood: VFC<CategoryProps> = memo((props) => {
                   </Box>
 
                   <Button
-                    mr={1}
-                    onClick={() => foodCategoryEditModal(matchingFood)}
-                    _hover={{
-                      cursor: 'pointer',
-                      opacity: 0.8,
-                    }}
-                  >
-                    <Box>
-                      <Icon name="pencil" />
-                    </Box>
-                  </Button>
-
-                  <Button
                     colorScheme="teal"
                     mr={1}
                     flexDirection="column"
@@ -184,6 +163,18 @@ export const CategoryFood: VFC<CategoryProps> = memo((props) => {
                     }}
                   >
                     <Icon name="trashcan" />
+                  </Button>
+                  <Button
+                    ml={1}
+                    onClick={() => foodCategoryEditModal(matchingFood)}
+                    _hover={{
+                      cursor: 'pointer',
+                      opacity: 0.8,
+                    }}
+                  >
+                    <Box>
+                      <Icon name="pencil" />
+                    </Box>
                   </Button>
                 </Box>
               </Flex>
@@ -233,19 +224,6 @@ export const NullFood: VFC<Props> = memo((props) => {
                   </Box>
 
                   <Button
-                    mr={1}
-                    onClick={() => foodCategoryEditModal(matchingFood)}
-                    _hover={{
-                      cursor: 'pointer',
-                      opacity: 0.8,
-                    }}
-                  >
-                    <Box>
-                      <Icon name="pencil" />
-                    </Box>
-                  </Button>
-
-                  <Button
                     colorScheme="teal"
                     mr={1}
                     flexDirection="column"
@@ -270,6 +248,18 @@ export const NullFood: VFC<Props> = memo((props) => {
                     }}
                   >
                     <Icon name="trashcan" />
+                  </Button>
+                  <Button
+                    ml={1}
+                    onClick={() => foodCategoryEditModal(matchingFood)}
+                    _hover={{
+                      cursor: 'pointer',
+                      opacity: 0.8,
+                    }}
+                  >
+                    <Box>
+                      <Icon name="pencil" />
+                    </Box>
                   </Button>
                 </Box>
               </Flex>

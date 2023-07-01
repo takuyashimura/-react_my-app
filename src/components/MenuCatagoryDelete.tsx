@@ -1,3 +1,4 @@
+import { VFC, memo, useRef } from 'react';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -9,27 +10,26 @@ import {
   AlertDialogCloseButton,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import React, { VFC, memo, useRef } from 'react';
 
 type Props = {
-  isOpen: boolean;
-  endcategoryDeleteConfirmationModal: () => void;
+  isCatagoryDeleteConfirmationModal: boolean;
+  endEditCategories: () => void;
   categoryId: any;
-  getFoodData: any;
-  getCategoryData: any;
   toast: any;
-  closeCategoryEditModal: any;
+  getMenuData: any;
+  getMenuCatagories: any;
+  endCatagoryDeleteConfirmationModal: () => void;
 };
 
-const CategoryDeleteConfirmation: VFC<Props> = memo((props) => {
+const MenuCatagoryDelete: VFC<Props> = memo((props) => {
   const {
-    isOpen,
-    endcategoryDeleteConfirmationModal,
+    isCatagoryDeleteConfirmationModal,
+    endEditCategories,
     categoryId,
-    getFoodData,
-    getCategoryData,
     toast,
-    closeCategoryEditModal,
+    endCatagoryDeleteConfirmationModal,
+    getMenuData,
+    getMenuCatagories,
   } = props;
   const cancelRef = useRef<HTMLButtonElement | null>(null);
 
@@ -38,7 +38,7 @@ const CategoryDeleteConfirmation: VFC<Props> = memo((props) => {
     (async () => {
       try {
         await axios
-          .post('/api/categoryDelete', {
+          .post('/api/menuCategoryDelete', {
             categoryId: categoryId.id,
             userId: localStorage.auth_userId,
           })
@@ -51,16 +51,16 @@ const CategoryDeleteConfirmation: VFC<Props> = memo((props) => {
               duration: 3000,
               isClosable: true,
             });
-            endcategoryDeleteConfirmationModal();
-            closeCategoryEditModal();
+            endEditCategories();
+            endCatagoryDeleteConfirmationModal();
           });
       } catch (error) {
         return error;
       }
     })();
     setTimeout(() => {
-      getFoodData();
-      getCategoryData();
+      getMenuData();
+      getMenuCatagories();
     }, 500);
   };
 
@@ -71,8 +71,8 @@ const CategoryDeleteConfirmation: VFC<Props> = memo((props) => {
           <AlertDialog
             motionPreset="slideInBottom"
             leastDestructiveRef={cancelRef}
-            onClose={endcategoryDeleteConfirmationModal}
-            isOpen={isOpen}
+            isOpen={isCatagoryDeleteConfirmationModal}
+            onClose={endCatagoryDeleteConfirmationModal}
             isCentered
           >
             <AlertDialogOverlay />
@@ -84,7 +84,7 @@ const CategoryDeleteConfirmation: VFC<Props> = memo((props) => {
                 {categoryId.name}を削除します。よろしいでしょうか？
               </AlertDialogBody>
               <AlertDialogFooter>
-                <Button onClick={endcategoryDeleteConfirmationModal}>
+                <Button onClick={endCatagoryDeleteConfirmationModal}>
                   キャンセル
                 </Button>
                 <Button
@@ -103,4 +103,4 @@ const CategoryDeleteConfirmation: VFC<Props> = memo((props) => {
   );
 });
 
-export default CategoryDeleteConfirmation;
+export default MenuCatagoryDelete;
