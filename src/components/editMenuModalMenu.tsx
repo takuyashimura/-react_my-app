@@ -2,11 +2,9 @@ import {
   Menu,
   MenuButton,
   MenuList,
-  MenuItem,
   MenuItemOption,
   MenuGroup,
   MenuOptionGroup,
-  MenuDivider,
   Button,
   Text,
 } from '@chakra-ui/react';
@@ -15,23 +13,17 @@ import { VFC, memo } from 'react';
 
 type Props = {
   menuCategories: any;
-  menuName: any;
   setEditMenuCategory: any;
   editMenuCategory: any;
   editMenuCategoryName: any;
 };
 
 const CategoryMenu: VFC<Props> = memo((props) => {
-  const {
-    menuCategories,
-    menuName,
-    setEditMenuCategory,
-    editMenuCategory,
-    editMenuCategoryName,
-  } = props;
-  if (editMenuCategoryName) {
-    console.log('editMenuCategoryName[0]', editMenuCategoryName[0]);
-  }
+  const { menuCategories, setEditMenuCategory, editMenuCategory } = props;
+
+  const categoryName = menuCategories.filter((m: any) => {
+    return m.id == editMenuCategory;
+  });
 
   return (
     <>
@@ -42,13 +34,13 @@ const CategoryMenu: VFC<Props> = memo((props) => {
           as={Button}
           rightIcon={<Icon name="down" />}
         >
-          {editMenuCategoryName ? (
+          {categoryName[0] ? (
             <Text
               whiteSpace={'nowrap'}
               overflow={'hidden'}
               textOverflow={'ellipsis'}
             >
-              {editMenuCategoryName[0].name}
+              {categoryName[0].name}
             </Text>
           ) : (
             <Text
@@ -56,7 +48,7 @@ const CategoryMenu: VFC<Props> = memo((props) => {
               overflow={'hidden'}
               textOverflow={'ellipsis'}
             >
-              選択
+              未選択
             </Text>
           )}
         </MenuButton>
@@ -72,6 +64,7 @@ const CategoryMenu: VFC<Props> = memo((props) => {
                   {c.name}
                 </MenuItemOption>
               ))}
+            <MenuItemOption value={'null'}>未分類</MenuItemOption>
           </MenuOptionGroup>
         </MenuList>
       </Menu>

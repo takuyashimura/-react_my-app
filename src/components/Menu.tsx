@@ -36,6 +36,12 @@ type MenuCategories = {
   id: number;
   name: string;
 };
+type Catagory = string;
+
+type EditMenuCategoryName = {
+  id: number;
+  name: string;
+};
 
 const Menu = () => {
   const [menus, setMenus] = useState<Menus[] | undefined>(undefined);
@@ -52,6 +58,15 @@ const Menu = () => {
     MenuCategories[] | undefined
   >(undefined);
   const [loading, setLoading] = useState<Loading>(true);
+  //編集するカテゴリーidを格納する変数
+
+  const [editMenuCategory, setEditMenuCategory] = useState<
+    Catagory | undefined
+  >(undefined);
+
+  const [editMenuCategoryName, setEditMenuCategoryName] = useState<
+    EditMenuCategoryName | undefined
+  >(undefined);
 
   const {
     isOpen: isAlert,
@@ -82,7 +97,6 @@ const Menu = () => {
         const res = await axios.get(
           `api/getMenuCatagories/${localStorage.auth_userId}`
         );
-        console.log('res.data', res.data);
         setMenuCategories(res.data);
         setLoading(true);
         return;
@@ -135,7 +149,6 @@ const Menu = () => {
 
   // 編集ボタン押下時に処理されるメソッド。選択したメニューの情報がmenuに当たる
   const clickEdit = (menu: any) => {
-    console.log('menu', menu);
     axios
       .post('api/menu_edit', { menu })
       .then((response) => {
@@ -143,6 +156,22 @@ const Menu = () => {
         setMenuName(response.data.menuData);
         //選択したメニューで使用する食材とその分量、使用しない食材を分けて取得する
         setMenuData(response.data.foodArray);
+        //選択したメニューのIDを文字列にして取得。カテゴリー未分類の場合の条件分岐あり
+        if (response.data.menuData.menu.category_id === null) {
+          setEditMenuCategory('null');
+        } else {
+          setEditMenuCategory(
+            response.data.menuData.menu.category_id.toString()
+          );
+        }
+
+        if (menuCategories) {
+          const selectMenuCategories = menuCategories.filter(
+            (m: any) => m.id === response.data.menuData.menu.category_id
+          );
+          setEditMenuCategoryName(selectMenuCategories[0]);
+        }
+
         onEdit();
       })
       .catch((error) => {
@@ -182,6 +211,13 @@ const Menu = () => {
             menuName={menuName}
             menuData={menuData}
             menuCategories={menuCategories}
+            editMenuCategory={editMenuCategory}
+            setEditMenuCategory={setEditMenuCategory}
+            setEditMenuCategoryName={setEditMenuCategoryName}
+            editMenuCategoryName={editMenuCategoryName}
+            setMenuData={setMenuData}
+            getMenuData={getMenuData}
+            getMenuCatagories={getMenuCatagories}
           />
           <NewMenuModal
             isOpen={isNew}

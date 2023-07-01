@@ -43,7 +43,6 @@ const MenuCatagoryDelete: VFC<Props> = memo((props) => {
             userId: localStorage.auth_userId,
           })
           .then((response) => {
-            console.log('response', response.data);
             toast({
               title: '使用する食材を消費しました。',
               position: 'top',

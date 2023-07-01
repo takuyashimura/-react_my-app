@@ -82,7 +82,6 @@ const EditMenuCategoriesModal: VFC<Props> = memo((props) => {
         userId: localStorage.auth_userId,
       })
       .then((response) => {
-        console.log('response', response.data);
         if (response.data === '成功') {
           endEditCategories();
           getMenuCatagories();
@@ -129,7 +128,6 @@ const EditMenuCategoriesModal: VFC<Props> = memo((props) => {
         await axios
           .post('/api/menuCategoryEdit', { editCategories })
           .then((response) => {
-            console.log('response.data', response.data);
             getMenuCatagories();
             seteditCategories(undefined);
             setCategory('カテゴリー名');

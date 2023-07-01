@@ -66,9 +66,7 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
     (async () => {
       try {
         const res = await axios.get(`api/add_menu/${localStorage.auth_userId}`);
-
         setFood(res.data.food);
-
         return;
       } catch (e) {
         return e;
@@ -92,7 +90,6 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
         menu.foodId === foodId ? { foodId, amount: Number(e) } : menu
       );
       setMenuData(updatedMenuData);
-
       // 存在しない場合
     } else {
       setMenuData([
@@ -106,6 +103,7 @@ export const NewMenuModal: VFC<Props> = memo((props) => {
   };
 
   const HandleSubmit = () => {
+    console.log('postCategory', postCategory);
     (async () => {
       try {
         axios

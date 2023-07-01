@@ -28,42 +28,31 @@ type Props = {
   menuName: any;
   menuData: any;
   menuCategories: any;
+  editMenuCategory: any;
+  setEditMenuCategory: any;
+  setEditMenuCategoryName: any;
+  editMenuCategoryName: any;
+  setMenuData: any;
+  getMenuData: any;
+  getMenuCatagories: any;
 };
 
-type Catagory = string;
-
 export const EditMenuModal: VFC<Props> = memo((props) => {
-  const { isOpen, onClose, menuName, menuData, menuCategories } = props;
-  const [postMenuData, setPostMenuData] = useState<any[] | undefined>(
-    undefined
-  );
-  //編集するカテゴリーidを格納する変数
-  const [editMenuCategory, setEditMenuCategory] = useState<
-    Catagory | undefined
-  >(undefined);
-  const [editMenuCategoryName, setEditMenuCategoryName] = useState<
-    Catagory | undefined
-  >(undefined);
-  const toast = useToast();
+  const {
+    isOpen,
+    onClose,
+    menuName,
+    menuData,
+    menuCategories,
+    editMenuCategory,
+    setEditMenuCategory,
+    editMenuCategoryName,
+    setMenuData,
+    getMenuData,
+    getMenuCatagories,
+  } = props;
 
-  useEffect(() => {
-    if (menuName) {
-      setEditMenuCategory(menuName.menu.category_id.toString());
-      console.log('menuName.menu', menuName.menu);
-      console.log('editMenuCategory', editMenuCategory);
-      if (menuData) {
-        setPostMenuData(menuData);
-      }
-      //選択したメニューのカテゴリー情報を取得
-      if (menuCategories) {
-        const selectMenuCategories = menuCategories.filter(
-          (m: any) => m.id === menuName.menu.category_id
-        );
-        setEditMenuCategoryName(selectMenuCategories);
-        console.log('selectMenuCategories', selectMenuCategories);
-      }
-    }
-  }, []);
+  const toast = useToast();
 
   const handlePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,7 +60,7 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
       .post('api/add_menu_edit', {
         menuName,
         editMenuCategory,
-        postMenuData,
+        menuData,
       })
       .then((response) => {
         toast({
@@ -81,6 +70,8 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
           duration: 3000,
           isClosable: true,
         });
+        getMenuData();
+        getMenuCatagories();
         onClose();
       })
       .catch((error) => {
@@ -89,14 +80,14 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
   };
 
   const onChangeFoodNumber = (e: string, name: string, foodId: number) => {
-    if (postMenuData?.some((d) => d.id === foodId)) {
-      const updatedMenuData = postMenuData.map((data) =>
+    if (menuData?.some((d: any) => d.id === foodId)) {
+      const updatedMenuData = menuData.map((data: any) =>
         data.id === foodId ? { id: foodId, name, food_amount: Number(e) } : data
       );
-      setPostMenuData(updatedMenuData);
+      setMenuData(updatedMenuData);
     } else {
-      setPostMenuData([
-        ...(postMenuData ? postMenuData : []),
+      setMenuData([
+        ...(menuData ? menuData : []),
         {
           id: foodId,
           name,
@@ -105,8 +96,6 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
       ]);
     }
   };
-
-  console.log('menuName', menuName);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -123,7 +112,6 @@ export const EditMenuModal: VFC<Props> = memo((props) => {
             <Flex justify="space-between">
               <CategoryMenu
                 menuCategories={menuCategories}
-                menuName={menuName}
                 setEditMenuCategory={setEditMenuCategory}
                 editMenuCategory={editMenuCategory}
                 editMenuCategoryName={editMenuCategoryName}
