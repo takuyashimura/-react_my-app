@@ -27,7 +27,9 @@ const CookingList = () => {
     undefined
   );
   const [toBuyList, settoBuyList] = useState([nonStocksData, onStocksData]);
+  //使用食材を格納するuseState
   const [useList, setUseList] = useState<StocksData[] | undefined>(undefined);
+
   const [nameCount, setNameCount] = useState<NameCount[] | undefined>(
     undefined
   );
@@ -94,6 +96,7 @@ const CookingList = () => {
   const HandlePost = () => {
     axios
       .post('api/cooking', {
+        nameCount,
         useList,
         userId: localStorage.auth_userId,
       })

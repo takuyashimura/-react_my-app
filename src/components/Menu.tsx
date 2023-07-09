@@ -10,9 +10,17 @@ import MenuComopnent from './MenuComponent';
 import SpinnerIcon from './loading';
 import EditMenuCategoriesModal from './EditMenuCategoriesModal';
 
+// type Menus = {
+//   menu_id: number;
+//   name: string;
+// };
+
 type Menus = {
-  menu_id: number;
+  id: number;
+  user_id: number;
   name: string;
+  category_id: number;
+  last_cook_at: number;
 };
 
 type DeleteMenu = {
